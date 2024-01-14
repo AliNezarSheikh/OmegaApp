@@ -1,0 +1,35 @@
+<svg width="372" height="335" viewBox="0 0 372 335" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_417_35102)">
+<rect width="372" height="335" fill="#E5E7EB"/>
+<rect width="372" height="335" fill="#E5E7EB"/>
+<g clip-path="url(#clip1_417_35102)">
+<rect x="300" y="16" width="56" height="56" rx="8" fill="white"/>
+<rect x="300" y="16" width="56" height="56" rx="8" fill="#E5E7EB"/>
+</g>
+<rect x="300.5" y="16.5" width="55" height="55" rx="7.5" stroke="#EDEDED"/>
+<g clip-path="url(#clip2_417_35102)">
+<rect x="300" y="84" width="56" height="56" rx="8" fill="white"/>
+<rect x="300" y="84" width="56" height="56" rx="8" fill="#E5E7EB"/>
+</g>
+<rect x="300.5" y="84.5" width="55" height="55" rx="7.5" stroke="#EDEDED"/>
+<g clip-path="url(#clip3_417_35102)">
+<rect x="300" y="152" width="56" height="56" rx="8" fill="white"/>
+<rect x="300" y="152" width="56" height="56" rx="8" fill="#E5E7EB"/>
+</g>
+<rect x="300.5" y="152.5" width="55" height="55" rx="7.5" stroke="#EDEDED"/>
+</g>
+<defs>
+<clipPath id="clip0_417_35102">
+<rect width="372" height="335" rx="24" fill="white"/>
+</clipPath>
+<clipPath id="clip1_417_35102">
+<rect x="300" y="16" width="56" height="56" rx="8" fill="white"/>
+</clipPath>
+<clipPath id="clip2_417_35102">
+<rect x="300" y="84" width="56" height="56" rx="8" fill="white"/>
+</clipPath>
+<clipPath id="clip3_417_35102">
+<rect x="300" y="152" width="56" height="56" rx="8" fill="white"/>
+</clipPath>
+</defs>
+</svg>
