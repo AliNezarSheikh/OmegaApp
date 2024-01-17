@@ -42,6 +42,7 @@ class loginscreen extends StatelessWidget {
                       words: "Welcome Back, Olivia",
                     ),
                     SizedBox(height: 10),
+
                     SecondlyText(
                       words: "Welcome back! Please enter your details.",
                     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/View/Screens/register_screen.dart';
@@ -9,6 +10,7 @@ import 'package:omega/View/Screens/register_screen.dart';
 double? width;
 double? height;
 logincontroller controller = Get.put(logincontroller());
+homecontroller homecontrol = Get.put(homecontroller());
 getwidth(BuildContext context) {
   width = MediaQuery.of(context).size.width;
   return MediaQuery.of(context).size.width;
@@ -43,10 +45,10 @@ Widget SecondlyText(
     Text(
       words,
       style: TextStyle(
-        color:color==null ? fontcolorsecond : color,
-        fontSize:fontsize==null ?  sizesecond :fontsize ,
-        fontFamily: fontfami ==null ? fontfamilysecond: fontfami,
-        fontWeight: wight ==null ? fontwightsecond: wight,
+        color: color == null ? fontcolorsecond : color,
+        fontSize: fontsize == null ? sizesecond : fontsize,
+        fontFamily: fontfami == null ? fontfamilysecond : fontfami,
+        fontWeight: wight == null ? fontwightsecond : wight,
       ),
     );
 
@@ -93,9 +95,7 @@ Widget buildRememberMeRow() {
       ),
       Spacer(),
       TextButton(
-        onPressed: () {
-
-        },
+        onPressed: () {},
         child: PrimaryText(
           words: "Forgot password?",
           fontsize: 14,
@@ -105,6 +105,7 @@ Widget buildRememberMeRow() {
     ],
   );
 }
+
 Widget buildAgreeRow() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,12 +127,12 @@ Widget buildAgreeRow() {
         wight: FontWeight.w500,
       ),
       Spacer(),
-
     ],
   );
 }
 
-Widget buildLoginButton({required  context, required String name , Color? Textcolor} ) {
+Widget buildLoginButton(
+    {required context, required String name, Color? Textcolor}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
@@ -141,19 +142,19 @@ Widget buildLoginButton({required  context, required String name , Color? Textco
         height: height! * 0.06,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color:Textcolor ==null ? fontcolorprimary : Colors.white,
-          border: Textcolor!= null ?
-              Border.all(
-                color: Textcolor,
-                style: BorderStyle.solid,
-                width: 1,
-              )
+          color: Textcolor == null ? fontcolorprimary : Colors.white,
+          border: Textcolor != null
+              ? Border.all(
+                  color: Textcolor,
+                  style: BorderStyle.solid,
+                  width: 1,
+                )
               : null,
         ),
         child: Center(
             child: PrimaryText(
           words: name,
-          color: Textcolor !=null  ? Textcolor :Colors.white,
+          color: Textcolor != null ? Textcolor : Colors.white,
           fontsize: 18,
           fontfami: "Inter",
         )),
@@ -193,7 +194,10 @@ Widget buildDividerRow(context) {
   );
 }
 
-Widget buildIconButton(context, String sentence , ) {
+Widget buildIconButton(
+  context,
+  String sentence,
+) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
@@ -211,7 +215,6 @@ Widget buildIconButton(context, String sentence , ) {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             SvgPicture.asset(
               'assets/images/img_google.svg',
               height: 25,
@@ -232,7 +235,7 @@ Widget buildIconButton(context, String sentence , ) {
   );
 }
 
-Widget buildannoymusButton(context, String sentence  ) {
+Widget buildannoymusButton(context, String sentence) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
@@ -242,32 +245,106 @@ Widget buildannoymusButton(context, String sentence  ) {
         height: height! * 0.06,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-
           border: Border.all(
               color: fontcolorprimary, style: BorderStyle.solid, width: 1),
         ),
         child: Center(
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-
-                Image.asset(
-                  'assets/images/annoyms.png',
-                  height: 50,
-                  width: 50,
-                ),
-                SizedBox(
-                  width: 3.0,
-                ),
-                PrimaryText(
-                  words: sentence,
-                  fontsize: 14,
-                  wight: FontWeight.w600,
-                ),
-              ],
-            )),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/annoyms.png',
+              height: 50,
+              width: 50,
+            ),
+            SizedBox(
+              width: 3.0,
+            ),
+            PrimaryText(
+              words: sentence,
+              fontsize: 14,
+              wight: FontWeight.w600,
+            ),
+          ],
+        )),
       ),
     ),
   );
 }
+
+Widget buildbanner(BuildContext context) => Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Container(
+        child: Stack(alignment: Alignment.topRight, children: [
+          Stack(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18.0, vertical: 18),
+                child: Container(
+                  width: getwidth(context),
+                  height: getwidth(context) * 0.5,
+                  decoration: BoxDecoration(
+                    color: themesecond,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 15.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PrimaryText(words: "Shop with us!", fontsize: 14),
+                        SizedBox(
+                          height: 12.0,
+                        ),
+                        SizedBox(
+                          width: getheight(context) * 0.2,
+                          child: Text(
+                            "Get 40% Off for all items",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: fontcolorprimary,
+                              fontSize: sizeprimary,
+                              fontFamily: fontfamilyprimary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 32.0, bottom: 32.0),
+            child: SvgPicture.asset(
+              "assets/images/img_mask_group.svg",
+              width: getwidth(context) * 0.4,
+            ),
+          ),
+        ]),
+      ),
+    );
+
+Widget buildlist(int index) => TextButton(
+      onPressed: () {
+        homecontrol.changenlistindex(index);
+        print(index);
+      },
+      child: SecondlyText(
+          words: "All",
+          color: homecontrol.selectedlistindex == index
+              ? fontcolorprimary
+              : fontcolorsecond),
+    );
+
+
+
+
