@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/register_screen.dart';
 
 double? width;
@@ -41,6 +42,7 @@ Widget SecondlyText(
         Color? color,
         double? fontsize,
         String? fontfami,
+        TextDecoration? decoration,
         FontWeight? wight}) =>
     Text(
       words,
@@ -49,6 +51,7 @@ Widget SecondlyText(
         fontSize: fontsize == null ? sizesecond : fontsize,
         fontFamily: fontfami == null ? fontfamilysecond : fontfami,
         fontWeight: wight == null ? fontwightsecond : wight,
+        decoration: decoration == null ? TextDecoration.none : decoration,
       ),
     );
 
@@ -136,7 +139,9 @@ Widget buildLoginButton(
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.off(homescreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
+      },
       child: Container(
         width: double.infinity,
         height: height! * 0.06,
@@ -340,11 +345,101 @@ Widget buildlist(int index) => TextButton(
       },
       child: SecondlyText(
           words: "All",
+          wight: FontWeight.w400,
+          decoration:homecontrol.selectedlistindex == index? TextDecoration.underline : TextDecoration.none,
           color: homecontrol.selectedlistindex == index
               ? fontcolorprimary
               : fontcolorsecond),
     );
 
-
-
-
+Widget ProductlistItemWidget(context) => Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image(
+              image: AssetImage(
+                "assets/images/img_bg.png",
+              ),
+              width: getwidth(context) * 0.3,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryText(words: "Airforce Jump", fontsize: 14),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.grey,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "Dark Grey")
+                    ],
+                  ),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  PrimaryText(words: '\$245.00 ', fontsize: 14),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: InkWell(
+                  onTap: () {},
+                  child: CircleAvatar(
+                    child: Image(
+                      image: AssetImage(
+                        "assets/images/img_heart.png",
+                      ),
+                      width: getwidth(context) * 0.055,
+                      //color: Colors.red,
+                    ),
+                    backgroundColor: Colors.red.withOpacity(0.5),
+                    radius: 15,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                child: SvgPicture.asset("assets/images/img_plus_primary.svg"),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );

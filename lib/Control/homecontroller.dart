@@ -6,12 +6,12 @@ import 'package:omega/View/Screens/dashboard.dart';
 import 'package:omega/View/Screens/favorite.dart';
 import 'package:omega/View/Screens/profile.dart';
 
-class homecontroller extends GetxController{
-  int currentindex =0;
-  Color selecteditemcolor=fontcolorprimary;
-  int selectedlistindex=0;
-  Color selectedlistcolor=fontcolorprimary;
-  List<Widget> bottomscreens=[
+class homecontroller extends GetxController {
+  int currentindex = 0;
+  Color selecteditemcolor = fontcolorprimary;
+  int selectedlistindex = 0;
+  Color selectedlistcolor = fontcolorprimary;
+  List<Widget> bottomscreens = [
     dashboard(),
     favorite(),
     cartscreen(),
@@ -19,12 +19,13 @@ class homecontroller extends GetxController{
   ];
   void changenavindex(int index) {
     currentindex = index;
-    selecteditemcolor=fontcolorprimary;
+    selecteditemcolor = fontcolorprimary;
     update();
   }
+
   void changenlistindex(int index) {
     selectedlistindex = index;
-    selectedlistcolor=fontcolorprimary;
+    selectedlistcolor = fontcolorprimary;
     update();
   }
 }

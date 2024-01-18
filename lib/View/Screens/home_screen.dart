@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:animations/animations.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
@@ -34,10 +34,23 @@ class homescreen extends StatelessWidget {
                 label: "",
               ),
               BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage("assets/images/img_thumbs_up.png"),
+                icon: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ImageIcon(
+                        AssetImage("assets/images/img_thumbs_up.png"),
+                      ),
+                    ),
+                    CircleAvatar(
+                      backgroundColor: Colors.green.withOpacity(0.5),
+                      child: Text("0"),
+                      radius: 10,
+                    ),
+                  ]
                 ),
-                label: "",
+               // label: "",
               ),
               BottomNavigationBarItem(
                 icon: ImageIcon(
@@ -48,11 +61,20 @@ class homescreen extends StatelessWidget {
             ],
           ),
         ),
-        body: GetBuilder<homecontroller>(
-          builder: (bottomcontroller) =>
-              bottomcontroller.bottomscreens[bottomcontroller.currentindex],
+        body:
+           GetBuilder<homecontroller>(
+            builder: (bottomcontroller) =>
+                PageTransitionSwitcher(
+                  duration: Duration(milliseconds: 500),
+                  transitionBuilder: (child, animation,animation2)=>
+                      FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                  child: bottomcontroller.bottomscreens[bottomcontroller.currentindex]),
+          ),
         ),
-      ),
+
     );
   }
 }
