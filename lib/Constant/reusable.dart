@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -140,7 +142,10 @@ Widget buildLoginButton(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
       onTap: () {
-        Get.off(homescreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
+        Get.off(homescreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));
       },
       child: Container(
         width: double.infinity,
@@ -346,7 +351,9 @@ Widget buildlist(int index) => TextButton(
       child: SecondlyText(
           words: "All",
           wight: FontWeight.w400,
-          decoration:homecontrol.selectedlistindex == index? TextDecoration.underline : TextDecoration.none,
+          decoration: homecontrol.selectedlistindex == index
+              ? TextDecoration.underline
+              : TextDecoration.none,
           color: homecontrol.selectedlistindex == index
               ? fontcolorprimary
               : fontcolorsecond),
@@ -443,3 +450,166 @@ Widget ProductlistItemWidget(context) => Container(
         ],
       ),
     );
+final random = Random();
+Widget CartlistItemWidget(context) => Dismissible(
+      key: Key(random.nextInt(4).toString()),
+      background: Container(
+        width: getwidth(context) * 0.25,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: fontcolorprimary,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: SvgPicture.asset(
+                "assets/images/img_trash_bin.svg",
+                width: 35,
+                height: 35,
+              ),
+            ),
+          ],
+        ),
+      ),
+      //onDismissed: (){},
+      child: Container(
+        padding: EdgeInsets.all(10),
+        height: getheight(context) * 0.1719,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorprimary.withOpacity(0.05),
+              spreadRadius: 4,
+              blurRadius: 5,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image(
+                image: AssetImage(
+                  "assets/images/img_bg.png",
+                ),
+                width: getwidth(context) * 0.3,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PrimaryText(words: "Airforce Jump", fontsize: 14),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.grey,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SecondlyText(words: "Dark Grey")
+                      ],
+                    ),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    PrimaryText(words: '\$245.00 ', fontsize: 14),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(2)),
+                              border: Border.all(
+                                color: Color(0XFFA2A5B1),
+                              )),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 2),
+                            child:  SvgPicture.asset(
+                                  "assets/images/img_minus_blue_gray_300.svg")
+                          ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "1", wight: FontWeight.w700),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SvgPicture.asset("assets/images/img_plus_primary.svg"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+Widget buildcheckButton(
+    {required context, required String name, Color? Textcolor}) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: InkWell(
+      onTap: () {
+        /*Get.off(homescreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));*/
+      },
+      child: Container(
+        width: double.infinity,
+        height: height! * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Textcolor == null ? fontcolorprimary : Colors.white,
+          border: Textcolor != null
+              ? Border.all(
+                  color: Textcolor,
+                  style: BorderStyle.solid,
+                  width: 1,
+                )
+              : null,
+        ),
+        child: Center(
+            child: PrimaryText(
+          words: name,
+          color: Textcolor != null ? Textcolor : Colors.white,
+          fontsize: 18,
+          fontfami: "Inter",
+        )),
+      ),
+    ),
+  );
+}
