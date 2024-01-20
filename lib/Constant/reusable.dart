@@ -78,14 +78,14 @@ Widget textinput({
             fontSize: 16.0, fontFamily: 'Poppins', fontWeight: FontWeight.w200),
       ),
     );
-Widget buildRememberMeRow() {
+Widget buildRememberMeRow(bool value) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Padding(
         padding: EdgeInsets.only(bottom: 1),
         child: Checkbox(
-          value: controller.rememberMe,
+          value: value,
           onChanged: (val) {
             controller.getremember(val: val);
           },
@@ -111,14 +111,14 @@ Widget buildRememberMeRow() {
   );
 }
 
-Widget buildAgreeRow() {
+Widget buildAgreeRow(bool value) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Padding(
         padding: EdgeInsets.only(bottom: 1),
         child: Checkbox(
-          value: controller.agree,
+          value: value,
           onChanged: (val) {
             controller.getagree(val: val);
           },
@@ -546,19 +546,17 @@ Widget CartlistItemWidget(context) => Dismissible(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(2)),
-                              border: Border.all(
-                                color: Color(0XFFA2A5B1),
-                              )),
-                          child: Padding(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(2)),
+                            border: Border.all(
+                              color: Color(0XFFA2A5B1),
+                            )),
+                        child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 2),
-                            child:  SvgPicture.asset(
-                                  "assets/images/img_minus_blue_gray_300.svg")
-                          ),
+                            child: SvgPicture.asset(
+                                "assets/images/img_minus_blue_gray_300.svg")),
                       ),
                       SizedBox(
                         width: 10,
@@ -610,6 +608,267 @@ Widget buildcheckButton(
           fontfami: "Inter",
         )),
       ),
+    ),
+  );
+}
+
+Widget buildeditButton(
+    {required context, required String name, Color? Textcolor}) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: InkWell(
+      onTap: () {
+        /*Get.off(homescreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));*/
+      },
+      child: Container(
+        width: width! * 0.25,
+        height: height! * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorprimary.withOpacity(0.1),
+              spreadRadius: 4,
+              blurRadius: 5,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+          color: Textcolor == null ? fontcolorprimary : Colors.white,
+          border: Textcolor != null
+              ? Border.all(
+                  color: Textcolor,
+                  style: BorderStyle.solid,
+                  width: 1,
+                )
+              : null,
+        ),
+        child: Center(
+            child: PrimaryText(
+          words: name,
+          color: Textcolor != null ? Textcolor : Colors.white,
+          fontsize: 18,
+          fontfami: "Inter",
+        )),
+      ),
+    ),
+  );
+}
+
+Widget buildsignoutButton(
+    {required context, required String name, Color? Textcolor}) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: InkWell(
+      onTap: () {
+        /*Get.off(homescreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));*/
+      },
+      child: Container(
+        width: width! * 0.25,
+        height: height! * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: fontcolorsecond,
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorprimary.withOpacity(0.1),
+              spreadRadius: 4,
+              blurRadius: 5,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+          border: Textcolor != null
+              ? Border.all(
+                  color: Textcolor,
+                  style: BorderStyle.solid,
+                  width: 1,
+                )
+              : null,
+        ),
+        child: Center(
+            child: PrimaryText(
+          words: name,
+          color: Textcolor != null ? Textcolor : Colors.white,
+          fontsize: 18,
+          fontfami: "Inter",
+        )),
+      ),
+    ),
+  );
+}
+
+Widget buildHeader() {
+  return Container(
+    decoration: BoxDecoration(
+        border: Border.all(
+            width: 1, color: fontcolorprimary, style: BorderStyle.solid),
+        borderRadius: BorderRadius.all(Radius.circular(100))),
+    child: Stack(alignment: Alignment.bottomRight, children: [
+      CircleAvatar(
+        radius: 102,
+        backgroundColor: Colors.white,
+        child: CircleAvatar(
+          radius: 100,
+          backgroundImage: AssetImage("assets/images/profile.jpg"),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 4.0, right: 4.0),
+        child: CircleAvatar(
+          backgroundImage: AssetImage("assets/images/addphoto.png"),
+          radius: 25,
+        ),
+      )
+    ]),
+  );
+}
+
+Widget buildinfo() {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Column(
+      children: [
+        Container(
+          width: double.infinity,
+          height: height! * 0.08,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)),
+            border: Border.all(
+              color: fontcolorprimary,
+              style: BorderStyle.solid,
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PrimaryText(
+                  words: "User Name",
+                  color: fontcolorsecond,
+                  fontsize: 12,
+                  fontfami: "Inter",
+                ),
+                SizedBox(
+                  height: 3.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: PrimaryText(
+                    words: "Ali Sheikh",
+                    color: fontcolorprimary,
+                    fontsize: 16,
+                    fontfami: "Inter",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Container(
+          width: double.infinity,
+          height: height! * 0.08,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)),
+            border: Border.all(
+              color: fontcolorprimary,
+              style: BorderStyle.solid,
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PrimaryText(
+                  words: "Email",
+                  color: fontcolorsecond,
+                  fontsize: 12,
+                  fontfami: "Inter",
+                ),
+                SizedBox(
+                  height: 3.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: PrimaryText(
+                    words: "AliSheikh@gmail.com",
+                    color: fontcolorprimary,
+                    fontsize: 16,
+                    fontfami: "Inter",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Container(
+          width: double.infinity,
+          height: height! * 0.08,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)),
+            border: Border.all(
+              color: fontcolorprimary,
+              style: BorderStyle.solid,
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PrimaryText(
+                  words: "Phone",
+                  color: fontcolorsecond,
+                  fontsize: 12,
+                  fontfami: "Inter",
+                ),
+                SizedBox(
+                  height: 3.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: PrimaryText(
+                    words: "+971 50 164 6033",
+                    color: fontcolorprimary,
+                    fontsize: 16,
+                    fontfami: "Inter",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+      ],
     ),
   );
 }

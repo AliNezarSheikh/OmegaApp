@@ -11,7 +11,7 @@ class registerscreen extends StatelessWidget {
   TextEditingController passwordFieldController = TextEditingController();
   TextEditingController passwordFieldController2 = TextEditingController();
 
-  logincontroller controller = logincontroller();
+  logincontroller controller = Get.find();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -59,14 +59,7 @@ class registerscreen extends StatelessWidget {
                         obscure: controller.notvisable,
                         hint: "Create Password",
                         controller: passwordFieldController,
-                       /* eyeicon: IconButton(
-                          onPressed: () {
-                            controller.getvisiblepassword();
-                          },
-                          icon: Icon(controller.notvisable == true
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined),
-                        ),*/
+
                       ),
                     ),
                     SizedBox(height: 24),
@@ -89,8 +82,8 @@ class registerscreen extends StatelessWidget {
                     ),
                     SizedBox(height: 24),
                     GetBuilder<logincontroller>(
-                      init: logincontroller(),
-                      builder: (controller) => buildAgreeRow(),
+
+                      builder: (controller) => buildAgreeRow(controller.agree),
                     ),
                     SizedBox(height: 15),
                     buildLoginButton(context: context, name: "Register"),

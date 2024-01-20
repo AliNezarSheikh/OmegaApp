@@ -11,7 +11,7 @@ class loginscreen extends StatelessWidget {
 
   TextEditingController passwordFieldController = TextEditingController();
 
-  logincontroller controller = logincontroller();
+  logincontroller controller = Get.put(logincontroller());
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -72,7 +72,7 @@ class loginscreen extends StatelessWidget {
                     SizedBox(height: 24),
                     GetBuilder<logincontroller>(
                       init: logincontroller(),
-                      builder: (controller) => buildRememberMeRow(),
+                      builder: (controller) => buildRememberMeRow( controller.rememberMe),
                     ),
                     SizedBox(height: 15),
                     buildLoginButton(context: context, name: "Login"),
