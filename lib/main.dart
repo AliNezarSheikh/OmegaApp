@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: splashscreen(),
+      home: homescreen(),
 
     );
   }

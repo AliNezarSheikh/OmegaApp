@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,6 +11,9 @@ import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/register_screen.dart';
+
+import '../View/Screens/add_new_card_screen.dart';
+import '../View/Screens/payment_screen.dart';
 
 double? width;
 double? height;
@@ -67,12 +72,49 @@ Widget textinput({
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: TextFormField(
+
         controller: controller,
         obscureText: obscure,
         keyboardType: type,
         decoration: InputDecoration(
           suffixIcon: eyeicon,
           hintText: hint,
+        ),
+        style: TextStyle(
+            fontSize: 16.0, fontFamily: 'Poppins', fontWeight: FontWeight.w200),
+      ),
+    );
+Widget textinput2({
+  required TextEditingController controller,
+  required TextInputType type,
+  required String hint,
+  required bool obscure,
+  Widget? eyeicon,
+  List<TextInputFormatter>? inputformat,
+  String? obscuretype,
+void Function()? ontap,
+  int? maxlenght,
+}) =>
+    Padding(
+      padding: const EdgeInsets.only(left: 16.0,top: 10,right: 16),
+      child: TextFormField(
+        inputFormatters:inputformat,
+        controller: controller,
+        obscureText: obscure,
+        keyboardType: type,
+       textAlignVertical: TextAlignVertical.bottom,
+        obscuringCharacter: obscuretype!=null ? obscuretype : '•',
+        onTap:ontap ,
+        maxLength:maxlenght ,
+        decoration: InputDecoration(
+
+          suffixIcon: eyeicon,
+          hintText: hint,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(5.0),
+            ),
+          ),
         ),
         style: TextStyle(
             fontSize: 16.0, fontFamily: 'Poppins', fontWeight: FontWeight.w200),
@@ -414,7 +456,7 @@ Widget ProductlistItemWidget(context) => Container(
                     ],
                   ),
                   SizedBox(
-                    height: 32,
+                    height: height!*0.02,
                   ),
                   PrimaryText(words: '\$245.00 ', fontsize: 14),
                 ],
@@ -530,7 +572,7 @@ Widget CartlistItemWidget(context) => Dismissible(
                       ],
                     ),
                     SizedBox(
-                      height: 32,
+                      height: height!*0.02,
                     ),
                     PrimaryText(words: '\$245.00 ', fontsize: 14),
                   ],
@@ -581,10 +623,10 @@ Widget buildcheckButton(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
       onTap: () {
-        /*Get.off(homescreen(),
-            transition: Transition.circularReveal,
+        Get.to(paymentscreen(),
+            transition: Transition.topLevel,
             curve: Curves.easeInOut,
-            duration: Duration(seconds: 3));*/
+            duration: Duration(seconds: 3));
       },
       child: Container(
         width: double.infinity,
@@ -741,7 +783,7 @@ Widget buildinfo() {
       children: [
         Container(
           width: double.infinity,
-          height: height! * 0.08,
+          height: height! * 0.09,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10.0),
@@ -764,7 +806,7 @@ Widget buildinfo() {
                   fontfami: "Inter",
                 ),
                 SizedBox(
-                  height: 3.0,
+                  height: height!*0.008,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
@@ -780,11 +822,11 @@ Widget buildinfo() {
           ),
         ),
         SizedBox(
-          height: 15,
+          height: height!*0.02,
         ),
         Container(
           width: double.infinity,
-          height: height! * 0.08,
+          height: height! * 0.09,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10.0),
@@ -807,7 +849,7 @@ Widget buildinfo() {
                   fontfami: "Inter",
                 ),
                 SizedBox(
-                  height: 3.0,
+                  height: height!*0.008,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
@@ -823,11 +865,11 @@ Widget buildinfo() {
           ),
         ),
         SizedBox(
-          height: 15,
+          height: height!*0.02,
         ),
         Container(
           width: double.infinity,
-          height: height! * 0.08,
+          height: height! * 0.09,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10.0),
@@ -850,7 +892,7 @@ Widget buildinfo() {
                   fontfami: "Inter",
                 ),
                 SizedBox(
-                  height: 3.0,
+                  height: height!*0.008,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
@@ -865,10 +907,157 @@ Widget buildinfo() {
             ),
           ),
         ),
-        SizedBox(
-          height: 10,
-        ),
+
       ],
+    ),
+  );
+}
+
+
+Widget paymentlist(context) => Container(
+  padding: EdgeInsets.all(10),
+  height: getheight(context) * 0.1719,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(20),
+    color: Colors.white,
+    boxShadow: [
+      BoxShadow(
+        color: fontcolorprimary.withOpacity(0.05),
+        spreadRadius: 4,
+        blurRadius: 5,
+        offset: Offset(
+          2,
+          4,
+        ),
+      ),
+    ],
+  ),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Image(
+          image: AssetImage(
+            "assets/images/img_bg.png",
+          ),
+          width: getwidth(context) * 0.3,
+          fit: BoxFit.cover,
+        ),
+      ),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PrimaryText(words: "Airforce Jump", fontsize: 14),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Colors.grey,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SecondlyText(words: "Dark Grey")
+                ],
+              ),
+              SizedBox(
+                height: height!*0.02,
+              ),
+              PrimaryText(words: '\$245.00 ', fontsize: 14),
+            ],
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+
+Widget addcardButton(
+    {required context, required String name, Color? Textcolor}) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: InkWell(
+      onTap: () {
+        Get.to(addcardscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: DottedBorder(
+          dashPattern: [5, 5],
+          strokeWidth: 2,
+          color: fontcolorprimary,
+
+          child: Container(
+            width: width!,
+            height: height! * 0.06,
+
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset("assets/images/img_icon.svg"),
+                  SizedBox(width: width!*0.02,),
+
+                  PrimaryText(
+                    words: name,
+                    color: fontcolorprimary,
+                    fontsize: 14,
+                    fontfami: "Inter",
+                  ),
+
+                ]),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget buildpaymentButton(
+    {required context, required String name, Color? Textcolor,String? object}) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: InkWell(
+      onTap: () {
+        Get.to(paymentscreen(),
+            transition: Transition.topLevel,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));
+        print(object);
+      },
+      child: Container(
+        width: double.infinity,
+        height: height! * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Textcolor == null ? fontcolorprimary : Colors.white,
+          border: Textcolor != null
+              ? Border.all(
+            color: Textcolor,
+            style: BorderStyle.solid,
+            width: 1,
+          )
+              : null,
+        ),
+        child: Center(
+            child: PrimaryText(
+              words: name,
+              color: Textcolor != null ? Textcolor : Colors.white,
+              fontsize: 18,
+              fontfami: "Inter",
+            )),
+      ),
     ),
   );
 }
