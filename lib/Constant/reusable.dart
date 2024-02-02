@@ -120,7 +120,7 @@ void Function()? ontap,
             fontSize: 16.0, fontFamily: 'Poppins', fontWeight: FontWeight.w200),
       ),
     );
-Widget buildRememberMeRow(bool value) {
+Widget buildRememberMeRow(bool value,void Function(bool?)? onChanged) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -128,9 +128,7 @@ Widget buildRememberMeRow(bool value) {
         padding: EdgeInsets.only(bottom: 1),
         child: Checkbox(
           value: value,
-          onChanged: (val) {
-            controller.getremember(val: val);
-          },
+          onChanged:onChanged,
           checkColor: Colors.white,
           activeColor: Colors.black,
         ),
@@ -153,7 +151,7 @@ Widget buildRememberMeRow(bool value) {
   );
 }
 
-Widget buildAgreeRow(bool value) {
+Widget buildAgreeRow(bool value,void Function(bool?)? onChanged) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -161,9 +159,7 @@ Widget buildAgreeRow(bool value) {
         padding: EdgeInsets.only(bottom: 1),
         child: Checkbox(
           value: value,
-          onChanged: (val) {
-            controller.getagree(val: val);
-          },
+          onChanged: onChanged,
           checkColor: Colors.white,
           activeColor: Colors.black,
         ),
