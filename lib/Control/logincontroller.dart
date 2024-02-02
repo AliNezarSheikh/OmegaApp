@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:omega/Model/usermodel.dart';
 import '../Constant/Components.dart';
 import '../Constant/reusable.dart';
 
@@ -89,7 +90,7 @@ class logincontroller extends GetxController {
       if (value.statusCode == 200) {
         isLoading.value = false;
         Map<String, dynamic> result = jsonDecode(value.body);
-         token = result["access_token"];
+        token = result["access_token"];
         await getuser(token: token, context: context);
       } else {
         isLoading.value = false;
@@ -112,8 +113,9 @@ class logincontroller extends GetxController {
     }).then((value) {
       if (value.statusCode == 200) {
         isLoading.value = false;
+        var result = jsonDecode(value.body);
+        user = usermodel.fromJson(result);
         successlogin.value = true;
-        Map<String, dynamic> result = jsonDecode(value.body);
       } else {
         isLoading.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["error"]);
