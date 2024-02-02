@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
@@ -18,7 +19,7 @@ class registerscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      ()=>SafeArea(
+      () => SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Container(
@@ -49,41 +50,84 @@ class registerscreen extends StatelessWidget {
                       SizedBox(height: 64),
                       textinput(
                           controller: emailFieldController,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return "Email Must Not Be Empty";
+                            } else {
+                              return null;
+                            }
+                          },
                           hint: "Email",
                           obscure: false,
                           type: TextInputType.emailAddress),
                       SizedBox(height: 24),
-
-                         textinput(
-                          type: TextInputType.visiblePassword,
-                          obscure: controller.notvisable.value,
-                          hint: "Create Password",
-                          controller: passwordFieldController,
-                        ),
-
+                      textinput(
+                        type: TextInputType.visiblePassword,
+                        validator: (String? value) {
+                          if (value!.length < 6) {
+                            return "Password is Short";
+                          } else {
+                            return null;
+                          }
+                        },
+                        obscure: controller.notvisable.value,
+                        hint: "Create Password",
+                        controller: passwordFieldController,
+                      ),
                       SizedBox(height: 24),
-                       textinput(
-                          type: TextInputType.visiblePassword,
-                          obscure: controller.notvisable.value,
-                          hint: "Confirm Password",
-                          controller: passwordFieldController2,
-                          eyeicon: IconButton(
-                            onPressed: () {
-                              controller.getvisiblepassword();
-                            },
-                            icon: Icon(controller.notvisable == true
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined),
-                          ),
+                      textinput(
+                        type: TextInputType.visiblePassword,
+                        obscure: controller.notvisable.value,
+                        hint: "Confirm Password",
+                        controller: passwordFieldController2,
+                        validator: (String? value) {
+                          if (value! != passwordFieldController.text) {
+                            return "Password does not Match";
+                          } else {
+                            return null;
+                          }
+                        },
+                        eyeicon: IconButton(
+                          onPressed: () {
+                            controller.getvisiblepassword();
+                          },
+                          icon: Icon(controller.notvisable == true
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined),
                         ),
-
+                      ),
                       SizedBox(height: 24),
-                    buildAgreeRow(controller.agree.value,(val) {
-                      controller.getagree(val: val);
-                    },),
-
+                      buildAgreeRow(
+                        controller.agree.value,
+                        (val) {
+                          controller.getagree(val: val);
+                        },
+                      ),
+                    controller.showError.value
+                        ? Text(
+                      'Please agree to the terms and conditions',
+                      style: TextStyle(color: Colors.red),
+                    )
+                        : SizedBox(),
                       SizedBox(height: 15),
-                      buildButton(context: context, name: "Register"),
+                      ConditionalBuilder(
+                          condition: controller.isLoading.isFalse,
+                          builder: (context) => buildButton(
+                              context: context,
+                              name: "Register",
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                 controller.submitForm();
+                                  if (controller.agree.isTrue) {
+                                    Get.off(() => loginscreen(),
+                                        transition: Transition.leftToRight,
+                                        curve: Curves.easeInOut,
+                                        duration: Duration(seconds: 2));
+                                  }
+                                }
+                              }),
+                          fallback: (context) =>
+                              Center(child: CircularProgressIndicator())),
                       SizedBox(height: 10),
                       buildDividerRow(context),
                       SizedBox(height: 10),
@@ -96,8 +140,11 @@ class registerscreen extends StatelessWidget {
                             words: "Have an account? ",
                           ),
                           TextButton(
-                            onPressed: (){
-                              Get.off(()=> loginscreen(),transition: Transition.leftToRight,curve: Curves.easeInOut,duration: Duration(seconds: 2));
+                            onPressed: () {
+                              Get.off(() => loginscreen(),
+                                  transition: Transition.leftToRight,
+                                  curve: Curves.easeInOut,
+                                  duration: Duration(seconds: 2));
                             },
                             child: PrimaryText(
                                 words: " Login",

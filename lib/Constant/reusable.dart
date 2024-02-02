@@ -68,6 +68,7 @@ Widget textinput({
   required String hint,
   required bool obscure,
   Widget? eyeicon,
+  String? Function(String?)? validator
 }) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -75,6 +76,7 @@ Widget textinput({
         controller: controller,
         obscureText: obscure,
         keyboardType: type,
+        validator: validator,
         decoration: InputDecoration(
           suffixIcon: eyeicon,
           hintText: hint,

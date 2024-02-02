@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
@@ -53,12 +57,26 @@ class loginscreen extends StatelessWidget {
                           controller: emailFieldController,
                           hint: "Email",
                           obscure: false,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return "Email Must Not Be Empty";
+                            } else {
+                              return null;
+                            }
+                          },
                           type: TextInputType.emailAddress),
                       SizedBox(height: 24),
                       textinput(
                         type: TextInputType.visiblePassword,
                         obscure: controller.notvisable.value,
                         hint: "Password",
+                        validator: (String? value) {
+                          if (value!.length < 6) {
+                            return "Password is Short";
+                          } else {
+                            return null;
+                          }
+                        },
                         controller: passwordFieldController,
                         eyeicon: IconButton(
                           onPressed: () {
@@ -70,16 +88,25 @@ class loginscreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 24),
-                      buildRememberMeRow(controller.rememberMe.value,(val){
+                      buildRememberMeRow(controller.rememberMe.value, (val) {
                         controller.getremember(val: val);
                       }),
                       SizedBox(height: 15),
-                      buildButton(context: context, name: "Login",onTap: (){
-                        Get.off(homescreen(),
-                            transition: Transition.circularReveal,
-                            curve: Curves.easeInOut,
-                            duration: Duration(seconds: 3));
-                      }),
+                      ConditionalBuilder(
+                          condition: controller.isLoading.isFalse,
+                          builder: (context) => buildButton(
+                              context: context,
+                              name: "Login",
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  Get.off(homescreen(),
+                                      transition: Transition.circularReveal,
+                                      curve: Curves.easeInOut,
+                                      duration: Duration(seconds: 3));
+                                }
+                              }),
+                          fallback: (context) =>
+                              Center(child: CircularProgressIndicator())),
                       SizedBox(height: 10),
                       buildDividerRow(context),
                       SizedBox(height: 10),
