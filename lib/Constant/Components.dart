@@ -33,4 +33,5 @@ class SpacingTextInputFormatter extends TextInputFormatter {
     );
   }
 }
+String baseurl="https://bagisto.code-vision.ae";
 GetStorage box=GetStorage();

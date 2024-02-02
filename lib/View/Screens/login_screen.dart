@@ -97,12 +97,15 @@ class loginscreen extends StatelessWidget {
                           builder: (context) => buildButton(
                               context: context,
                               name: "Login",
-                              onTap: () {
+                              onTap: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  Get.off(homescreen(),
+                                  await controller.loginuser(
+                                      email: emailFieldController.text,
+                                      password: passwordFieldController.text);
+                                 /* Get.off(homescreen(),
                                       transition: Transition.circularReveal,
                                       curve: Curves.easeInOut,
-                                      duration: Duration(seconds: 3));
+                                      duration: Duration(seconds: 3));*/
                                 }
                               }),
                           fallback: (context) =>

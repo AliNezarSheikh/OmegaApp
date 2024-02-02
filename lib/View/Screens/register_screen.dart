@@ -115,10 +115,13 @@ class registerscreen extends StatelessWidget {
                           builder: (context) => buildButton(
                               context: context,
                               name: "Register",
-                              onTap: () {
+                              onTap: () async {
                                 if (_formKey.currentState!.validate()) {
                                  controller.submitForm();
                                   if (controller.agree.isTrue) {
+                                    await controller.registeruser(
+                                        email: emailFieldController.text,
+                                        password: passwordFieldController.text);
                                     Get.off(() => loginscreen(),
                                         transition: Transition.leftToRight,
                                         curve: Curves.easeInOut,
