@@ -11,6 +11,7 @@ import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/register_screen.dart';
+import 'package:toastification/toastification.dart';
 
 import '../View/Screens/add_new_card_screen.dart';
 import '../View/Screens/payment_screen.dart';
@@ -62,14 +63,13 @@ Widget SecondlyText(
       ),
     );
 
-Widget textinput({
-  required TextEditingController controller,
-  required TextInputType type,
-  required String hint,
-  required bool obscure,
-  Widget? eyeicon,
-  String? Function(String?)? validator
-}) =>
+Widget textinput(
+        {required TextEditingController controller,
+        required TextInputType type,
+        required String hint,
+        required bool obscure,
+        Widget? eyeicon,
+        String? Function(String?)? validator}) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: TextFormField(
@@ -175,7 +175,10 @@ Widget buildAgreeRow(bool value, void Function(bool?)? onChanged) {
 }
 
 Widget buildButton(
-    {required context, required String name, Color? Textcolor,void Function()? onTap}) {
+    {required context,
+    required String name,
+    Color? Textcolor,
+    void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
@@ -609,11 +612,14 @@ Widget CartlistItemWidget(context) => Dismissible(
       ),
     );
 Widget profileButton(
-    {required context, required String name, Color? Textcolor,void Function()? onTap}) {
+    {required context,
+    required String name,
+    Color? Textcolor,
+    void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
-      onTap:onTap,
+      onTap: onTap,
       child: Container(
         width: width! * 0.25,
         height: height! * 0.06,
@@ -621,7 +627,7 @@ Widget profileButton(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           boxShadow: [
             BoxShadow(
-              color: fontcolorprimary.withOpacity(0.1) ,
+              color: fontcolorprimary.withOpacity(0.1),
               spreadRadius: 4,
               blurRadius: 5,
               offset: Offset(
@@ -630,7 +636,7 @@ Widget profileButton(
               ),
             ),
           ],
-          color: name == "Edit" ? fontcolorprimary :fontcolorsecond,
+          color: name == "Edit" ? fontcolorprimary : fontcolorsecond,
           border: Textcolor != null
               ? Border.all(
                   color: Textcolor,
@@ -650,8 +656,6 @@ Widget profileButton(
     ),
   );
 }
-
-
 
 Widget buildHeader() {
   return Container(
@@ -882,7 +886,10 @@ Widget paymentlist(context) => Container(
     );
 
 Widget addcardButton(
-    {required context, required String name, Color? Textcolor,void Function()? onTap}) {
+    {required context,
+    required String name,
+    Color? Textcolor,
+    void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
@@ -955,3 +962,18 @@ Widget addcardButton(
     ),
   );
 }*/
+
+void showresult(BuildContext context, Color color, String text) =>
+    toastification.show(
+      context: context,
+      icon: ImageIcon(AssetImage("assets/images/img_group_9.png")),
+      backgroundColor: color,
+      autoCloseDuration: const Duration(seconds: 3),
+      style: ToastificationStyle.flat,
+      description: PrimaryText(
+        words: text,
+        fontsize: 14,
+        wight: FontWeight.w400,
+      ),
+      borderRadius: BorderRadius.circular(12),
+    );

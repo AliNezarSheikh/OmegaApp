@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../Constant/Components.dart';
+import '../Constant/reusable.dart';
 
 class logincontroller extends GetxController {
   RxBool notvisable = true.obs;
@@ -10,6 +13,8 @@ class logincontroller extends GetxController {
   RxBool agree = true.obs;
   RxBool showError = false.obs;
   RxBool isLoading = false.obs;
+  RxBool successregister = false.obs;
+  RxBool successlogin = false.obs;
   void getvisiblepassword() {
     notvisable.value = !notvisable.value;
   }
@@ -34,6 +39,7 @@ class logincontroller extends GetxController {
   Future<void> registeruser({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/api/v2/storefront/account");
@@ -54,18 +60,23 @@ class logincontroller extends GetxController {
     )
         .then((value) {
       if (value.statusCode == 200) {
-        print(jsonDecode(value.body));
+        isLoading.value = false;
+        showresult(context, Colors.green, "Email has been Created Successfuly");
+        successregister.value = true;
       } else {
-        print(jsonDecode(value.body));
+        isLoading.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
       }
     }).catchError((error) {
-      print(error);
+      isLoading.value = false;
+      showresult(context, Colors.red, error.toString());
     });
   }
 
   Future<void> loginuser({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/spree_oauth/token");
@@ -79,37 +90,37 @@ class logincontroller extends GetxController {
         isLoading.value = false;
         Map<String, dynamic> result = jsonDecode(value.body);
         String token = result["access_token"];
-        await getuser(token: token);
+        await getuser(token: token, context: context);
       } else {
         isLoading.value = false;
-        print(jsonDecode(value.body));
+        showresult(
+            context, Colors.red, jsonDecode(value.body)["error_description"]);
       }
     }).catchError((error) {
-      print(error);
+      isLoading.value = false;
+      showresult(context, Colors.red, error.toString());
     });
   }
 
-  Future<void> getuser({
-    required String token,
-
-  }) async {
+  Future<void> getuser(
+      {required String token, required BuildContext context}) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/api/v2/storefront/account");
-
-    await http.get(url,headers: {
+    await http.get(url, headers: {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     }).then((value) {
       if (value.statusCode == 200) {
         isLoading.value = false;
+        successlogin.value = true;
         Map<String, dynamic> result = jsonDecode(value.body);
-        String id = result["data"]["id"];
-        print(id);
       } else {
-        print(jsonDecode(value.body));
+        isLoading.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
       }
     }).catchError((error) {
-      print(error);
+      isLoading.value = false;
+      showresult(context, Colors.red, error.toString());
     });
   }
 }

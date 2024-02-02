@@ -12,7 +12,7 @@ class registerscreen extends StatelessWidget {
   TextEditingController passwordFieldController = TextEditingController();
   TextEditingController passwordFieldController2 = TextEditingController();
 
-  logincontroller controller = Get.find();
+  logincontroller controller = Get.put(logincontroller());
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -121,11 +121,14 @@ class registerscreen extends StatelessWidget {
                                   if (controller.agree.isTrue) {
                                     await controller.registeruser(
                                         email: emailFieldController.text,
-                                        password: passwordFieldController.text);
-                                    Get.off(() => loginscreen(),
-                                        transition: Transition.leftToRight,
-                                        curve: Curves.easeInOut,
-                                        duration: Duration(seconds: 2));
+                                        password: passwordFieldController.text, context: context);
+                                    if(controller.successregister.isTrue){
+                                      Get.off(() => loginscreen(),
+                                          transition: Transition.leftToRight,
+                                          curve: Curves.easeInOut,
+                                          duration: Duration(seconds: 2));
+                                    }
+
                                   }
                                 }
                               }),

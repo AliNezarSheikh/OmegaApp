@@ -101,11 +101,14 @@ class loginscreen extends StatelessWidget {
                                 if (_formKey.currentState!.validate()) {
                                   await controller.loginuser(
                                       email: emailFieldController.text,
-                                      password: passwordFieldController.text);
-                                 /* Get.off(homescreen(),
-                                      transition: Transition.circularReveal,
-                                      curve: Curves.easeInOut,
-                                      duration: Duration(seconds: 3));*/
+                                      password: passwordFieldController.text, context: context);
+                                  if(controller.successlogin.isTrue){
+                                    Get.off(homescreen(),
+                                        transition: Transition.circularReveal,
+                                        curve: Curves.easeInOut,
+                                        duration: Duration(seconds: 3));
+                                  }
+
                                 }
                               }),
                           fallback: (context) =>
