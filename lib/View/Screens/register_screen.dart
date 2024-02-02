@@ -83,7 +83,7 @@ class registerscreen extends StatelessWidget {
                     },),
 
                       SizedBox(height: 15),
-                      buildLoginButton(context: context, name: "Register"),
+                      buildButton(context: context, name: "Register"),
                       SizedBox(height: 10),
                       buildDividerRow(context),
                       SizedBox(height: 10),
@@ -107,7 +107,7 @@ class registerscreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 5),
-                      buildLoginButton(
+                      buildButton(
                           context: context,
                           name: 'Continue As Guest',
                           Textcolor: fontcolorprimary),

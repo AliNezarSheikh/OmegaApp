@@ -265,7 +265,7 @@ class addcardscreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: height!*0.1,),
-              buildpaymentButton(context: context,name: "Add New Card",object: cardnumbercontrol.text),
+              buildButton(context: context,name: "Add New Card",),
             ],
           ),
         ),

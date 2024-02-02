@@ -8,6 +8,7 @@ import 'package:accordion/accordion.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 
 import '../../Constant/Components.dart';
+import 'add_new_card_screen.dart';
 
 class paymentscreen extends StatelessWidget {
   late String payment = "";
@@ -223,7 +224,12 @@ class paymentscreen extends StatelessWidget {
                                 ),
                               ),
                               addcardButton(
-                                  context: context, name: "Add New Card"),
+                                  context: context, name: "Add New Card",onTap: (){
+                                Get.to(addcardscreen(),
+                                    transition: Transition.circularReveal,
+                                    curve: Curves.easeInOut,
+                                    duration: Duration(seconds: 3));
+                              }),
                             ],
                           )),
                     ],
@@ -312,7 +318,9 @@ class paymentscreen extends StatelessWidget {
 
                     ),
                   ),
-                  buildpaymentButton(context: context,name: "Apply Filter")
+                  buildButton(context: context,name: "Apply Filter",onTap: (){
+
+                  })
                 ],
               )
             ),

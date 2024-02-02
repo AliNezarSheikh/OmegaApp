@@ -6,6 +6,8 @@ import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/View/Screens/register_screen.dart';
 
+import 'home_screen.dart';
+
 class loginscreen extends StatelessWidget {
   TextEditingController emailFieldController = TextEditingController();
 
@@ -72,7 +74,12 @@ class loginscreen extends StatelessWidget {
                         controller.getremember(val: val);
                       }),
                       SizedBox(height: 15),
-                      buildLoginButton(context: context, name: "Login"),
+                      buildButton(context: context, name: "Login",onTap: (){
+                        Get.off(homescreen(),
+                            transition: Transition.circularReveal,
+                            curve: Curves.easeInOut,
+                            duration: Duration(seconds: 3));
+                      }),
                       SizedBox(height: 10),
                       buildDividerRow(context),
                       SizedBox(height: 10),
@@ -99,7 +106,7 @@ class loginscreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 5),
-                      buildLoginButton(
+                      buildButton(
                           context: context,
                           name: 'Continue As Guest',
                           Textcolor: fontcolorprimary),
