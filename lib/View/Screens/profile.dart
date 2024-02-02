@@ -23,6 +23,7 @@ class profile extends StatelessWidget {
                 profileButton(context: context, name: "Edit"),
                 Spacer(),
                 profileButton(context: context, name: "Signout",onTap: (){
+                  remeber.write("token", null);
                   Get.off(loginscreen(),
                       transition: Transition.circularReveal,
                       curve: Curves.easeOut,

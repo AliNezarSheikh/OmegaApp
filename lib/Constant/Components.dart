@@ -33,5 +33,7 @@ class SpacingTextInputFormatter extends TextInputFormatter {
     );
   }
 }
+String token="";
+String? remembertoken;
 String baseurl="https://bagisto.code-vision.ae";
-GetStorage box=GetStorage();
+GetStorage remeber=GetStorage();

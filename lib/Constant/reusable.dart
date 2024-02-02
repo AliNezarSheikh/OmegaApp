@@ -966,7 +966,7 @@ Widget addcardButton(
 void showresult(BuildContext context, Color color, String text) =>
     toastification.show(
       context: context,
-      icon: ImageIcon(AssetImage("assets/images/img_group_9.png")),
+      icon: ImageIcon(AssetImage("assets/images/img_group_9.png"),color: Colors.blue,),
       backgroundColor: color,
       autoCloseDuration: const Duration(seconds: 3),
       style: ToastificationStyle.flat,

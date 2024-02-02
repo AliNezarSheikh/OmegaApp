@@ -89,7 +89,7 @@ class logincontroller extends GetxController {
       if (value.statusCode == 200) {
         isLoading.value = false;
         Map<String, dynamic> result = jsonDecode(value.body);
-        String token = result["access_token"];
+         token = result["access_token"];
         await getuser(token: token, context: context);
       } else {
         isLoading.value = false;
