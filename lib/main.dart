@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/splash_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -13,7 +14,7 @@ void main() {
       statusBarIconBrightness: Brightness.dark,// Replace with your desired status bar color
     ),
   );
-
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:omega/Constant/reusable.dart';
+import 'package:omega/View/Screens/payment_screen.dart';
 
 class cartscreen extends StatelessWidget {
   const cartscreen({super.key});
@@ -94,7 +98,12 @@ class cartscreen extends StatelessWidget {
                 SizedBox(
                   height: 25,
                 ),
-                buildcheckButton(context: context, name: "Checkout"),
+                buildButton(context: context, name: "Checkout",onTap: (){
+                  Get.to(paymentscreen(),
+                      transition: Transition.topLevel,
+                      curve: Curves.easeInOut,
+                      duration: Duration(seconds: 3));
+                }),
               ],
             ),
           ),

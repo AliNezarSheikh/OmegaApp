@@ -606,23 +606,29 @@ Widget CartlistItemWidget(context) => Dismissible(
         ),
       ),
     );
-Widget buildcheckButton(
-    {required context, required String name, Color? Textcolor}) {
+Widget profileButton(
+    {required context, required String name, Color? Textcolor,void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
-      onTap: () {
-        Get.to(paymentscreen(),
-            transition: Transition.topLevel,
-            curve: Curves.easeInOut,
-            duration: Duration(seconds: 3));
-      },
+      onTap:onTap,
       child: Container(
-        width: double.infinity,
+        width: width! * 0.25,
         height: height! * 0.06,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Textcolor == null ? fontcolorprimary : Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorprimary.withOpacity(0.1) ,
+              spreadRadius: 4,
+              blurRadius: 5,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+          color: name == "Edit" ? fontcolorprimary :fontcolorsecond,
           border: Textcolor != null
               ? Border.all(
                   color: Textcolor,
@@ -643,101 +649,7 @@ Widget buildcheckButton(
   );
 }
 
-Widget buildeditButton(
-    {required context, required String name, Color? Textcolor}) {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: InkWell(
-      onTap: () {
-        /*Get.off(homescreen(),
-            transition: Transition.circularReveal,
-            curve: Curves.easeInOut,
-            duration: Duration(seconds: 3));*/
-      },
-      child: Container(
-        width: width! * 0.25,
-        height: height! * 0.06,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          boxShadow: [
-            BoxShadow(
-              color: fontcolorprimary.withOpacity(0.1),
-              spreadRadius: 4,
-              blurRadius: 5,
-              offset: Offset(
-                2,
-                4,
-              ),
-            ),
-          ],
-          color: Textcolor == null ? fontcolorprimary : Colors.white,
-          border: Textcolor != null
-              ? Border.all(
-                  color: Textcolor,
-                  style: BorderStyle.solid,
-                  width: 1,
-                )
-              : null,
-        ),
-        child: Center(
-            child: PrimaryText(
-          words: name,
-          color: Textcolor != null ? Textcolor : Colors.white,
-          fontsize: 18,
-          fontfami: "Inter",
-        )),
-      ),
-    ),
-  );
-}
 
-Widget buildsignoutButton(
-    {required context, required String name, Color? Textcolor}) {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: InkWell(
-      onTap: () {
-        /*Get.off(homescreen(),
-            transition: Transition.circularReveal,
-            curve: Curves.easeInOut,
-            duration: Duration(seconds: 3));*/
-      },
-      child: Container(
-        width: width! * 0.25,
-        height: height! * 0.06,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: fontcolorsecond,
-          boxShadow: [
-            BoxShadow(
-              color: fontcolorprimary.withOpacity(0.1),
-              spreadRadius: 4,
-              blurRadius: 5,
-              offset: Offset(
-                2,
-                4,
-              ),
-            ),
-          ],
-          border: Textcolor != null
-              ? Border.all(
-                  color: Textcolor,
-                  style: BorderStyle.solid,
-                  width: 1,
-                )
-              : null,
-        ),
-        child: Center(
-            child: PrimaryText(
-          words: name,
-          color: Textcolor != null ? Textcolor : Colors.white,
-          fontsize: 18,
-          fontfami: "Inter",
-        )),
-      ),
-    ),
-  );
-}
 
 Widget buildHeader() {
   return Container(

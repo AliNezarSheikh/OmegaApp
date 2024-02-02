@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 //primary
 Color fontcolorprimary =Color(0xff000000);
 double sizeprimary = 24;
@@ -32,3 +33,4 @@ class SpacingTextInputFormatter extends TextInputFormatter {
     );
   }
 }
+GetStorage box=GetStorage();

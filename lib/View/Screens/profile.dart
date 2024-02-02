@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/View/Screens/login_screen.dart';
 
 import '../../Constant/reusable.dart';
 
@@ -16,9 +20,14 @@ class profile extends StatelessWidget {
             Row(
 
               children: [
-                buildeditButton(context: context, name: "Edit"),
+                profileButton(context: context, name: "Edit"),
                 Spacer(),
-                buildsignoutButton(context: context, name: "Signout"),
+                profileButton(context: context, name: "Signout",onTap: (){
+                  Get.off(loginscreen(),
+                      transition: Transition.circularReveal,
+                      curve: Curves.easeOut,
+                      duration: Duration(seconds: 3));
+                }),
               ],
             ),
             SizedBox(
