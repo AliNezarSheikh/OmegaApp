@@ -6,6 +6,8 @@ import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/View/Screens/login_screen.dart';
 
+import 'home_screen.dart';
+
 class registerscreen extends StatelessWidget {
   TextEditingController emailFieldController = TextEditingController();
 
@@ -163,7 +165,13 @@ class registerscreen extends StatelessWidget {
                       buildButton(
                           context: context,
                           name: 'Continue As Guest',
-                          Textcolor: fontcolorprimary),
+                          Textcolor: fontcolorprimary,
+                      onTap: (){
+                        Get.off(homescreen(),
+                            transition: Transition.circularReveal,
+                            curve: Curves.easeInOut,
+                            duration: Duration(seconds: 3));
+                      }),
                     ],
                   ),
                 ),

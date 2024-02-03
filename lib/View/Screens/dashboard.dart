@@ -6,11 +6,13 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
+import 'package:omega/Control/dashboardcontroller.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/View/Screens/favorite.dart';
 
 class dashboard extends StatelessWidget {
-  @override
+  //final homecontroller con = Get.find<homecontroller>();
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -33,14 +35,20 @@ class dashboard extends StatelessWidget {
             child: CircleAvatar(
               radius: 50,
               backgroundColor: fontcolorprimary,
-              child: SvgPicture.asset(
-                'assets/images/img_search.svg',
+              child: InkWell(
+                onTap: () {
+                  print(user!.email);
+                },
+                child: SvgPicture.asset(
+                  'assets/images/img_search.svg',
+                ),
               ),
             ),
           ),
         ],
       ),
-      body: Container(
+ 
+      body:Container(
         width: getwidth(context),
         height: getheight(context),
         child: SingleChildScrollView(
@@ -55,7 +63,7 @@ class dashboard extends StatelessWidget {
                   buildbanner(context),
                 ],
                 options: CarouselOptions(
-                  //height: MediaQuery.of(context).size.height*0.35,
+
                   reverse: false,
                   initialPage: 0,
                   enableInfiniteScroll: true,
@@ -68,8 +76,8 @@ class dashboard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0, vertical: 6.0),
                 child: Row(
                   children: [
                     TextButton(
@@ -77,20 +85,24 @@ class dashboard extends StatelessWidget {
                         child: PrimaryText(words: "Popular", fontsize: 20)),
                     Spacer(),
                     TextButton(
-                        onPressed: () {}, child: SecondlyText(words: "See all"))
+                        onPressed: () {},
+                        child: SecondlyText(words: "See all"))
                   ],
                 ),
               ),
-              GetBuilder<homecontroller>(
-                builder: (homecontroller controller) => Container(
-                  height: 50,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) => buildlist(index),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                  ),
-                ),
-              ),
+
+              GetBuilder<dashcontroller>(
+                init: dashcontroller(),
+                  builder: (dashcontroller control)=> Container(
+                    height: 50,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => buildlist(index),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                    ),
+                  ),),
+
+
               Column(
                 children: [
                   Container(
@@ -98,7 +110,8 @@ class dashboard extends StatelessWidget {
                       child: GridView.count(
                         crossAxisCount: 2,
                         shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),//BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        physics:
+                        BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                         mainAxisSpacing: 10.0,
                         crossAxisSpacing: 1.0,
                         childAspectRatio: 1 / 1.35,
@@ -118,7 +131,8 @@ class dashboard extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(12.0),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
+                                          borderRadius:
+                                          BorderRadius.circular(15),
                                           child: Stack(
                                             alignment: Alignment.topRight,
                                             children: [
@@ -126,11 +140,13 @@ class dashboard extends StatelessWidget {
                                                 image: AssetImage(
                                                   "assets/images/img_bg.png",
                                                 ),
-                                                width: getwidth(context) * 0.5,
+                                                width:
+                                                getwidth(context) * 0.5,
                                                 fit: BoxFit.cover,
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.only(
+                                                padding:
+                                                const EdgeInsets.only(
                                                     top: 8.0, right: 8.0),
                                                 child: InkWell(
                                                   onTap: () {},
@@ -139,10 +155,14 @@ class dashboard extends StatelessWidget {
                                                       image: AssetImage(
                                                         "assets/images/img_heart.png",
                                                       ),
-                                                      width: getwidth(context) * 0.03,
+                                                      width:
+                                                      getwidth(context) *
+                                                          0.03,
                                                       //color: Colors.red,
                                                     ),
-                                                    backgroundColor: Colors.black.withOpacity(0.5),
+                                                    backgroundColor: Colors
+                                                        .black
+                                                        .withOpacity(0.5),
                                                     radius: 10,
                                                   ),
                                                 ),
@@ -152,27 +172,32 @@ class dashboard extends StatelessWidget {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 14.0),
+                                        padding:
+                                        const EdgeInsets.only(left: 14.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               PrimaryText(
-                                                  words: 'Airprods USA', fontsize: 14),
+                                                  words: 'Airprods USA',
+                                                  fontsize: 14),
                                               SecondlyText(
-                                                  words: "chair", fontsize: 12),
+                                                  words: "chair",
+                                                  fontsize: 12),
                                               SizedBox(
                                                 height: 5,
                                               ),
                                               Row(
                                                 children: [
                                                   PrimaryText(
-                                                      words: '\$245.00 ', fontsize: 14),
+                                                      words: '\$245.00 ',
+                                                      fontsize: 14),
                                                   Spacer(),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(
+                                                    padding:
+                                                    const EdgeInsets.only(
                                                         right: 15.0),
                                                     child: SvgPicture.asset(
                                                         "assets/images/img_plus_primary.svg"),
@@ -199,6 +224,7 @@ class dashboard extends StatelessWidget {
           ),
         ),
       ),
+
     );
   }
 }

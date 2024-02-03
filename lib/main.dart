@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/View/Screens/home_screen.dart';
+import 'package:omega/View/Screens/login_screen.dart';
 import 'package:omega/View/Screens/splash_screen.dart';
 
 Future<void> main() async {
@@ -16,6 +18,7 @@ Future<void> main() async {
     ),
   );
   await GetStorage.init();
+
   remembertoken=remeber.read("token");
   runApp(const MyApp());
 }
@@ -27,13 +30,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: splashscreen(),
 
+      debugShowCheckedModeBanner: false,
+      home: loginscreen(),
+
+      initialBinding: BindingsBuilder(() {
+        Get.lazyPut<homecontroller>(() => homecontroller());
+      }),
     );
+
   }
 }
 

@@ -9,17 +9,20 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/Model/usermodel.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/register_screen.dart';
 import 'package:toastification/toastification.dart';
 
+import '../Control/dashboardcontroller.dart';
 import '../View/Screens/add_new_card_screen.dart';
 import '../View/Screens/payment_screen.dart';
 
 double? width;
 double? height;
-logincontroller controller = Get.put(logincontroller());
-homecontroller homecontrol = Get.put(homecontroller());
+//logincontroller controller = Get.put(logincontroller());
+homecontroller homecontrol=Get.put(homecontroller());
+dashcontroller dashcontrol = Get.put(dashcontroller());
 getwidth(BuildContext context) {
   width = MediaQuery.of(context).size.width;
   return MediaQuery.of(context).size.width;
@@ -51,15 +54,18 @@ Widget SecondlyText(
         double? fontsize,
         String? fontfami,
         TextDecoration? decoration,
+          TextAlign? align,
         FontWeight? wight}) =>
     Text(
       words,
+      textAlign:align ==null ? TextAlign.start:align ,
       style: TextStyle(
         color: color == null ? fontcolorsecond : color,
         fontSize: fontsize == null ? sizesecond : fontsize,
         fontFamily: fontfami == null ? fontfamilysecond : fontfami,
         fontWeight: wight == null ? fontwightsecond : wight,
         decoration: decoration == null ? TextDecoration.none : decoration,
+
       ),
     );
 
@@ -380,17 +386,16 @@ Widget buildbanner(BuildContext context) => Padding(
     );
 
 Widget buildlist(int index) => TextButton(
-      onPressed: () {
-        homecontrol.changenlistindex(index);
-        print(index);
+      onPressed:(){
+        dashcontrol.changenlistindex(index);
       },
       child: SecondlyText(
           words: "All",
           wight: FontWeight.w400,
-          decoration: homecontrol.selectedlistindex == index
+          decoration:  dashcontrol.selectedlistindex== index
               ? TextDecoration.underline
               : TextDecoration.none,
-          color: homecontrol.selectedlistindex == index
+          color: dashcontrol.selectedlistindex == index
               ? fontcolorprimary
               : fontcolorsecond),
     );
@@ -682,51 +687,143 @@ Widget buildHeader() {
     ]),
   );
 }
+Widget buildInfoCard(context) {
+  return Column(
+    children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+        child: Card(
+          elevation: 5.0,
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                top: 16.0, bottom: 16.0, right: 10.0, left: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                new Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    PrimaryText(words: "Store Credits",fontsize: 18.0,wight: FontWeight.w400),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
 
+                      child: PrimaryText(words: user.store_credits.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
+                    ),
+                  ],
+                ),
+                new Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    PrimaryText(words: "Completed Orders",fontsize: 18.0,wight: FontWeight.w400),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+
+                      child: PrimaryText(words: user.completed_orders.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
+                    ),
+                  ],
+                ),
+
+
+              ],
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
 Widget buildinfo() {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: height! * 0.09,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
-            border: Border.all(
-              color: fontcolorprimary,
-              style: BorderStyle.solid,
-              width: 1,
+        Row(
+          children: [
+            Container(
+              width: width!*0.35,
+              height: height! * 0.09,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+                border: Border.all(
+                  color: fontcolorprimary,
+                  style: BorderStyle.solid,
+                  width: 1,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PrimaryText(
+                      words: "First Name",
+                      color: fontcolorsecond,
+                      fontsize: 12,
+                      fontfami: "Inter",
+                    ),
+                    SizedBox(
+                      height: height! * 0.008,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: PrimaryText(
+                        words: user.first_name==null? "": "${user!.first_name}",
+                        color: fontcolorprimary,
+                        fontsize: 16,
+                        fontfami: "Inter",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PrimaryText(
-                  words: "User Name",
-                  color: fontcolorsecond,
-                  fontsize: 12,
-                  fontfami: "Inter",
+            Spacer(),
+            Container(
+              width: width!*0.35,
+              height: height! * 0.09,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+                border: Border.all(
+                  color: fontcolorprimary,
+                  style: BorderStyle.solid,
+                  width: 1,
                 ),
-                SizedBox(
-                  height: height! * 0.008,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PrimaryText(
+                      words: "Last Name",
+                      color: fontcolorsecond,
+                      fontsize: 12,
+                      fontfami: "Inter",
+                    ),
+                    SizedBox(
+                      height: height! * 0.008,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: PrimaryText(
+                        words: user.last_name==null? "": "${user!.last_name}",
+                        color: fontcolorprimary,
+                        fontsize: 16,
+                        fontfami: "Inter",
+                      ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: PrimaryText(
-                    words: "Ali Sheikh",
-                    color: fontcolorprimary,
-                    fontsize: 16,
-                    fontfami: "Inter",
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
         SizedBox(
           height: height! * 0.02,
@@ -761,7 +858,7 @@ Widget buildinfo() {
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: PrimaryText(
-                    words: "AliSheikh@gmail.com",
+                    words: user.email==null ? "" :"${user!.email}",
                     color: fontcolorprimary,
                     fontsize: 16,
                     fontfami: "Inter",
@@ -774,7 +871,7 @@ Widget buildinfo() {
         SizedBox(
           height: height! * 0.02,
         ),
-        Container(
+        /*Container(
           width: double.infinity,
           height: height! * 0.09,
           decoration: BoxDecoration(
@@ -813,7 +910,7 @@ Widget buildinfo() {
               ],
             ),
           ),
-        ),
+        ),*/
       ],
     ),
   );

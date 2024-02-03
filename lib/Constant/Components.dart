@@ -36,6 +36,6 @@ class SpacingTextInputFormatter extends TextInputFormatter {
 }
 String token="";
 String? remembertoken;
-usermodel? user;
+late usermodel user;
 String baseurl="https://bagisto.code-vision.ae";
 GetStorage remeber=GetStorage();

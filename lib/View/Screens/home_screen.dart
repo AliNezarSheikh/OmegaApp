@@ -5,38 +5,39 @@ import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
 
 class homescreen extends StatelessWidget {
-  homecontroller bottomcontroller = Get.put(homecontroller());
+
+  homecontroller controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: GetBuilder<homecontroller>(
-          builder: (bottomcontroller) => BottomNavigationBar(
-            currentIndex: bottomcontroller.currentindex,
-            selectedItemColor: bottomcontroller.selecteditemcolor,
-            unselectedItemColor: fontcolorsecond,
-            elevation: 0.0,
-            onTap: (index) {
-              bottomcontroller.changenavindex(index);
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage("assets/images/img_user.png"),
+      child: Obx(
+            () =>  Scaffold(
+          bottomNavigationBar:
+           BottomNavigationBar(
+              currentIndex: controller.currentindex.value,
+              selectedItemColor: controller.selecteditemcolor.value,
+              unselectedItemColor: fontcolorsecond,
+              elevation: 0.0,
+              onTap: (index) {
+
+                controller.changenavindex(index);
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/images/img_user.png"),
+                  ),
+                  label: "",
                 ),
-                label: "",
-              ),
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage("assets/images/img_heart.png"),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/images/img_heart.png"),
+                  ),
+                  label: "",
                 ),
-                label: "",
-              ),
-              BottomNavigationBarItem(
-                icon: Stack(
-                  alignment: Alignment.topRight,
-                  children: [
+                BottomNavigationBarItem(
+                  icon: Stack(alignment: Alignment.topRight, children: [
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: ImageIcon(
@@ -48,33 +49,30 @@ class homescreen extends StatelessWidget {
                       child: Text("0"),
                       radius: 10,
                     ),
-                  ]
+                  ]),
+                  // label: "",
                 ),
-               // label: "",
-              ),
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage("assets/images/img_lock.png"),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/images/img_lock.png"),
+                  ),
+                  label: "",
                 ),
-                label: "",
-              ),
-            ],
-          ),
-        ),
-        body:
-           GetBuilder<homecontroller>(
-            builder: (bottomcontroller) =>
-                PageTransitionSwitcher(
-                  duration: Duration(milliseconds: 500),
-                  transitionBuilder: (child, animation,animation2)=>
-                      FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
-                  child: bottomcontroller.bottomscreens[bottomcontroller.currentindex]),
-          ),
-        ),
+              ],
+            ),
 
+          body:  Obx(()=>PageTransitionSwitcher(
+              duration: Duration(milliseconds: 500),
+              transitionBuilder: (child, animation, animation2) =>
+                  FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+              child: controller
+                  .bottomscreens[controller.currentindex.value]),),
+          ),
+
+      ),
     );
   }
 }
