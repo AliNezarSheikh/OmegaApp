@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
 
       debugShowCheckedModeBanner: false,
-      home: loginscreen(),
+      home: splashscreen(),
 
       initialBinding: BindingsBuilder(() {
         Get.lazyPut<homecontroller>(() => homecontroller());
