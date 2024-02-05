@@ -15,7 +15,9 @@ class logincontroller extends GetxController {
   RxBool showError = false.obs;
   RxBool isLoading = false.obs;
   RxBool successregister = false.obs;
+
   RxBool successlogin = false.obs;
+  RxBool successupdate= false.obs;
   void getvisiblepassword() {
     notvisable.value = !notvisable.value;
   }
@@ -44,9 +46,11 @@ class logincontroller extends GetxController {
   }) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/api/v2/storefront/account");
-    Map<String, dynamic> requestbody = {
+    Map<String, dynamic> requestbody =
+   {
       "email": email,
-      "password": password,
+
+     "password": password,
       "password_confirmation": password,
     };
     Map<String, dynamic> user = {"user": requestbody};
@@ -75,9 +79,10 @@ class logincontroller extends GetxController {
   }
 
   Future<void> loginuser({
-    required String email,
+    required String? email,
     required String password,
     required BuildContext context,
+    required bool isremember,
   }) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/spree_oauth/token");
@@ -91,6 +96,9 @@ class logincontroller extends GetxController {
         isLoading.value = false;
         Map<String, dynamic> result = jsonDecode(value.body);
         token = result["access_token"];
+        if(isremember==true){
+          remeber.write("token", token);
+        }
         await getuser(token: token, context: context);
       } else {
         isLoading.value = false;
@@ -116,6 +124,56 @@ class logincontroller extends GetxController {
         var result = jsonDecode(value.body);
         user = usermodel.fromJson(result);
         successlogin.value = true;
+      } else {
+        isLoading.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
+      }
+    }).catchError((error) {
+      isLoading.value = false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }
+
+  Future<void> updateuser({
+    required String email,
+    required String token,
+    String? firstname,
+    String? lastname,
+     String? password,
+    required BuildContext context,
+  }) async {
+    isLoading.value = true;
+    Uri url = Uri.parse("$baseurl/api/v2/storefront/account");
+    Map<String, dynamic> requestbody =
+   password==null? {
+      "email": email,
+      "first_name":firstname,
+      "last_name":lastname,
+
+    }:{
+     "email": email,
+     "first_name":firstname,
+     "last_name":lastname,
+     "password": password,
+     "password_confirmation": password,
+   };
+    Map<String, dynamic> user = {"user": requestbody};
+    await http
+        .patch(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+
+      },
+      body: jsonEncode(user),
+    )
+        .then((value) {
+      if (value.statusCode == 200) {
+        isLoading.value = false;
+        showresult(context, Colors.green, "Info has been updated Successfuly");
+        successupdate.value = true;
       } else {
         isLoading.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["error"]);

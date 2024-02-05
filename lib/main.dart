@@ -19,8 +19,7 @@ Future<void> main() async {
   );
   await GetStorage.init();
 
-  remembertoken=remeber.read("token");
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {

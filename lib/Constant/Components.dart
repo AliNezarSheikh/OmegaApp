@@ -39,3 +39,4 @@ String? remembertoken;
 late usermodel user;
 String baseurl="https://bagisto.code-vision.ae";
 GetStorage remeber=GetStorage();
+GetStorage edit=GetStorage();

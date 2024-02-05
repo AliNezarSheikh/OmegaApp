@@ -102,10 +102,13 @@ class loginscreen extends StatelessWidget {
                                 if (_formKey.currentState!.validate()) {
                                   await controller.loginuser(
                                       email: emailFieldController.text,
-                                      password: passwordFieldController.text, context: context);
+                                      password: passwordFieldController.text, context: context,
+                                  isremember: controller.rememberMe.value);
                                   if(controller.successlogin.isTrue){
+                                    controller.successlogin.value=false;
                                     if(controller.rememberMe.isTrue){
-                                      remeber.write("token", token);
+
+                                      print(remeber.read("token", ));
                                     }
                                     Get.off(homescreen(),
                                         transition: Transition.circularReveal,

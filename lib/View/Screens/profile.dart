@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Model/usermodel.dart';
+import 'package:omega/View/Screens/checkuser.dart';
 import 'package:omega/View/Screens/login_screen.dart';
 import 'package:omega/View/Screens/register_screen.dart';
 
@@ -14,6 +15,7 @@ class profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body:user.id==null
           ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -39,10 +41,15 @@ class profile extends StatelessWidget {
               Row(
         
                 children: [
-                  profileButton(context: context, name: "Edit"),
+                  profileButton(context: context, name: "Edit",    onTap:(){
+                    Get.to(checkuser(),
+                        transition: Transition.upToDown,
+                        curve: Curves.easeOut,
+                        duration: Duration(milliseconds: 500));
+                  }),
                   Spacer(),
                   profileButton(context: context, name: "Signout",onTap: (){
-                    remeber.write("token", null);
+                    remeber.remove("token");
                     usermodel.signOut();
                     homecontrol.currentindex=0.obs;
                     Get.off(loginscreen(),

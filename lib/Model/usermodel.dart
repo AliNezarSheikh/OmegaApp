@@ -2,7 +2,7 @@ import '../Constant/Components.dart';
 
 class usermodel{
   String? id;
-  String? email;
+   String? email;
   String? first_name;
   String? last_name;
   int? store_credits;
