@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/Control/logincontroller.dart';
 
 import 'home_screen.dart';
 import 'login_screen.dart';
@@ -9,14 +10,21 @@ import 'login_screen.dart';
 
 class splashscreen extends StatelessWidget {
    splashscreen({super.key});
+   logincontroller controll=logincontroller();
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 4),(){
-      remeber.read("token")==null ?
+    Future.delayed(Duration(seconds: 4),() async {
+      if(remeber.read("token")==null){
+        Get.off(()  =>loginscreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
+      }else{
+        await controll.getuser(token: remeber.read("token"), context: context);
+      Get.off(()  =>homescreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
+      }
+     /* remeber.read("token")==null ?
       Get.off(()  =>loginscreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3))
           :Get.off(()  =>homescreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
-    });
+   */ });
     return  SafeArea(
       child: Scaffold(
 

@@ -16,7 +16,7 @@ class profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body:user.id==null
+      body:currentuser.id==null
           ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

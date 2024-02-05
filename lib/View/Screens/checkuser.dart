@@ -88,12 +88,11 @@ class checkuser extends StatelessWidget {
                             onTap: () async {
                               if (formKey.currentState!.validate()) {
                                 await controller.loginuser(
-                                    email: user!.email,
+                                    email: currentuser!.email,
                                     password: passwordFieldController.text,
                                     context: context,
                                 isremember: controller.rememberMe.value);
                                 if (controller.successlogin.isTrue) {
-                                  edit.write("token", token);
                                   passwordFieldController.clear();
                                   Get.to(edituser(),
                                       transition: Transition.fadeIn,

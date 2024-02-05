@@ -37,7 +37,7 @@ class dashboard extends StatelessWidget {
               backgroundColor: fontcolorprimary,
               child: InkWell(
                 onTap: () {
-                  print(user!.email);
+                  print(currentuser!.email);
                 },
                 child: SvgPicture.asset(
                   'assets/images/img_search.svg',

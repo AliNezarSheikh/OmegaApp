@@ -25,7 +25,7 @@ class usermodel{
   completed_orders=jsondata["attributes"]["completed_orders"];
 }
    usermodel.signOut() {
-    user = usermodel(email: null, id: null, first_name: null, last_name: null, store_credits: null, completed_orders: null);
+    currentuser = usermodel(email: null, id: null, first_name: null, last_name: null, store_credits: null, completed_orders: null);
   }
 
 }

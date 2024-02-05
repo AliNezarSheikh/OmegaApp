@@ -709,7 +709,7 @@ Widget buildInfoCard(context) {
                     Padding(
                       padding: const EdgeInsets.only(top: 6.0),
 
-                      child: PrimaryText(words: user.store_credits.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
+                      child: PrimaryText(words: currentuser.store_credits.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
                     ),
                   ],
                 ),
@@ -721,7 +721,7 @@ Widget buildInfoCard(context) {
                     Padding(
                       padding: const EdgeInsets.only(top: 6.0),
 
-                      child: PrimaryText(words: user.completed_orders.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
+                      child: PrimaryText(words: currentuser.completed_orders.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
                     ),
                   ],
                 ),
@@ -772,7 +772,7 @@ Widget buildinfo() {
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0),
                       child: PrimaryText(
-                        words: user.first_name==null? "": "${user!.first_name}",
+                        words: currentuser.first_name==null? "": "${currentuser!.first_name}",
                         color: fontcolorprimary,
                         fontsize: 16,
                         fontfami: "Inter",
@@ -813,7 +813,7 @@ Widget buildinfo() {
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0),
                       child: PrimaryText(
-                        words: user.last_name==null? "": "${user!.last_name}",
+                        words: currentuser.last_name==null? "": "${currentuser!.last_name}",
                         color: fontcolorprimary,
                         fontsize: 16,
                         fontfami: "Inter",
@@ -858,7 +858,7 @@ Widget buildinfo() {
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: PrimaryText(
-                    words: user.email==null ? "" :"${user!.email}",
+                    words: currentuser.email==null ? "" :"${currentuser!.email}",
                     color: fontcolorprimary,
                     fontsize: 16,
                     fontfami: "Inter",

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/usermodel.dart';
+import 'package:omega/View/Screens/login_screen.dart';
 import '../Constant/Components.dart';
 import '../Constant/reusable.dart';
 
@@ -122,11 +123,12 @@ class logincontroller extends GetxController {
       if (value.statusCode == 200) {
         isLoading.value = false;
         var result = jsonDecode(value.body);
-        user = usermodel.fromJson(result);
+        currentuser = usermodel.fromJson(result);
         successlogin.value = true;
       } else {
         isLoading.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["error"]);
+        Get.off(loginscreen());
       }
     }).catchError((error) {
       isLoading.value = false;
@@ -172,6 +174,8 @@ class logincontroller extends GetxController {
         .then((value) {
       if (value.statusCode == 200) {
         isLoading.value = false;
+        var result = jsonDecode(value.body);
+        currentuser = usermodel.fromJson(result);
         showresult(context, Colors.green, "Info has been updated Successfuly");
         successupdate.value = true;
       } else {

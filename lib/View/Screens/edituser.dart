@@ -22,9 +22,9 @@ class edituser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    emailFieldController.text=user.email!;
-    firstnameController.text=user.first_name==null? firstnameController.text: user.first_name!;
-    lastnameController.text=user.last_name==null? lastnameController.text: user.last_name!;
+    emailFieldController.text=currentuser.email!;
+    firstnameController.text=currentuser.first_name==null? firstnameController.text: currentuser.first_name!;
+    lastnameController.text=currentuser.last_name==null? lastnameController.text: currentuser.last_name!;
     return Scaffold(
       appBar: AppBar(
 
@@ -49,90 +49,94 @@ class edituser extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
-          child: Column(
-            children: [
-              textinput(
-                  controller: emailFieldController,
-                  hint: "Email",
-                  obscure: false,
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                textinput(
+                    controller: emailFieldController,
+                    hint: "Email",
+                    obscure: false,
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return "Email Must Not Be Empty";
+                      } else {
+                        return null;
+                      }
+                    },
+                    type: TextInputType.emailAddress),
+                SizedBox(height: 20,),
+                textinput(
+                    controller: firstnameController,
+                    hint: "First_Name",
+                    obscure: false,
+
+                    type: TextInputType.text),
+                SizedBox(height: 20,),
+                textinput(
+                    controller: lastnameController,
+                    hint: "Last Name",
+                    obscure: false,
+
+                    type: TextInputType.text),
+                SizedBox(height: 20,),
+                textinput(
+                  type: TextInputType.visiblePassword,
+                  obscure: controller.notvisable.value,
+                  hint: "New Password",
+                  controller: passwordFieldController,
+                ),
+                SizedBox(height: 20,),
+                textinput(
+                  type: TextInputType.visiblePassword,
+                  obscure: controller.notvisable.value,
+                  hint: "Confirm Password",
+                  controller: passwordFieldController2,
                   validator: (String? value) {
-                    if (value!.isEmpty) {
-                      return "Email Must Not Be Empty";
+                    if (value! != passwordFieldController.text) {
+                      return "Password does not Match";
                     } else {
                       return null;
                     }
                   },
-                  type: TextInputType.emailAddress),
-              SizedBox(height: 20,),
-              textinput(
-                  controller: firstnameController,
-                  hint: "First_Name",
-                  obscure: false,
-
-                  type: TextInputType.text),
-              SizedBox(height: 20,),
-              textinput(
-                  controller: lastnameController,
-                  hint: "Last Name",
-                  obscure: false,
-
-                  type: TextInputType.text),
-              SizedBox(height: 20,),
-              textinput(
-                type: TextInputType.visiblePassword,
-                obscure: controller.notvisable.value,
-                hint: "New Password",
-                controller: passwordFieldController,
-              ),
-              SizedBox(height: 20,),
-              textinput(
-                type: TextInputType.visiblePassword,
-                obscure: controller.notvisable.value,
-                hint: "Confirm Password",
-                controller: passwordFieldController2,
-                validator: (String? value) {
-                  if (value! != passwordFieldController.text) {
-                    return "Password does not Match";
-                  } else {
-                    return null;
-                  }
-                },
-                eyeicon: IconButton(
-                  onPressed: () {
-                    controller.getvisiblepassword();
-                  },
-                  icon: Icon(controller.notvisable == true
-                      ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined),
+                  eyeicon: IconButton(
+                    onPressed: () {
+                      controller.getvisiblepassword();
+                    },
+                    icon: Icon(controller.notvisable == true
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined),
+                  ),
                 ),
-              ),
-              SizedBox(height: 20,),
-              ConditionalBuilder(
-                  condition: controller.isLoading.isFalse,
-                  builder: (context) => buildButton(
-                      context: context,
-                      name: "Register",
-                      onTap: () async {
-                        if (formKey.currentState!.validate()) {
+                SizedBox(height: 20,),
+                ConditionalBuilder(
+                    condition: controller.isLoading.isFalse,
+                    builder: (context) => buildButton(
+                        context: context,
+                        name: "Update",
+                        onTap: () async {
+                          if (formKey.currentState!.validate()) {
+                              await controller.updateuser(
+                                  email: emailFieldController.text,
+                                  password: passwordFieldController.text,
+                                  firstname: firstnameController.text,
+                                  lastname: lastnameController.text,
+                                  context: context, token: token);
+                              if(controller.successupdate.isTrue){
+                                Get.off(() => homescreen(),
+                                    transition: Transition.leftToRight,
+                                    curve: Curves.easeInOut,
+                                    duration: Duration(seconds: 2));
+                              }
 
 
-                            await controller.registeruser(
-                                email: emailFieldController.text,
-                                password: passwordFieldController.text, context: context);
-                            if(controller.successupdate.isTrue){
-                              Get.off(() => homescreen(),
-                                  transition: Transition.leftToRight,
-                                  curve: Curves.easeInOut,
-                                  duration: Duration(seconds: 2));
-                            }
+                          }
+                        }),
+                    fallback: (context) =>
+                        Center(child: CircularProgressIndicator())),
 
-
-                        }
-                      }),
-                  fallback: (context) =>
-                      Center(child: CircularProgressIndicator())),
-
-            ],
+              ],
+            ),
           ),
         ),
       ),
