@@ -24,7 +24,7 @@ class paymentscreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 12.0),
           child: IconButton(
             onPressed: () {
-              Get.off(homescreen());
+              Get.back();
             },
             icon: SvgPicture.asset(
               "assets/images/img_arrow_left.svg",
@@ -287,7 +287,7 @@ class paymentscreen extends StatelessWidget {
             child: Container(
 
               width: width!,
-              height: height!*0.18,
+              height: height!*0.20,
               decoration: BoxDecoration(
                   color: Colors.white,
                 borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),

@@ -47,7 +47,7 @@ class loginscreen extends StatelessWidget {
                   child: Column(
                     children: [
                       PrimaryText(
-                        words: "Welcome Back, Olivia",
+                        words: "Welcome Back",
                       ),
                       SizedBox(height: 10),
                       SecondlyText(

@@ -22,9 +22,9 @@ class edituser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    emailFieldController.text=currentuser.email!;
-    firstnameController.text=currentuser.first_name==null? firstnameController.text: currentuser.first_name!;
-    lastnameController.text=currentuser.last_name==null? lastnameController.text: currentuser.last_name!;
+    emailFieldController.text=currentuser!.email!;
+    firstnameController.text=currentuser!.first_name==null? firstnameController.text: currentuser!.first_name!;
+    lastnameController.text=currentuser!.last_name==null? lastnameController.text: currentuser!.last_name!;
     return Scaffold(
       appBar: AppBar(
 

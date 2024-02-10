@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:omega/Model/usermodel.dart';
+
+import '../Model/adressmodel.dart';
 //primary
 Color fontcolorprimary =Color(0xff000000);
 double sizeprimary = 24;
@@ -36,7 +38,10 @@ class SpacingTextInputFormatter extends TextInputFormatter {
 }
 String token="";
 String? remembertoken;
-late usermodel currentuser;
+ usermodel? currentuser;
+
+late List<addressmodel> listadress = [];
+late addressmodel useradress;
 String baseurl="https://bagisto.code-vision.ae";
 GetStorage remeber=GetStorage();
 GetStorage edit=GetStorage();

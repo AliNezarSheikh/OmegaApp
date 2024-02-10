@@ -12,7 +12,7 @@ class homecontroller extends GetxController {
   RxInt currentindex = 0.obs;
   Rx<Color> selecteditemcolor = fontcolorprimary.obs;
 
-  RxBool isDrawerOpen = false.obs;
+
 
   List<Widget> bottomscreens = [
     dashboard(),

@@ -10,6 +10,8 @@ import '../../Constant/Components.dart';
 import '../../Control/logincontroller.dart';
 
 class checkuser extends StatelessWidget {
+  Widget targetscreen;
+  checkuser({required this.targetscreen});
   TextEditingController passwordFieldController = TextEditingController();
 
   logincontroller controller = Get.put(logincontroller());
@@ -94,7 +96,7 @@ class checkuser extends StatelessWidget {
                                 isremember: controller.rememberMe.value);
                                 if (controller.successlogin.isTrue) {
                                   passwordFieldController.clear();
-                                  Get.to(edituser(),
+                                  Get.to(targetscreen,
                                       transition: Transition.fadeIn,
                                       curve: Curves.easeInOut,
                                       duration: Duration(milliseconds: 700));
