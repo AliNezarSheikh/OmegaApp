@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
@@ -36,12 +40,33 @@ class SpacingTextInputFormatter extends TextInputFormatter {
     );
   }
 }
-String token="";
+int generateRandomNumber(int min, int max) {
+  final random = Random();
+  return min + random.nextInt(max - min);
+}
+Future<String> getDeviceName() async {
+
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  if(Platform.isIOS){
+
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    return iosInfo.utsname.machine;
+  }else  if(Platform.isAndroid){
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    return androidInfo.model;
+  }else{
+    return "model not known";
+  }
+
+
+}
+String devicename="";
 String? remembertoken;
+String token="";
  usermodel? currentuser;
 
 late List<addressmodel> listadress = [];
 late addressmodel useradress;
-String baseurl="https://bagisto.code-vision.ae";
+String baseurl="https://bagisto.lofialight.com/public/api/v1";
 GetStorage remeber=GetStorage();
 GetStorage edit=GetStorage();

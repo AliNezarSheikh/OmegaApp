@@ -7,27 +7,27 @@ import 'package:omega/Control/logincontroller.dart';
 import 'home_screen.dart';
 import 'login_screen.dart';
 
-
 class splashscreen extends StatelessWidget {
-   splashscreen({super.key});
-   logincontroller controll=logincontroller();
+  splashscreen({super.key});
+  logincontroller controll = logincontroller();
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 4),() async {
-      if(remeber.read("token")==null){
-        Get.off(()  =>loginscreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
-      }else{
-        await controll.getuser(token: remeber.read("token"), context: context);
-      Get.off(()  =>homescreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
+    Future.delayed(Duration(seconds: 4), () async {
+      if (remeber.read("token") == null) {
+        Get.off(() => loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));
+      } else {
+        Get.off(() => homescreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));
       }
-     /* remeber.read("token")==null ?
-      Get.off(()  =>loginscreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3))
-          :Get.off(()  =>homescreen(),transition: Transition.circularReveal,curve: Curves.easeInOut,duration: Duration(seconds: 3));
-   */ });
-    return  SafeArea(
+    });
+    return SafeArea(
       child: Scaffold(
-
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -36,15 +36,11 @@ class splashscreen extends StatelessWidget {
               width: 200,
               height: 200,
               child: Image(
-
                 image: AssetImage("assets/images/img_group_9.png"),
-
               ),
             ),
           ),
         ),
-
-
       ),
     );
   }

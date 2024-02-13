@@ -688,7 +688,7 @@ Widget buildHeader() {
     ]),
   );
 }
-Widget buildInfoCard(context) {
+/*Widget buildInfoCard(context) {
   return Column(
     children: <Widget>[
       Container(
@@ -735,7 +735,7 @@ Widget buildInfoCard(context) {
       ),
     ],
   );
-}
+}*/
 Widget buildinfo() {
   return Padding(
     padding: const EdgeInsets.all(16.0),

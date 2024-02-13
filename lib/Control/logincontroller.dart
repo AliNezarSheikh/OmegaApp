@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,30 +48,31 @@ class logincontroller extends GetxController {
     required BuildContext context,
   }) async {
     isLoading.value = true;
-    Uri url = Uri.parse("$baseurl/api/v2/storefront/account");
-    Map<String, dynamic> requestbody = {
-      "email": email,
-      "password": password,
-      "password_confirmation": password,
-    };
-    Map<String, dynamic> user = {"user": requestbody};
-    await http
-        .post(
+    Uri url = Uri.parse("$baseurl/customer/register");
+
+    int randomNumber = await generateRandomNumber(100000, 999999);
+    //print(randomNumber);
+    await http.post(
       url,
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        "Accept": "application/json",
+        // "Content-Type":"application/json",
       },
-      body: jsonEncode(user),
-    )
-        .then((value) {
+      body: {
+        "first_name": "user",
+        "last_name": randomNumber.toString(),
+        "email": email,
+        "password": password,
+        "password_confirmation": password,
+      },
+    ).then((value) {
       if (value.statusCode == 200) {
         isLoading.value = false;
         showresult(context, Colors.green, "Email has been Created Successfuly");
         successregister.value = true;
       } else {
         isLoading.value = false;
-        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
       isLoading.value = false;
@@ -85,35 +87,39 @@ class logincontroller extends GetxController {
     required bool isremember,
   }) async {
     isLoading.value = true;
-    Uri url = Uri.parse("$baseurl/spree_oauth/token");
 
-    await http.post(url, body: {
-      "username": email,
+    Uri url = Uri.parse("$baseurl/customer/login?accept_token=true");
+    await http.post(url, headers: {
+      "Accept": "application/json",
+    }, body: {
+      "email": email,
       "password": password,
-      "grant_type": "password",
+      "device_name": devicename,
     }).then((value) async {
       if (value.statusCode == 200) {
         isLoading.value = false;
         Map<String, dynamic> result = jsonDecode(value.body);
-        token = result["access_token"];
+        token = result["token"];
+        currentuser = usermodel.fromJson(result);
         if (isremember == true) {
           remeber.write("token", token);
         }
-        await getuser(token: token, context: context);
-        // await getadress(token: token, context: context);
+        successlogin.value = true;
       } else {
         isLoading.value = false;
         showresult(
             context, Colors.red, jsonDecode(value.body)["error_description"]);
         Get.off(loginscreen());
+        successlogin.value = false;
       }
     }).catchError((error) {
       isLoading.value = false;
       showresult(context, Colors.red, error.toString());
+      successlogin.value = false;
     });
   }
 
-  Future<void> getuser(
+  /*Future<void> getuser(
       {required String token, required BuildContext context}) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/api/v2/storefront/account");
@@ -132,6 +138,38 @@ class logincontroller extends GetxController {
         Get.off(loginscreen());
       }
     }).catchError((error) {
+      isLoading.value = false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }*/
+  Future<void> logout({
+    required String token,
+    required BuildContext context,
+})async{
+    isLoading.value = true;
+    Uri url = Uri.parse("$baseurl/customer/logout");
+    await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      }
+    ).then((value) {
+      if(value.statusCode == 200){
+        isLoading.value = false;
+        remeber.remove("token");
+        usermodel.signOut();
+        homecontrol.currentindex=0.obs;
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
+      }else{
+        isLoading.value = false;
+        showresult(
+            context, Colors.red, jsonDecode(value.body)["error_description"]);
+      }
+    }).catchError((error){
       isLoading.value = false;
       showresult(context, Colors.red, error.toString());
     });

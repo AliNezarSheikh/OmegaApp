@@ -1,31 +1,35 @@
 import '../Constant/Components.dart';
 
 class usermodel{
-  String? id;
-   String? email;
+ int? id;
+  String? email;
   String? first_name;
   String? last_name;
-  int? store_credits;
-  int? completed_orders;
+  String? gender;
+ String? token;
+
   usermodel({
     required this.email,
     required this.id,
     required this.first_name,
     required this.last_name,
-    required this.store_credits,
-    required this.completed_orders,
+    required this.gender,
+    required this.token,
+
+
 });
  usermodel.fromJson(dynamic data){
   var jsondata=data["data"];
   id=jsondata["id"];
-  email=jsondata["attributes"]["email"];
-  first_name=jsondata["attributes"]["first_name"];
-  last_name=jsondata["attributes"]["last_name"];
-  store_credits=jsondata["attributes"]["store_credits"];
-  completed_orders=jsondata["attributes"]["completed_orders"];
+  email=jsondata["email"];
+  first_name=jsondata["first_name"];
+  last_name=jsondata["last_name"];
+  gender=jsondata["gender"];
+  token=data["token"];
+
 }
    usermodel.signOut() {
-    currentuser = usermodel(email: null, id: null, first_name: null, last_name: null, store_credits: null, completed_orders: null);
+    currentuser = usermodel(email: null,id: null, first_name: null, last_name: null, gender: null, token: null);
   }
 
 }
