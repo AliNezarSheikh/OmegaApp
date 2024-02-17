@@ -4,13 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/reusable.dart';
-import 'package:omega/View/Screens/edituser.dart';
-
-import '../../Constant/Components.dart';
 import '../../Control/logincontroller.dart';
+import 'home_screen.dart';
 
-class checkuser extends StatelessWidget {
-
+class changepassword extends StatelessWidget {
   TextEditingController passwordFieldController = TextEditingController();
   TextEditingController passwordFieldController2 = TextEditingController();
 
@@ -50,7 +47,7 @@ class checkuser extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    PrimaryText(words: "For Security Propose"),
+                    PrimaryText(words: "Change Password Account"),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -60,8 +57,6 @@ class checkuser extends StatelessWidget {
                     ),
                     textinput(
                       type: TextInputType.visiblePassword,
-                      obscure: controller.notvisable.value,
-                      hint: "Password",
                       validator: (String? value) {
                         if (value!.length < 6) {
                           return "Password is Short";
@@ -69,12 +64,28 @@ class checkuser extends StatelessWidget {
                           return null;
                         }
                       },
+                      obscure: controller.notvisable.value,
+                      hint: "Create Password",
                       controller: passwordFieldController,
+                    ),
+                    SizedBox(height: 24),
+                    textinput(
+                      type: TextInputType.visiblePassword,
+                      obscure: controller.notvisable.value,
+                      hint: "Confirm Password",
+                      controller: passwordFieldController2,
+                      validator: (String? value) {
+                        if (value! != passwordFieldController.text) {
+                          return "Password does not Match";
+                        } else {
+                          return null;
+                        }
+                      },
                       eyeicon: IconButton(
                         onPressed: () {
                           controller.getvisiblepassword();
                         },
-                        icon: Icon(controller.notvisable.isTrue
+                        icon: Icon(controller.notvisable == true
                             ? Icons.visibility_off_outlined
                             : Icons.visibility_outlined),
                       ),
@@ -86,20 +97,18 @@ class checkuser extends StatelessWidget {
                         condition: controller.isLoading.isFalse,
                         builder: (context) => buildButton(
                             context: context,
-                            name: "Continue",
+                            name: "SAVE",
                             onTap: () async {
                               if (formKey.currentState!.validate()) {
-                                await controller.loginuser(
-                                    email: currentuser!.email,
-                                    password: passwordFieldController.text,
-                                    context: context,
-                                isremember: controller.rememberMe.value);
-                                if (controller.successlogin.isTrue) {
-                                  passwordFieldController.clear();
-                               /*   Get.to(targetscreen,
-                                      transition: Transition.fadeIn,
+                                await controller.changepassword(
+                                  password: passwordFieldController.text,
+                                  context: context,
+                                );
+                                if (controller.successupdate.isTrue) {
+                                  Get.off(() => homescreen(),
+                                      transition: Transition.leftToRight,
                                       curve: Curves.easeInOut,
-                                      duration: Duration(milliseconds: 700));*/
+                                      duration: Duration(seconds: 2));
                                 }
                               }
                             }),

@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/View/Screens/edituser.dart';
 import 'package:omega/View/Screens/register_screen.dart';
+import 'package:omega/View/Screens/updatepassword.dart';
 
 import '../../Constant/reusable.dart';
 import '../../Control/logincontroller.dart';
@@ -107,7 +108,12 @@ class profile extends StatelessWidget {
                   height: 10.0,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => changepassword(),
+                        transition: Transition.rightToLeft,
+                        curve: Curves.easeInOut,
+                        duration: Duration(seconds: 2));
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -135,7 +141,7 @@ class profile extends StatelessWidget {
                         fontcolorprimary,
                         fontcolorsecond,
                         Colors.black26
-                      ], // Replace with your desired gradient colors
+                      ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),

@@ -108,7 +108,7 @@ class logincontroller extends GetxController {
       } else {
         isLoading.value = false;
         showresult(
-            context, Colors.red, jsonDecode(value.body)["error_description"]);
+            context, Colors.red, jsonDecode(value.body)["message"]);
         Get.off(loginscreen());
         successlogin.value = false;
       }
@@ -145,31 +145,35 @@ class logincontroller extends GetxController {
   Future<void> logout({
     required String token,
     required BuildContext context,
-})async{
+  }) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/customer/logout");
-    await http.post(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      }
-    ).then((value) {
-      if(value.statusCode == 200){
+    await http.post(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }).then((value) {
+      if (value.statusCode == 200) {
         isLoading.value = false;
         remeber.remove("token");
         usermodel.signOut();
-        homecontrol.currentindex=0.obs;
+        homecontrol.currentindex = 0.obs;
         Get.off(loginscreen(),
             transition: Transition.circularReveal,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
-      }else{
+      } else {
         isLoading.value = false;
         showresult(
-            context, Colors.red, jsonDecode(value.body)["error_description"]);
+            context, Colors.red, jsonDecode(value.body)["error"]);
+        remeber.remove("token");
+        usermodel.signOut();
+        homecontrol.currentindex = 0.obs;
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
       }
-    }).catchError((error){
+    }).catchError((error) {
       isLoading.value = false;
       showresult(context, Colors.red, error.toString());
     });
@@ -180,37 +184,24 @@ class logincontroller extends GetxController {
     required String token,
     required String? firstname,
     required String? lastname,
-    required  String? phone,
-    required  String? gender,
+    required String? phone,
+    required String? gender,
     required BuildContext context,
   }) async {
     isLoading.value = true;
     Uri url = Uri.parse("$baseurl/customer/profile");
-    Map<String, dynamic> requestbody =
-       {
-            "email": email,
-            "first_name": firstname,
-            "last_name": lastname,
-               "gender": gender,
-                "phone": phone,
-          };
-  print(requestbody);
-    await http
-        .put(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: {
-        "email": email,
-        "first_name": firstname,
-        "last_name": lastname,
-        "gender": gender,
-        "phone": phone,
-    })
-        .then((value) {
-          print(value.statusCode);
+
+    await http.put(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }, body: {
+      "email": email,
+      "first_name": firstname,
+      "last_name": lastname,
+      "gender": gender,
+      "phone": phone,
+    }).then((value) {
+      print(value.statusCode);
       if (value.statusCode == 200) {
         isLoading.value = false;
         var result = jsonDecode(value.body);
@@ -219,7 +210,7 @@ class logincontroller extends GetxController {
 
         showresult(context, Colors.green, "Info has been updated Successfuly");
         successupdate.value = true;
-      } else if(value.statusCode == 401  ){
+      } else if (value.statusCode == 401) {
         isLoading.value = false;
         successupdate.value = false;
         showresult(context, Colors.red, "You need to login");
@@ -227,9 +218,7 @@ class logincontroller extends GetxController {
             transition: Transition.circularReveal,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
-
-      }
-      else {
+      } else {
         isLoading.value = false;
         successupdate.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
@@ -243,7 +232,51 @@ class logincontroller extends GetxController {
     });
   }
 
+  Future<void> changepassword({
 
+    required String? password,
+    required BuildContext context,
+  }) async {
+    isLoading.value = true;
+    Uri url = Uri.parse("$baseurl/customer/profile");
+
+    await http.put(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }, body: {
+      "email": currentuser!.email,
+      "first_name": currentuser!.first_name,
+      "last_name": currentuser!.last_name,
+      "gender": currentuser!.gender == null ? "undefined" : currentuser!.gender,
+      "phone": currentuser!.phone == null ? "00000" : currentuser!.phone,
+      "password": password,
+      "password_confirmation": password,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        isLoading.value = false;
+        var result = jsonDecode(value.body);
+        currentuser = usermodel.fromJson(result);
+        showresult(context, Colors.green, "Info has been updated Successfuly");
+        successupdate.value = true;
+      } else if (value.statusCode == 401) {
+        isLoading.value = false;
+        successupdate.value = false;
+        showresult(context, Colors.red, "You need to login");
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
+      } else {
+        isLoading.value = false;
+        successupdate.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+      }
+    }).catchError((error) {
+      isLoading.value = false;
+      successupdate.value = false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }
 
   Future<void> addnewadress({
     required String phone,
