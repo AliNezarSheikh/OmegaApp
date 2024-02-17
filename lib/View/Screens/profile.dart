@@ -4,12 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:omega/Constant/Components.dart';
-import 'package:omega/Control/homecontroller.dart';
-import 'package:omega/Model/usermodel.dart';
-import 'package:omega/View/Screens/addadress.dart';
-import 'package:omega/View/Screens/checkuser.dart';
 import 'package:omega/View/Screens/edituser.dart';
-import 'package:omega/View/Screens/login_screen.dart';
 import 'package:omega/View/Screens/register_screen.dart';
 
 import '../../Constant/reusable.dart';
@@ -57,7 +52,7 @@ class profile extends StatelessWidget {
                         fontcolorprimary,
                         fontcolorsecond,
                         Colors.black26
-                      ], // Replace with your desired gradient colors
+                      ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
@@ -68,7 +63,12 @@ class profile extends StatelessWidget {
                   height: 10.0,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => edituser(),
+                        transition: Transition.rightToLeft,
+                        curve: Curves.easeInOut,
+                        duration: Duration(seconds: 2));
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -213,7 +213,7 @@ class profile extends StatelessWidget {
                         name: "Sign Out",
                         onTap: () async {
                           await controller.logout(
-                              context: context, token: currentuser!.token!);
+                              context: context, token: token);
                         }),
                     fallback: (context) =>
                         Center(child: CircularProgressIndicator())),

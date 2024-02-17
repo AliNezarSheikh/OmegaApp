@@ -76,6 +76,8 @@ Widget textinput(
         required String hint,
         required bool obscure,
         Widget? eyeicon,
+          InputBorder? border,
+          String? lab,
         String? Function(String?)? validator}) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -87,6 +89,8 @@ Widget textinput(
         decoration: InputDecoration(
           suffixIcon: eyeicon,
           hintText: hint,
+          border: border,
+          label: lab!=null ?Text(lab):null,
         ),
         style: TextStyle(
             fontSize: 16.0, fontFamily: 'Poppins', fontWeight: FontWeight.w200),

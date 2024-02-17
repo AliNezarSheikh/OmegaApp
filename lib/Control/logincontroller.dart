@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ class logincontroller extends GetxController {
   RxBool successaddress = false.obs;
   RxBool successlogin = false.obs;
   RxBool successupdate = false.obs;
+  RxString dropdownValue = list.first.obs;
   void getvisiblepassword() {
     notvisable.value = !notvisable.value;
   }
@@ -178,53 +178,72 @@ class logincontroller extends GetxController {
   Future<void> updateuser({
     required String email,
     required String token,
-    String? firstname,
-    String? lastname,
-    String? password,
+    required String? firstname,
+    required String? lastname,
+    required  String? phone,
+    required  String? gender,
     required BuildContext context,
   }) async {
     isLoading.value = true;
-    Uri url = Uri.parse("$baseurl/api/v2/storefront/account");
-    Map<String, dynamic> requestbody = password == null
-        ? {
+    Uri url = Uri.parse("$baseurl/customer/profile");
+    Map<String, dynamic> requestbody =
+       {
             "email": email,
             "first_name": firstname,
             "last_name": lastname,
-          }
-        : {
-            "email": email,
-            "first_name": firstname,
-            "last_name": lastname,
-            "password": password,
-            "password_confirmation": password,
+               "gender": gender,
+                "phone": phone,
           };
-    Map<String, dynamic> user = {"user": requestbody};
+  print(requestbody);
     await http
-        .patch(
+        .put(
       url,
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(user),
-    )
+      body: {
+        "email": email,
+        "first_name": firstname,
+        "last_name": lastname,
+        "gender": gender,
+        "phone": phone,
+    })
         .then((value) {
+          print(value.statusCode);
       if (value.statusCode == 200) {
         isLoading.value = false;
         var result = jsonDecode(value.body);
+        print(result);
         currentuser = usermodel.fromJson(result);
+
         showresult(context, Colors.green, "Info has been updated Successfuly");
         successupdate.value = true;
-      } else {
+      } else if(value.statusCode == 401  ){
         isLoading.value = false;
-        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
+        successupdate.value = false;
+        showresult(context, Colors.red, "You need to login");
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
+
+      }
+      else {
+        isLoading.value = false;
+        successupdate.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+        print(jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
       isLoading.value = false;
+      successupdate.value = false;
       showresult(context, Colors.red, error.toString());
+      print(error.toString());
     });
   }
+
+
 
   Future<void> addnewadress({
     required String phone,

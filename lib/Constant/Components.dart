@@ -65,6 +65,8 @@ String? remembertoken;
 String token="";
  usermodel? currentuser;
 
+const List<String> list = <String>['Male', 'Female',];
+
 late List<addressmodel> listadress = [];
 late addressmodel useradress;
 String baseurl="https://bagisto.lofialight.com/public/api/v1";
