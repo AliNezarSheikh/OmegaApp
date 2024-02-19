@@ -6,8 +6,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 
-import '../../Constant/reusable.dart';
-import '../../Control/logincontroller.dart';
+import '../../../Constant/reusable.dart';
+import '../../../Control/logincontroller.dart';
 
 class edituser extends StatelessWidget {
 
@@ -22,7 +22,7 @@ class edituser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //String dropdownValue = list.first;
+
     emailFieldController.text = currentuser!.email!;
     firstnameController.text = currentuser!.first_name == null
         ? firstnameController.text

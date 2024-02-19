@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/adressmodel.dart';
 import 'package:omega/Model/usermodel.dart';
-import 'package:omega/View/Screens/login_screen.dart';
 import '../Constant/Components.dart';
 import '../Constant/reusable.dart';
+import '../View/Screens/signup/login_screen.dart';
 
 class logincontroller extends GetxController {
   RxBool notvisable = true.obs;
@@ -392,7 +392,67 @@ class logincontroller extends GetxController {
       showresult(context, Colors.red, error.toString());
     });
   }
-
+  Future<void> addressupdate({
+    required int id,
+    required String phoneaddress,
+    required String postcode,
+    required String state_name,
+    required String address1,
+    required String first_name,
+    required String last_name,
+    required String city,
+    required String country,
+    required BuildContext context,
+    required String token,
+  }) async {
+    isLoading.value = true;
+    Uri url = Uri.parse("$baseurl/customer/addresses/${id}");
+    List<String> listadd = [address1];
+    Map<String, dynamic> requestbody = {
+      "phone": phoneaddress,
+      "state": state_name,
+      "address1": listadd,
+      "city": city,
+      "first_name": first_name,
+      "last_name": last_name,
+      "postcode": postcode,
+      "country": country,
+    };
+    await http
+        .put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(requestbody),
+    )
+        .then((value) {
+      if (value.statusCode == 200) {
+        isLoading.value = false;
+        showresult(
+            context, Colors.green, "Adress has been Updated Successfuly");
+        successaddress.value = true;
+      } else if (value.statusCode == 401) {
+        isLoading.value = false;
+        successaddress.value = false;
+        showresult(context, Colors.red, "You need to login");
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
+      } else {
+        isLoading.value = false;
+        successaddress.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+      }
+    }).catchError((error) {
+      isLoading.value = false;
+      successaddress.value = false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }
   void showMaterialDialog<T>({required BuildContext context, required Widget child})
   {
     showDialog<T>(context: context,

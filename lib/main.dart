@@ -5,9 +5,8 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
-import 'package:omega/View/Screens/splash_screen.dart';
-
-import 'View/Screens/all address.dart';
+import 'View/Screens/address/all address.dart';
+import 'View/Screens/signup/splash_screen.dart';
 
 
 Future<void> main() async {

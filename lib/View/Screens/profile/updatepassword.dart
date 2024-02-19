@@ -4,8 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/reusable.dart';
-import '../../Control/logincontroller.dart';
-import 'home_screen.dart';
+
+import '../../../Control/logincontroller.dart';
+import '../home_screen.dart';
+
 
 class changepassword extends StatelessWidget {
   TextEditingController passwordFieldController = TextEditingController();

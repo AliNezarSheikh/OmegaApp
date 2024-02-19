@@ -4,9 +4,8 @@ import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
-import 'package:omega/View/Screens/login_screen.dart';
-
-import 'home_screen.dart';
+import '../home_screen.dart';
+import 'login_screen.dart';
 
 class registerscreen extends StatelessWidget {
   TextEditingController emailFieldController = TextEditingController();

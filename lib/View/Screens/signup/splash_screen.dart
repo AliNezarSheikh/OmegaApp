@@ -3,8 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/logincontroller.dart';
-
-import 'home_screen.dart';
+import '../home_screen.dart';
 import 'login_screen.dart';
 
 class splashscreen extends StatelessWidget {

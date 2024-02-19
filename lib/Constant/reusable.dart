@@ -11,8 +11,9 @@ import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Model/adressmodel.dart';
 import 'package:omega/Model/usermodel.dart';
+import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/home_screen.dart';
-import 'package:omega/View/Screens/register_screen.dart';
+import 'package:omega/View/Screens/signup/register_screen.dart';
 import 'package:toastification/toastification.dart';
 
 import '../Control/dashboardcontroller.dart';
@@ -1139,13 +1140,17 @@ Widget adresslist(addressmodel model,context,) =>
           Padding(
             padding: const EdgeInsets.only(top: 8.0, right: 8.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(() => updateaddress(model: model),
+                    transition: Transition.rightToLeft,
+                    curve: Curves.easeInOut,
+                    duration: Duration(seconds: 2));
+              },
               child: CircleAvatar(
                 backgroundColor: Colors.green.withOpacity(0.5),
                 radius: 15,
                 child: Icon(
                   Icons.edit,
-
                 ),
               ),
             ),

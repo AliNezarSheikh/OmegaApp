@@ -1,36 +1,44 @@
-import 'dart:ffi';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:omega/Constant/Components.dart';
+import 'package:omega/Model/adressmodel.dart';
+import 'package:omega/View/Screens/address/all%20address.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 
-import '../../Constant/reusable.dart';
-import '../../Control/logincontroller.dart';
+import '../../../Constant/Components.dart';
+import '../../../Constant/reusable.dart';
+import '../../../Control/logincontroller.dart';
 
-class addadress extends StatelessWidget {
-  TextEditingController adressController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController stateController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController firstname = TextEditingController();
-  TextEditingController lastname = TextEditingController();
-  TextEditingController postalcode = TextEditingController();
-  TextEditingController country = TextEditingController();
+class updateaddress extends StatelessWidget {
+addressmodel model;
+updateaddress({required this.model});
+
+TextEditingController adressController = TextEditingController();
+TextEditingController cityController = TextEditingController();
+TextEditingController stateController = TextEditingController();
+TextEditingController phoneController = TextEditingController();
+TextEditingController firstname = TextEditingController();
+TextEditingController lastname = TextEditingController();
+TextEditingController postalcode = TextEditingController();
+TextEditingController country = TextEditingController();
 
 
-  logincontroller controller = Get.put(logincontroller());
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+logincontroller controller = Get.put(logincontroller());
+GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  @override
   Widget build(BuildContext context) {
-
+    adressController.text=model.address1!;
+    cityController.text=model.city!;
+    country.text=model.country!;
+    stateController.text=model.state!;
+    phoneController.text=model.phoneaddress!;
+    firstname.text=model.firstname!;
+    lastname.text=model.lastname!;
+    postalcode.text=model.postcode!;
     return Obx(
-      ()=> Scaffold(
+          ()=> Scaffold(
         appBar: AppBar(
 
           scrolledUnderElevation: 0.0,
@@ -69,6 +77,10 @@ class addadress extends StatelessWidget {
                           return null;
                         }
                       },
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      lab: "First Name",
                       type: TextInputType.text),
                   SizedBox(height: 20,),
                   textinput(
@@ -82,6 +94,10 @@ class addadress extends StatelessWidget {
                           return null;
                         }
                       },
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      lab: "Last Name",
                       type: TextInputType.text),
                   SizedBox(height: 20,),
 
@@ -96,6 +112,10 @@ class addadress extends StatelessWidget {
                           return null;
                         }
                       },
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      lab: "Adress",
                       type: TextInputType.text),
                   SizedBox(height: 20,),
                   textinput(
@@ -109,6 +129,10 @@ class addadress extends StatelessWidget {
                           return null;
                         }
                       },
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      lab: "Phone",
                       type: TextInputType.number),
                   SizedBox(height: 20,),
                   textinput(
@@ -122,6 +146,10 @@ class addadress extends StatelessWidget {
                           return null;
                         }
                       },
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      lab: "Country",
                       type: TextInputType.text),
                   SizedBox(height: 20,),
                   textinput(
@@ -132,6 +160,10 @@ class addadress extends StatelessWidget {
                         return null;
                       }
                     },
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    lab: "City",
                     type: TextInputType.text,
                     obscure: false,
                     hint: "City",
@@ -140,6 +172,10 @@ class addadress extends StatelessWidget {
                   SizedBox(height: 20,),
                   textinput(
                     type: TextInputType.text,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    lab: "State",
                     obscure: false,
                     hint: "State",
                     controller: stateController,
@@ -154,6 +190,10 @@ class addadress extends StatelessWidget {
                   SizedBox(height: 20,),
                   textinput(
                       controller: postalcode,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      lab: "Postal Code",
                       hint: "Postal Code",
                       obscure: false,
                       validator: (String? value) {
@@ -169,10 +209,11 @@ class addadress extends StatelessWidget {
                       condition: controller.isLoading.isFalse,
                       builder: (context) => buildButton(
                           context: context,
-                          name: "Add",
+                          name: "Update",
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
-                              await controller.addnewadress(
+                              await controller.addressupdate(
+                                id: model.id!,
                                   address1: adressController.text,
                                   city: cityController.text,
                                   phoneaddress: phoneController.text,
@@ -180,7 +221,7 @@ class addadress extends StatelessWidget {
                                   context: context, token: token, postcode: postalcode.text, first_name: firstname.text, last_name: lastname.text, country: country.text);
                               if(controller.successaddress.isTrue){
                                 Get.off(() => homescreen(),
-                                    transition: Transition.leftToRight,
+                                    transition: Transition.rightToLeft,
                                     curve: Curves.easeInOut,
                                     duration: Duration(seconds: 2));
                               }

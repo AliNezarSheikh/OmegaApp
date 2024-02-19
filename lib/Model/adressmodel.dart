@@ -1,5 +1,4 @@
-
-class addressmodel{
+class addressmodel {
   int? id;
   String? firstname;
   String? lastname;
@@ -20,23 +19,16 @@ class addressmodel{
     required this.lastname,
     required this.postcode,
     required this.country,
-
   });
-  addressmodel.fromJson(dynamic data){
-
-    id=data["id"];
-    address1=data["address1"][0];
-    city=data["city"];
-    phoneaddress=data["phone"];
-    state=data["state"];
-    firstname=data["first_name"];
-    lastname=data["last_name"];
-    country=data["country"];
-    postcode=data["postcode"];
-
-
-
+  addressmodel.fromJson(dynamic data) {
+    id = data["id"];
+    address1 = data["address1"][0];
+    city = data["city"];
+    phoneaddress = data["phone"];
+    state = data["state"];
+    firstname = data["first_name"];
+    lastname = data["last_name"];
+    country = data["country"];
+    postcode = data["postcode"];
   }
-
-
 }

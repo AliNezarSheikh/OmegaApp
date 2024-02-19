@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:omega/Constant/Components.dart';
-import 'package:omega/View/Screens/addadress.dart';
-import 'package:omega/View/Screens/all%20address.dart';
-import 'package:omega/View/Screens/edituser.dart';
-import 'package:omega/View/Screens/register_screen.dart';
-import 'package:omega/View/Screens/updatepassword.dart';
+import 'package:omega/View/Screens/address/addadress.dart';
+import 'package:omega/View/Screens/address/all%20address.dart';
+import 'package:omega/View/Screens/profile/edituser.dart';
+import 'package:omega/View/Screens/signup/register_screen.dart';
+import 'package:omega/View/Screens/profile/updatepassword.dart';
 
-import '../../Constant/reusable.dart';
-import '../../Control/logincontroller.dart';
+import '../../../Constant/reusable.dart';
+import '../../../Control/logincontroller.dart';
 
 class profile extends StatelessWidget {
   logincontroller controller = Get.put(logincontroller());

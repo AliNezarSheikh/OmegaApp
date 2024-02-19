@@ -4,14 +4,14 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
-import 'package:omega/View/Screens/register_screen.dart';
+import 'package:omega/View/Screens/signup/register_screen.dart';
 
-import '../../Control/homecontroller.dart';
-import 'home_screen.dart';
+import '../home_screen.dart';
+
+
 
 class loginscreen extends StatelessWidget {
   TextEditingController emailFieldController = TextEditingController();

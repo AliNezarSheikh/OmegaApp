@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/reusable.dart';
 
-import '../../Constant/Components.dart';
-import '../../Control/logincontroller.dart';
+import '../../../Constant/Components.dart';
+import '../../../Control/logincontroller.dart';
 
 class alladdress extends StatelessWidget {
   logincontroller controller = Get.put(logincontroller());

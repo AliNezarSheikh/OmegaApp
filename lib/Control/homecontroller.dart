@@ -5,7 +5,7 @@ import 'package:omega/Constant/Components.dart';
 import 'package:omega/View/Screens/cart_screen.dart';
 import 'package:omega/View/Screens/dashboard.dart';
 import 'package:omega/View/Screens/favorite.dart';
-import 'package:omega/View/Screens/profile.dart';
+import 'package:omega/View/Screens/profile/profile.dart';
 
 class homecontroller extends GetxController {
   RxInt currentindex = 0.obs;
