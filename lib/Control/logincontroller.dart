@@ -21,6 +21,8 @@ class logincontroller extends GetxController {
   RxBool successlogin = false.obs;
   RxBool successupdate = false.obs;
   RxString dropdownValue = list.first.obs;
+  @override
+
   void getvisiblepassword() {
     notvisable.value = !notvisable.value;
   }
@@ -107,8 +109,7 @@ class logincontroller extends GetxController {
         successlogin.value = true;
       } else {
         isLoading.value = false;
-        showresult(
-            context, Colors.red, jsonDecode(value.body)["message"]);
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
         Get.off(loginscreen());
         successlogin.value = false;
       }
@@ -163,8 +164,7 @@ class logincontroller extends GetxController {
             duration: Duration(seconds: 3));
       } else {
         isLoading.value = false;
-        showresult(
-            context, Colors.red, jsonDecode(value.body)["error"]);
+        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
         remeber.remove("token");
         usermodel.signOut();
         homecontrol.currentindex = 0.obs;
@@ -222,18 +222,15 @@ class logincontroller extends GetxController {
         isLoading.value = false;
         successupdate.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
-        print(jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
       isLoading.value = false;
       successupdate.value = false;
       showresult(context, Colors.red, error.toString());
-      print(error.toString());
     });
   }
 
   Future<void> changepassword({
-
     required String? password,
     required BuildContext context,
   }) async {
@@ -279,35 +276,39 @@ class logincontroller extends GetxController {
   }
 
   Future<void> addnewadress({
-    required String phone,
+    required String phoneaddress,
+    required String postcode,
     required String state_name,
     required String address1,
+    required String first_name,
+    required String last_name,
     required String city,
+    required String country,
     required BuildContext context,
     required String token,
   }) async {
     isLoading.value = true;
-    Uri url = Uri.parse("$baseurl/api/v2/storefront/account/addresses");
+    Uri url = Uri.parse("$baseurl/customer/addresses");
+    List<String> listadd = [address1];
     Map<String, dynamic> requestbody = {
-      "phone": phone,
-      "state_name": state_name,
-      "address1": address1,
+      "phone": phoneaddress,
+      "state": state_name,
+      "address1": listadd,
       "city": city,
-      "firstname": currentuser!.first_name,
-      "lastname": currentuser!.last_name,
-      "zipcode": "00000",
-      "country_iso": "AE",
+      "first_name": first_name,
+      "last_name": last_name,
+      "postcode": postcode,
+      "country": country,
     };
-    Map<String, dynamic> adress = {"address": requestbody};
     await http
         .post(
       url,
       headers: {
-        'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(adress),
+      body: jsonEncode(requestbody),
     )
         .then((value) {
       if (value.statusCode == 200) {
@@ -315,38 +316,89 @@ class logincontroller extends GetxController {
         showresult(
             context, Colors.green, "Adress has been Created Successfuly");
         successaddress.value = true;
+      } else if (value.statusCode == 401) {
+        isLoading.value = false;
+        successaddress.value = false;
+        showresult(context, Colors.red, "You need to login");
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
       } else {
         isLoading.value = false;
-        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
+        successaddress.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
       isLoading.value = false;
+      successaddress.value = false;
       showresult(context, Colors.red, error.toString());
     });
   }
 
   Future<void> getadress(
-      {required String token, required BuildContext context}) async {
+      {required String token, }) async {
+    isLoading.value = true;
     listadress = [];
-    Uri url = Uri.parse("$baseurl/api/v2/storefront/account/addresses");
+    Uri url = Uri.parse("$baseurl/customer/addresses");
     await http.get(url, headers: {
       'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
+
     }).then((value) {
+
       if (value.statusCode == 200) {
         isLoading.value = false;
         var result = jsonDecode(value.body);
-        useradress = addressmodel.fromJson(result);
-
-        listadress.add(useradress);
-      } else {
+       result["data"].forEach((element) {
+          listadress.add(addressmodel.fromJson(element));
+        });
+      } else if (value.statusCode == 401){
         isLoading.value = false;
-        showresult(context, Colors.red, jsonDecode(value.body)["error"]);
+       // showresult(context, Colors.red, "You need to login");
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
+      }else {
+        isLoading.value = false;
+        //showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
       isLoading.value = false;
-      showresult(context, Colors.red, error.toString());
+      //showresult(context, Colors.red, error.toString());
       print(error.toString());
     });
   }
+  Future<void> deleteaddress({required int id,required BuildContext context})async{
+    isLoading.value = true;
+    Uri url = Uri.parse("$baseurl/customer/addresses/${id}");
+    await http.delete(url,headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }).then((value) async {
+      if(value.statusCode==200){
+        await getadress(token: token,);
+        showresult(context, Colors.green, "Adress deleted Success");
+      }else  if(value.statusCode==401){
+        isLoading.value = false;
+        showresult(context, Colors.red, "You need to login");
+        Get.off(loginscreen(),
+            transition: Transition.circularReveal,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
+      }
+    }).catchError((error){
+      isLoading.value = false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }
+
+  void showMaterialDialog<T>({required BuildContext context, required Widget child})
+  {
+    showDialog<T>(context: context,
+      builder: (BuildContext context)=>child,);
+  }
+
+
+
 }

@@ -64,11 +64,11 @@ String devicename="";
 String? remembertoken;
 String token="";
  usermodel? currentuser;
-
+BuildContext? context;
 const List<String> list = <String>['Male', 'Female',];
 
 late List<addressmodel> listadress = [];
-late addressmodel useradress;
+late addressmodel useraddress;
 String baseurl="https://bagisto.lofialight.com/public/api/v1";
 GetStorage remeber=GetStorage();
 GetStorage edit=GetStorage();

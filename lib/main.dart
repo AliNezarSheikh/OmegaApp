@@ -5,9 +5,10 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
-import 'package:omega/View/Screens/home_screen.dart';
-import 'package:omega/View/Screens/login_screen.dart';
 import 'package:omega/View/Screens/splash_screen.dart';
+
+import 'View/Screens/all address.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,8 @@ Future<void> main() async {
   );
   await GetStorage.init();
 
-  runApp( MyApp());
+  runApp( MyApp(
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,10 +35,13 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
 
       debugShowCheckedModeBanner: false,
+
+
       home: splashscreen(),
 
       initialBinding: BindingsBuilder(() {
         Get.lazyPut<homecontroller>(() => homecontroller());
+        Get.lazyPut(()=>alladdress());
       }),
     );
 

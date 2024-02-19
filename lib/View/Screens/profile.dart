@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/View/Screens/addadress.dart';
+import 'package:omega/View/Screens/all%20address.dart';
 import 'package:omega/View/Screens/edituser.dart';
 import 'package:omega/View/Screens/register_screen.dart';
 import 'package:omega/View/Screens/updatepassword.dart';
@@ -152,7 +154,12 @@ class profile extends StatelessWidget {
                   height: 10.0,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => addadress(),
+                        transition: Transition.rightToLeft,
+                        curve: Curves.easeInOut,
+                        duration: Duration(seconds: 2));
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -191,7 +198,13 @@ class profile extends StatelessWidget {
                   height: 10.0,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+
+                    Get.to(() => alladdress(),
+                        transition: Transition.rightToLeft,
+                        curve: Curves.easeInOut,
+                        duration: Duration(seconds: 2));
+                  },
                   child: Row(
                     children: [
                       Icon(

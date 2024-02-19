@@ -21,7 +21,7 @@ import '../View/Screens/payment_screen.dart';
 
 double? width;
 double? height;
-//logincontroller controller = Get.put(logincontroller());
+logincontroller checkcon = Get.put(logincontroller());
 homecontroller homecontrol=Get.put(homecontroller());
 dashcontroller dashcontrol = Get.put(dashcontroller());
 getwidth(BuildContext context) {
@@ -33,7 +33,10 @@ getheight(BuildContext context) {
   height = MediaQuery.of(context).size.height;
   return MediaQuery.of(context).size.height;
 }
-
+enum ButtonAction {
+  cancel,
+  Agree,
+}
 Widget PrimaryText(
         {required String words,
         Color? color,
@@ -1065,7 +1068,7 @@ Widget addcardButton(
   );
 }*/
 
-void showresult(BuildContext context, Color color, String text) =>
+void showresult(BuildContext context, Color color, String text,) =>
     toastification.show(
       context: context,
       icon: ImageIcon(AssetImage("assets/images/img_group_9.png"),color: Colors.blue,),
@@ -1079,7 +1082,8 @@ void showresult(BuildContext context, Color color, String text) =>
       ),
       borderRadius: BorderRadius.circular(12),
     );
-Widget adresslist(addressmodel model,context) => Container(
+Widget adresslist(addressmodel model,context,) =>
+     Container(
   padding: EdgeInsets.all(10),
   height: getheight(context) * 0.1719,
   decoration: BoxDecoration(
@@ -1114,7 +1118,7 @@ Widget adresslist(addressmodel model,context) => Container(
               ),
               Row(
                 children: [
-                  SecondlyText(words: "State : ${model.state_name}"),
+                  SecondlyText(words: "State : ${model.state}"),
                   SizedBox(
                     width: 10,
                   ),
@@ -1124,7 +1128,7 @@ Widget adresslist(addressmodel model,context) => Container(
               SizedBox(
                 height: height! * 0.02,
               ),
-              PrimaryText(words: 'Phone Number ${model.phone}', fontsize: 14),
+              PrimaryText(words: 'Phone Number ${model.phoneaddress}', fontsize: 14),
             ],
           ),
         ),
@@ -1149,7 +1153,38 @@ Widget adresslist(addressmodel model,context) => Container(
           Padding(
             padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
             child: InkWell(
-              onTap: (){},
+              onTap: (){
+                checkcon.showMaterialDialog(
+                    context: context,
+                    child: AlertDialog(
+                      title: const Text(
+                          'Are you sure you want to delete the adress?'),
+                      content: Text(
+                        'If you want to adress the item, choose AGREE or cancel the operation',
+                      ),
+                      actions: <Widget>[
+                        InkWell(
+                          child: const Text('Cancel'),
+                          onTap: () {
+                            Navigator.pop(
+                                context, ButtonAction.cancel);
+                          },
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        InkWell(
+                          child: const Text('Agree'),
+                          onTap:() async {
+                            Navigator.pop(
+                                context, ButtonAction.Agree);
+                            await checkcon.deleteaddress(id: model.id!, context: context);
+
+                          },
+                        ),
+                      ],
+                    ),);
+              },
               child: Icon(
                 Icons.delete_outline,
               ),
