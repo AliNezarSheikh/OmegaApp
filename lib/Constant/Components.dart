@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/Model/usermodel.dart';
 
 import '../Model/adressmodel.dart';
@@ -64,10 +65,12 @@ String devicename="";
 String? remembertoken;
 String token="";
  usermodel? currentuser;
+categorymodel? catmod;
 BuildContext? context;
 const List<String> list = <String>['Male', 'Female',];
 
-late List<addressmodel> listadress = [];
+ List<addressmodel> listadress = [];
+List<categorymodel> listcategories = [];
 late addressmodel useraddress;
 String baseurl="https://bagisto.lofialight.com/public/api/v1";
 GetStorage remeber=GetStorage();

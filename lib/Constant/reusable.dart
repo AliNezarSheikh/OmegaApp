@@ -11,6 +11,7 @@ import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Model/adressmodel.dart';
 import 'package:omega/Model/usermodel.dart';
+import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/signup/register_screen.dart';
@@ -394,19 +395,22 @@ Widget buildbanner(BuildContext context) => Padding(
       ),
     );
 
-Widget buildlist(int index) => TextButton(
-      onPressed:(){
-        dashcontrol.changenlistindex(index);
-      },
-      child: SecondlyText(
-          words: "All",
-          wight: FontWeight.w400,
-          decoration:  dashcontrol.selectedlistindex== index
-              ? TextDecoration.underline
-              : TextDecoration.none,
-          color: dashcontrol.selectedlistindex == index
-              ? fontcolorprimary
-              : fontcolorsecond),
+Widget buildlist(int index,categorymodel model,dashcontroller control) =>
+    Obx(
+        ()=> TextButton(
+          onPressed:     (){
+            control.changenlistindex(index);
+          },
+          child: SecondlyText(
+            words: "${model.name}",
+            wight: FontWeight.w400,
+
+            decoration:  control.selectedlistindex== index
+                ? TextDecoration.underline
+                : TextDecoration.none,
+            color: control.selectedlistindex == index
+                ? fontcolorprimary
+                : fontcolorsecond),),
     );
 
 Widget ProductlistItemWidget(context) => Container(

@@ -100,10 +100,12 @@ class loginscreen extends StatelessWidget {
                               name: "Login",
                               onTap: () async {
                                 if (_formKey.currentState!.validate()) {
+                                  await dashcontrol.getcategories();
                                   await controller.loginuser(
                                       email: emailFieldController.text,
                                       password: passwordFieldController.text, context: context,
                                   isremember: controller.rememberMe.value);
+
                                   if(controller.successlogin.isTrue){
                                     controller.successlogin.value=false;
                                     if(controller.rememberMe.isTrue){
