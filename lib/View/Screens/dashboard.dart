@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,77 +8,80 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/dashboardcontroller.dart';
-import 'package:omega/Model/categorymodel.dart';
+
 
 class dashboard extends StatelessWidget {
   dashcontroller dashcon = Get.put(dashcontroller());
 
   Widget build(BuildContext context) {
-    dashcon.getcategories();
-
-    return FutureBuilder(
+    // dashcon.getcategories();
+    //dashcon.getallproducts();
+    /*return FutureBuilder(
       future: Future.delayed(Duration(seconds: 3)),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-            appBar: AppBar(
-              scrolledUnderElevation: 0.0,
-              elevation: 0.0,
-              leadingWidth: 70,
-              leading: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: fontcolorprimary,
+        if (snapshot.connectionState == ConnectionState.done) {*/
+    return Scaffold(
+        appBar: AppBar(
+          scrolledUnderElevation: 0.0,
+          elevation: 0.0,
+          leadingWidth: 70,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: fontcolorprimary,
+              child: SvgPicture.asset(
+                'assets/images/img_megaphone.svg',
+              ),
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: fontcolorprimary,
+                child: InkWell(
+                  onTap: () {},
                   child: SvgPicture.asset(
-                    'assets/images/img_megaphone.svg',
+                    'assets/images/img_search.svg',
                   ),
                 ),
               ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: fontcolorprimary,
-                    child: InkWell(
-                      onTap: () {},
-                      child: SvgPicture.asset(
-                        'assets/images/img_search.svg',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
-            body: Container(
-              width: getwidth(context),
-              height: getheight(context),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CarouselSlider(
-                      items: [
-                        buildbanner(context),
-                        buildbanner(context),
-                        buildbanner(context),
-                        buildbanner(context),
-                      ],
-                      options: CarouselOptions(
-                        reverse: false,
-                        initialPage: 0,
-                        enableInfiniteScroll: true,
-                        autoPlay: true,
-                        autoPlayInterval: Duration(seconds: 3),
-                        autoPlayAnimationDuration: Duration(seconds: 1),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        scrollDirection: Axis.horizontal,
-                        viewportFraction: 1.0,
-                      ),
-                    ),
-                    /* Padding(
+          ],
+        ),
+        body: FutureBuilder(
+            future: dashcon.getcategories(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Container(
+                  width: getwidth(context),
+                  height: getheight(context),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CarouselSlider(
+                          items: [
+                            buildbanner(context),
+                            buildbanner(context),
+                            buildbanner(context),
+                            buildbanner(context),
+                          ],
+                          options: CarouselOptions(
+                            reverse: false,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration: Duration(seconds: 1),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            scrollDirection: Axis.horizontal,
+                            viewportFraction: 1.0,
+                          ),
+                        ),
+                        /* Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12.0, vertical: 6.0),
                     child: Row(
@@ -93,155 +97,72 @@ class dashboard extends StatelessWidget {
                     ),
                   ),*/
 
-                    Container(
-                      height: 50,
-                      child: ListView.builder(
-                        reverse: true,
-                        itemBuilder: (context, index) {
-                          return buildlist(
-                            index,
-                            listcategories[index],
-                            dashcon,
-                          );
-                        },
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listcategories.length,
-                      ),
-                    ),
-                    Column(
-                      children: [
                         Container(
-                          child: AnimationLimiter(
-                            child: GridView.count(
-                              crossAxisCount: 2,
-                              shrinkWrap: true,
-                              physics:
-                                  BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                              mainAxisSpacing: 10.0,
-                              crossAxisSpacing: 1.0,
-                              childAspectRatio: 1 / 1.35,
-                              children: List.generate(10, (index) {
-                                return AnimationConfiguration.staggeredGrid(
-                                  position: index,
-                                  duration: Duration(milliseconds: 1000),
-                                  columnCount: 2,
-                                  child: ScaleAnimation(
-                                    duration: Duration(milliseconds: 1200),
-                                    curve: Curves.fastLinearToSlowEaseIn,
-                                    child: FadeInAnimation(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 6.0),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(12.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                child: Stack(
-                                                  alignment: Alignment.topRight,
-                                                  children: [
-                                                    Image(
-                                                      image: AssetImage(
-                                                        "assets/images/img_bg.png",
-                                                      ),
-                                                      width: getwidth(context) *
-                                                          0.5,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 8.0,
-                                                              right: 8.0),
-                                                      child: InkWell(
-                                                        onTap: () {},
-                                                        child: CircleAvatar(
-                                                          child: Image(
-                                                            image: AssetImage(
-                                                              "assets/images/img_heart.png",
-                                                            ),
-                                                            width: getwidth(
-                                                                    context) *
-                                                                0.03,
-                                                            //color: Colors.red,
-                                                          ),
-                                                          backgroundColor:
-                                                              Colors.black
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                          radius: 10,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
+                          height: 50,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+
+                            //reverse: true ,
+                            itemBuilder: (context, index) {
+                              return buildlist(
+                                index,
+                                listcategories[index],
+                                dashcon,
+                              );
+                            },
+                            scrollDirection: Axis.horizontal,
+                            itemCount: listcategories.length,
+                          ),
+                        ),
+                        Obx(
+              ()=> ConditionalBuilder(
+                            condition:dashcon.isLoad.isFalse,
+                            builder: (context)=>Column(
+                              children: [
+                                Container(
+                                  child: AnimationLimiter(
+                                    child: GridView.count(
+                                      crossAxisCount: 2,
+                                      shrinkWrap: true,
+                                      physics:
+                                      BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                      mainAxisSpacing: 10.0,
+                                      crossAxisSpacing: 1.0,
+                                      childAspectRatio: 1 / 1.4,
+                                      children: List.generate(
+                                          listproducts.length,
+                                              (index) {
+                                            return AnimationConfiguration.staggeredGrid(
+                                              position: index,
+                                              duration: Duration(milliseconds: 1000),
+                                              columnCount: 2,
+                                              child: ScaleAnimation(
+                                                duration: Duration(milliseconds: 1200),
+                                                curve: Curves.fastLinearToSlowEaseIn,
+                                                child: FadeInAnimation(
+                                                  child:
+                                                  ProductList(listproducts[index]),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 14.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    PrimaryText(
-                                                        words: 'Airprods USA',
-                                                        fontsize: 14),
-                                                    SecondlyText(
-                                                        words: "chair",
-                                                        fontsize: 12),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        PrimaryText(
-                                                            words: '\$245.00 ',
-                                                            fontsize: 14),
-                                                        Spacer(),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 15.0),
-                                                          child: SvgPicture.asset(
-                                                              "assets/images/img_plus_primary.svg"),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                            );
+                                          }),
                                     ),
                                   ),
-                                );
-                              }),
+                                ),
+                              ],
                             ),
+                            fallback:(context)=>Center(child: CircularProgressIndicator(),) ,
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-      // child:
-    );
+                  ),
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
   }
 }

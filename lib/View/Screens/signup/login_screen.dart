@@ -100,7 +100,7 @@ class loginscreen extends StatelessWidget {
                               name: "Login",
                               onTap: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  await dashcontrol.getcategories();
+                                //  await dashcontrol.getcategories();
                                   await controller.loginuser(
                                       email: emailFieldController.text,
                                       password: passwordFieldController.text, context: context,

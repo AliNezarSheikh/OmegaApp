@@ -1,10 +1,9 @@
-import 'dart:js_util';
 
 class productmodel{
   int? id;
   String? name;
   String?  formatted_price;
-  String? description;
+  String? short_description;
   String? medium_image_url;
   String? original_image_url;
 
@@ -12,15 +11,15 @@ class productmodel{
     required this.id,
     required this.name,
     required this.formatted_price,
-    required this.description,
+    required this.short_description,
     required this.medium_image_url,
     required this.original_image_url,
 });
 productmodel.fromJson(dynamic data){
   id=data["id"];
   name=data["name"];
-  formatted_price=data[formatted_price];
-  description=data["description"];
+  formatted_price=data["formatted_price"];
+  short_description=data["short_description"];
   medium_image_url=data["base_image"]["medium_image_url"];
   original_image_url=data["base_image"]["original_image_url"];
 }

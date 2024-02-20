@@ -9,6 +9,7 @@ import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/Model/usermodel.dart';
 
 import '../Model/adressmodel.dart';
+import '../Model/productmodel.dart';
 //primary
 Color fontcolorprimary =Color(0xff000000);
 double sizeprimary = 24;
@@ -68,9 +69,10 @@ String token="";
 categorymodel? catmod;
 BuildContext? context;
 const List<String> list = <String>['Male', 'Female',];
-
+int? id;
  List<addressmodel> listadress = [];
 List<categorymodel> listcategories = [];
+List<productmodel> listproducts = [];
 late addressmodel useraddress;
 String baseurl="https://bagisto.lofialight.com/public/api/v1";
 GetStorage remeber=GetStorage();

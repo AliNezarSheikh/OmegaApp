@@ -10,6 +10,7 @@ import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Model/adressmodel.dart';
+import 'package:omega/Model/productmodel.dart';
 import 'package:omega/Model/usermodel.dart';
 import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
@@ -398,9 +399,9 @@ Widget buildbanner(BuildContext context) => Padding(
 Widget buildlist(int index,categorymodel model,dashcontroller control) =>
     Obx(
         ()=> TextButton(
-          onPressed:     (){
+          onPressed:     () async {
             control.changenlistindex(index);
-          },
+await control.getproductbycategory(id: model.id!)  ;        },
           child: SecondlyText(
             words: "${model.name}",
             wight: FontWeight.w400,
@@ -412,7 +413,99 @@ Widget buildlist(int index,categorymodel model,dashcontroller control) =>
                 ? fontcolorprimary
                 : fontcolorsecond),),
     );
+Widget ProductList(productmodel model)=> Padding(
+    padding:
+    const EdgeInsets.only(top: 6.0),
+    child: Column(
+      children: [
+        Padding(
+          padding:
+          const EdgeInsets.all(12.0),
+          child: ClipRRect(
+            borderRadius:
+            BorderRadius.circular(15),
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                  Image(
+                      image: NetworkImage(
+                        "${model.medium_image_url}",
+                      ),
+                      width: width! *
+                          0.5,
+                      fit: BoxFit.cover,
+                    ),
 
+
+                Padding(
+                  padding:
+                  const EdgeInsets.only(
+                      top: 8.0,
+                      right: 8.0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: CircleAvatar(
+                      child: Image(
+                        image: AssetImage(
+                          "assets/images/img_heart.png",
+                        ),
+                        width: width! *
+                            0.03,
+                        //color: Colors.red,
+                      ),
+                      backgroundColor:
+                      Colors.black
+                          .withOpacity(
+                          0.5),
+                      radius: 10,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+              left: 14.0),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
+              children: [
+                PrimaryText(
+                    words: "${model.name}",
+                    fontsize: 14),
+                SecondlyText(
+                    words: "${model.short_description}",
+                    fontsize: 12),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    PrimaryText(
+                        words: '${model.formatted_price} ',
+                        fontsize: 14),
+                    Spacer(),
+                    Padding(
+                      padding:
+                      const EdgeInsets
+                          .only(
+                          right: 15.0),
+                      child: SvgPicture.asset(
+                          "assets/images/img_plus_primary.svg"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 Widget ProductlistItemWidget(context) => Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
