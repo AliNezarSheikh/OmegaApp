@@ -4,6 +4,7 @@ class productmodel{
   String? name;
   String?  formatted_price;
   String? short_description;
+  String? description;
   String? medium_image_url;
   String? original_image_url;
 
@@ -14,6 +15,7 @@ class productmodel{
     required this.short_description,
     required this.medium_image_url,
     required this.original_image_url,
+    required this.description,
 });
 productmodel.fromJson(dynamic data){
   id=data["id"];
@@ -22,6 +24,7 @@ productmodel.fromJson(dynamic data){
   short_description=data["short_description"];
   medium_image_url=data["base_image"]["medium_image_url"];
   original_image_url=data["base_image"]["original_image_url"];
+  description=data["description"];
 }
 
 }

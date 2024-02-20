@@ -9,160 +9,139 @@ import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/dashboardcontroller.dart';
 
-
 class dashboard extends StatelessWidget {
   dashcontroller dashcon = Get.put(dashcontroller());
 
   Widget build(BuildContext context) {
-    // dashcon.getcategories();
-    //dashcon.getallproducts();
-    /*return FutureBuilder(
-      future: Future.delayed(Duration(seconds: 3)),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {*/
+
     return Scaffold(
-        appBar: AppBar(
-          scrolledUnderElevation: 0.0,
-          elevation: 0.0,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+      appBar: AppBar(
+        scrolledUnderElevation: 0.0,
+        elevation: 0.0,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+          child: CircleAvatar(
+            radius: 50,
+            backgroundColor: fontcolorprimary,
+            child: SvgPicture.asset(
+              'assets/images/img_megaphone.svg',
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: CircleAvatar(
               radius: 50,
               backgroundColor: fontcolorprimary,
-              child: SvgPicture.asset(
-                'assets/images/img_megaphone.svg',
-              ),
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: fontcolorprimary,
-                child: InkWell(
-                  onTap: () {},
-                  child: SvgPicture.asset(
-                    'assets/images/img_search.svg',
-                  ),
+              child: InkWell(
+                onTap: () {},
+                child: SvgPicture.asset(
+                  'assets/images/img_search.svg',
                 ),
               ),
             ),
-          ],
-        ),
-        body: FutureBuilder(
-            future: dashcon.getcategories(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                  width: getwidth(context),
-                  height: getheight(context),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CarouselSlider(
-                          items: [
-                            buildbanner(context),
-                            buildbanner(context),
-                            buildbanner(context),
-                            buildbanner(context),
-                          ],
-                          options: CarouselOptions(
-                            reverse: false,
-                            initialPage: 0,
-                            enableInfiniteScroll: true,
-                            autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 3),
-                            autoPlayAnimationDuration: Duration(seconds: 1),
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            scrollDirection: Axis.horizontal,
-                            viewportFraction: 1.0,
-                          ),
-                        ),
-                        /* Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 6.0),
-                    child: Row(
-                      children: [
-                        TextButton(
-                            onPressed: () {},
-                            child: PrimaryText(words: "Popular", fontsize: 20)),
-                        Spacer(),
-                        TextButton(
-                            onPressed: () {},
-                            child: SecondlyText(words: "See all"))
+          ),
+        ],
+      ),
+      body: FutureBuilder(
+        future: dashcon.getcategories(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Container(
+              width: getwidth(context),
+              height: getheight(context),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CarouselSlider(
+                      items: [
+                        buildbanner(context),
+                        buildbanner(context),
+                        buildbanner(context),
+                        buildbanner(context),
                       ],
+                      options: CarouselOptions(
+                        reverse: false,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        autoPlayInterval: Duration(seconds: 3),
+                        autoPlayAnimationDuration: Duration(seconds: 1),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        scrollDirection: Axis.horizontal,
+                        viewportFraction: 1.0,
+                      ),
                     ),
-                  ),*/
-
-                        Container(
-                          height: 50,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-
-                            //reverse: true ,
-                            itemBuilder: (context, index) {
-                              return buildlist(
-                                index,
-                                listcategories[index],
-                                dashcon,
-                              );
-                            },
-                            scrollDirection: Axis.horizontal,
-                            itemCount: listcategories.length,
-                          ),
-                        ),
-                        Obx(
-              ()=> ConditionalBuilder(
-                            condition:dashcon.isLoad.isFalse,
-                            builder: (context)=>Column(
-                              children: [
-                                Container(
-                                  child: AnimationLimiter(
-                                    child: GridView.count(
-                                      crossAxisCount: 2,
-                                      shrinkWrap: true,
-                                      physics:
+                    Container(
+                      height: 50,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return buildlist(
+                            index,
+                            listcategories[index],
+                            dashcon,
+                          );
+                        },
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listcategories.length,
+                      ),
+                    ),
+                    Obx(
+                      () => ConditionalBuilder(
+                        condition: dashcon.isLoad.isFalse,
+                        builder: (context) => Column(
+                          children: [
+                            Container(
+                              child: AnimationLimiter(
+                                child: GridView.count(
+                                  crossAxisCount: 2,
+                                  shrinkWrap: true,
+                                  physics:
                                       BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                      mainAxisSpacing: 10.0,
-                                      crossAxisSpacing: 1.0,
-                                      childAspectRatio: 1 / 1.4,
-                                      children: List.generate(
-                                          listproducts.length,
-                                              (index) {
-                                            return AnimationConfiguration.staggeredGrid(
-                                              position: index,
-                                              duration: Duration(milliseconds: 1000),
-                                              columnCount: 2,
-                                              child: ScaleAnimation(
-                                                duration: Duration(milliseconds: 1200),
-                                                curve: Curves.fastLinearToSlowEaseIn,
-                                                child: FadeInAnimation(
-                                                  child:
-                                                  ProductList(listproducts[index]),
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                    ),
-                                  ),
+                                  mainAxisSpacing: 10.0,
+                                  crossAxisSpacing: 1.0,
+                                  childAspectRatio: 1 / 1.4,
+                                  children: List.generate(listproducts.length,
+                                      (index) {
+                                    return AnimationConfiguration.staggeredGrid(
+                                      position: index,
+                                      duration: Duration(milliseconds: 1000),
+                                      columnCount: 2,
+                                      child: ScaleAnimation(
+                                        duration: Duration(milliseconds: 1200),
+                                        curve: Curves.fastLinearToSlowEaseIn,
+                                        child: FadeInAnimation(
+                                          child:
+                                              ProductList(context,listproducts[index]),
+                                        ),
+                                      ),
+                                    );
+                                  }),
                                 ),
-                              ],
+                              ),
                             ),
-                            fallback:(context)=>Center(child: CircularProgressIndicator(),) ,
-                          ),
+                          ],
                         ),
-                      ],
+                        fallback: (context) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            }));
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
   }
 }

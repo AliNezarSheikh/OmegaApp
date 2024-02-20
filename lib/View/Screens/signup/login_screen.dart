@@ -109,7 +109,7 @@ class loginscreen extends StatelessWidget {
                                   if(controller.successlogin.isTrue){
                                     controller.successlogin.value=false;
                                     if(controller.rememberMe.isTrue){
-
+                                      remeber.write("token", token);
                                       print(remeber.read("token", ));
                                     }
                                     Get.off(homescreen(),

@@ -15,8 +15,10 @@ import 'package:omega/Model/usermodel.dart';
 import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/home_screen.dart';
+import 'package:omega/View/Screens/productdetails.dart';
 import 'package:omega/View/Screens/signup/register_screen.dart';
 import 'package:toastification/toastification.dart';
+import 'package:wave_transition/wave_transition.dart';
 
 import '../Control/dashboardcontroller.dart';
 import '../View/Screens/add_new_card_screen.dart';
@@ -413,99 +415,130 @@ await control.getproductbycategory(id: model.id!)  ;        },
                 ? fontcolorprimary
                 : fontcolorsecond),),
     );
-Widget ProductList(productmodel model)=> Padding(
+Widget ProductList(BuildContext context,productmodel model)=> InkWell(
+  onTap: (){
+    Navigator.push(context , WaveTransition(
+        child: productdetails(model: model,),
+
+        center: FractionalOffset(0.9, 0.9),
+
+
+        duration: Duration(milliseconds: 3000),
+        settings: RouteSettings(arguments: "yeah! it works!")),
+    );
+
+  },
+  child: Padding(
     padding:
-    const EdgeInsets.only(top: 6.0),
-    child: Column(
-      children: [
-        Padding(
-          padding:
-          const EdgeInsets.all(12.0),
-          child: ClipRRect(
-            borderRadius:
-            BorderRadius.circular(15),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                  Image(
-                      image: NetworkImage(
-                        "${model.medium_image_url}",
-                      ),
-                      width: width! *
-                          0.5,
-                      fit: BoxFit.cover,
-                    ),
-
-
-                Padding(
-                  padding:
-                  const EdgeInsets.only(
-                      top: 8.0,
-                      right: 8.0),
-                  child: InkWell(
-                    onTap: () {},
-                    child: CircleAvatar(
-                      child: Image(
-                        image: AssetImage(
-                          "assets/images/img_heart.png",
-                        ),
-                        width: width! *
-                            0.03,
-                        //color: Colors.red,
-                      ),
-                      backgroundColor:
-                      Colors.black
-                          .withOpacity(
-                          0.5),
-                      radius: 10,
-                    ),
-                  ),
-                ),
-              ],
+      const EdgeInsets.all( 6.0),
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 3,
+            blurRadius: 4,
+            offset: Offset(
+              2,
+              4,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 14.0),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Column(
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
-              children: [
-                PrimaryText(
-                    words: "${model.name}",
-                    fontsize: 14),
-                SecondlyText(
-                    words: "${model.short_description}",
-                    fontsize: 12),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
+        ],
+      ),
+      child: Column(
+          children: [
+            Padding(
+              padding:
+              const EdgeInsets.all(12.0),
+              child: ClipRRect(
+                borderRadius:
+                BorderRadius.circular(15),
+                child: Stack(
+                  alignment: Alignment.topRight,
                   children: [
-                    PrimaryText(
-                        words: '${model.formatted_price} ',
-                        fontsize: 14),
-                    Spacer(),
+                      Image(
+                          image: NetworkImage(
+                            "${model.medium_image_url}",
+                          ),
+                          width: width! *
+                              0.5,
+                          fit: BoxFit.cover,
+                        ),
+
+
                     Padding(
                       padding:
-                      const EdgeInsets
-                          .only(
-                          right: 15.0),
-                      child: SvgPicture.asset(
-                          "assets/images/img_plus_primary.svg"),
+                      const EdgeInsets.only(
+                          top: 8.0,
+                          right: 8.0),
+                      child: InkWell(
+                        onTap: () {},
+                        child: CircleAvatar(
+                          child: Image(
+                            image: AssetImage(
+                              "assets/images/img_heart.png",
+                            ),
+                            width: width! *
+                                0.03,
+                            //color: Colors.red,
+                          ),
+                          backgroundColor:
+                          Colors.black
+                              .withOpacity(
+                              0.5),
+                          radius: 10,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 14.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    PrimaryText(
+                        words: "${model.name}",
+                        fontsize: 14),
+                    SecondlyText(
+                        words: "${model.short_description}",
+                        fontsize: 12),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        PrimaryText(
+                            words: '${model.formatted_price} ',
+                            fontsize: 14),
+                        Spacer(),
+                        Padding(
+                          padding:
+                          const EdgeInsets
+                              .only(
+                              right: 15.0),
+                          child: SvgPicture.asset(
+                              "assets/images/img_plus_primary.svg"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
     ),
-  );
+  ),
+);
 Widget ProductlistItemWidget(context) => Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
