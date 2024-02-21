@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -512,7 +513,7 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
                         words: "${model.short_description}",
                         fontsize: 12),
                     SizedBox(
-                      height: 5,
+                      height: height!*0.005,
                     ),
                     Row(
                       children: [
@@ -520,13 +521,29 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
                             words: '${model.formatted_price} ',
                             fontsize: 14),
                         Spacer(),
-                        Padding(
-                          padding:
-                          const EdgeInsets
-                              .only(
-                              right: 15.0),
-                          child: SvgPicture.asset(
-                              "assets/images/img_plus_primary.svg"),
+                        Obx(
+                          ()=> ConditionalBuilder(
+                            condition: dashcontrol.loadadd.isFalse,
+                            builder: (BuildContext context) { return Padding(
+                              padding:
+                              const EdgeInsets
+                                  .only(
+                                  right: 15.0),
+                              child: InkWell(
+                                onTap: () async {
+                                  await dashcontrol.addtocart(productid: model.id!,token: token,context: context);
+                                },
+                                child: SvgPicture.asset(
+                                    "assets/images/img_plus_primary.svg",),
+                              ),
+                            ); },
+                            fallback: (BuildContext context){
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: CircleAvatar(radius:10,child: CircularProgressIndicator()),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),

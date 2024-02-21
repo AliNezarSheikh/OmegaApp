@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:omega/Model/categorymodel.dart';
@@ -7,11 +8,15 @@ import 'package:omega/Model/productmodel.dart';
 import '../Constant/Components.dart';
 import 'package:http/http.dart' as http;
 
+import '../Constant/reusable.dart';
+
 
 class dashcontroller extends GetxController {
   RxInt selectedlistindex = 0.obs;
   Rx<Color> selectedlistcolor = fontcolorprimary.obs;
   RxBool isLoad=false.obs;
+  RxBool loadadd=false.obs;
+
 
   void changenlistindex(int index) {
     selectedlistindex.value = index;
@@ -98,5 +103,38 @@ class dashcontroller extends GetxController {
   }
   
  
+  }
+  Future<void> addtocart({required int productid,required String token,required BuildContext context})async  {
+    loadadd.value=true;
+    Uri url = Uri.parse("$baseurl/customer/cart/add/${productid}");
+    await http.post(
+        url,
+        headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token',
+        },body: {
+      "product_id": "${productid}",
+      "quantity": "1",
+      "is_buy_now": "false",
+    }
+    ).then((value) {
+      if(value.statusCode==200){
+        loadadd.value=false;
+        showresult(context, Colors.green, jsonDecode(value.body)["message"]);
+      }else if(value.statusCode==401){
+        loadadd.value=false;
+
+        showresult(context, Colors.red,"You need to Login");
+      }else{
+        loadadd.value=false;
+
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+      }
+    }).catchError((error){
+      loadadd.value=false;
+
+      showresult(context, Colors.red, error.toString());
+
+    });
   }
 }

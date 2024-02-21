@@ -16,9 +16,10 @@ import '../../../Control/logincontroller.dart';
 class profile extends StatelessWidget {
   logincontroller controller = Get.put(logincontroller());
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
-        body: currentuser==null
+        body: currentuser!.email==null
             ? Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -225,17 +226,19 @@ class profile extends StatelessWidget {
                 SizedBox(
                   height: 100.0,
                 ),
-                ConditionalBuilder(
-                    condition: controller.isLoading.isFalse,
-                    builder: (context) => buildButton(
-                        context: context,
-                        name: "Sign Out",
-                        onTap: () async {
-                          await controller.logout(
-                              context: context, token: token);
-                        }),
-                    fallback: (context) =>
-                        Center(child: CircularProgressIndicator())),
+                Obx(
+                    ()=> ConditionalBuilder(
+                      condition: controller.isLoading.isFalse,
+                      builder: (context) => buildButton(
+                          context: context,
+                          name: "Sign Out",
+                          onTap: () async {
+                            await controller.logout(
+                                context: context, token: token);
+                          }),
+                      fallback: (context) =>
+                          Center(child: CircularProgressIndicator())),
+                ),
 
               ],
             ),

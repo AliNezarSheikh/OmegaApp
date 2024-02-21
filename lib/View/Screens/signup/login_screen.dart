@@ -112,6 +112,7 @@ class loginscreen extends StatelessWidget {
                                       remeber.write("token", token);
                                       print(remeber.read("token", ));
                                     }
+                                    await dashcontrol.getallproducts();
                                     Get.off(homescreen(),
                                         transition: Transition.circularReveal,
                                         curve: Curves.easeInOut,
@@ -152,7 +153,8 @@ class loginscreen extends StatelessWidget {
                           context: context,
                           name: 'Continue As Guest',
                           Textcolor: fontcolorprimary,
-                      onTap: (){
+                      onTap: () async {
+                        await dashcontrol.getallproducts();
                         Get.off(homescreen(),
                             transition: Transition.circularReveal,
                             curve: Curves.easeInOut,
