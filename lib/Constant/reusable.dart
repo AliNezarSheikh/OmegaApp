@@ -6,24 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
-import 'package:omega/Constant/Components.dart';
 import 'package:omega/Model/adressmodel.dart';
-import 'package:omega/Model/productmodel.dart';
-import 'package:omega/Model/usermodel.dart';
 import 'package:omega/Model/categorymodel.dart';
+import 'package:omega/Model/productmodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/productdetails.dart';
-import 'package:omega/View/Screens/signup/register_screen.dart';
 import 'package:toastification/toastification.dart';
-import 'package:wave_transition/wave_transition.dart';
+
 
 import '../Control/dashboardcontroller.dart';
-import '../View/Screens/add_new_card_screen.dart';
-import '../View/Screens/payment_screen.dart';
 
 double? width;
 double? height;
@@ -404,7 +399,7 @@ Widget buildlist(int index,categorymodel model,dashcontroller control) =>
         ()=> TextButton(
           onPressed:     () async {
             control.changenlistindex(index);
-await control.getproductbycategory(id: model.id!)  ;        },
+await control.getproductbycategory(id: model.id!)  ;  },
           child: SecondlyText(
             words: "${model.name}",
             wight: FontWeight.w400,
@@ -418,16 +413,7 @@ await control.getproductbycategory(id: model.id!)  ;        },
     );
 Widget ProductList(BuildContext context,productmodel model)=> InkWell(
   onTap: (){
-    Navigator.push(context , WaveTransition(
-        child: productdetails(model: model,),
-
-        center: FractionalOffset(0.9, 0.9),
-
-
-        duration: Duration(milliseconds: 3000),
-        settings: RouteSettings(arguments: "yeah! it works!")),
-    );
-
+    Get.to(productdetails(model: model));
   },
   child: Padding(
     padding:
@@ -475,7 +461,9 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
                           top: 8.0,
                           right: 8.0),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                         await dashcontrol.addorremovefromwish(productid: model.id!, token: token, context: context);
+                        },
                         child: CircleAvatar(
                           child: Image(
                             image: AssetImage(
@@ -556,7 +544,7 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
     ),
   ),
 );
-Widget ProductlistItemWidget(context) => Container(
+Widget ProductlistItemWidget(context,productmodel model) => Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
       decoration: BoxDecoration(
@@ -581,8 +569,8 @@ Widget ProductlistItemWidget(context) => Container(
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Image(
-              image: AssetImage(
-                "assets/images/img_bg.png",
+              image: NetworkImage(
+                "${model.medium_image_url}",
               ),
               width: getwidth(context) * 0.3,
               fit: BoxFit.cover,
@@ -594,7 +582,7 @@ Widget ProductlistItemWidget(context) => Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PrimaryText(words: "Airforce Jump", fontsize: 14),
+                  PrimaryText(words: "${model.name}", fontsize: 14),
                   SizedBox(
                     height: 10,
                   ),
@@ -607,13 +595,13 @@ Widget ProductlistItemWidget(context) => Container(
                       SizedBox(
                         width: 10,
                       ),
-                      SecondlyText(words: "Dark Grey")
+                      SecondlyText(words: "${model.short_description}")
                     ],
                   ),
                   SizedBox(
                     height: height! * 0.02,
                   ),
-                  PrimaryText(words: '\$245.00 ', fontsize: 14),
+                  PrimaryText(words: '${model.formatted_price} ', fontsize: 14),
                 ],
               ),
             ),
@@ -624,7 +612,11 @@ Widget ProductlistItemWidget(context) => Container(
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, right: 8.0),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    await dashcontrol.addorremovefromwish(productid: model.id!, token: token, context: context);
+
+                    Get.off(homescreen());
+                  },
                   child: CircleAvatar(
                     child: Image(
                       image: AssetImage(
@@ -1266,7 +1258,7 @@ Widget adresslist(addressmodel model,context,) =>
               ),
               Row(
                 children: [
-                  SecondlyText(words: "State : ${model.state}"),
+                  SecondlyText(words: "Emarite : ${model.state}"),
                   SizedBox(
                     width: 10,
                   ),

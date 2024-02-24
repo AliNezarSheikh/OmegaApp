@@ -1,9 +1,6 @@
-import 'dart:ffi';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
@@ -113,10 +110,10 @@ class loginscreen extends StatelessWidget {
                                       print(remeber.read("token", ));
                                     }
                                     await dashcontrol.getallproducts();
-                                    Get.off(homescreen(),
-                                        transition: Transition.circularReveal,
+                                    Get.off(() => homescreen(),
+                                        transition: Transition.fadeIn,
                                         curve: Curves.easeInOut,
-                                        duration: Duration(seconds: 3));
+                                        duration: Duration(seconds: 1));
                                   }
 
                                 }
@@ -140,7 +137,7 @@ class loginscreen extends StatelessWidget {
                                 Get.off(() => registerscreen(),
                                     transition: Transition.rightToLeft,
                                     curve: Curves.easeInOut,
-                                    duration: Duration(seconds: 2));
+                                    duration: Duration(milliseconds: 700));
                               },
                               child: PrimaryText(
                                   words: " Register",
@@ -155,10 +152,10 @@ class loginscreen extends StatelessWidget {
                           Textcolor: fontcolorprimary,
                       onTap: () async {
                         await dashcontrol.getallproducts();
-                        Get.off(homescreen(),
-                            transition: Transition.circularReveal,
+                        Get.off(()=>homescreen(),
+                            transition: Transition.fadeIn,
                             curve: Curves.easeInOut,
-                            duration: Duration(seconds: 3));
+                            duration: Duration(seconds: 1));
                       }),
                     ],
                   ),

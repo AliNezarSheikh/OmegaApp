@@ -3,6 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/logincontroller.dart';
+
 import '../home_screen.dart';
 import 'login_screen.dart';
 
@@ -15,12 +16,12 @@ class splashscreen extends StatelessWidget {
     Future.delayed(Duration(seconds: 4), () async {
       if (remeber.read("token") == null) {
         Get.off(() => loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeInOut,
             duration: Duration(seconds: 3));
       } else {
         Get.off(() => homescreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeInOut,
             duration: Duration(seconds: 3));
       }

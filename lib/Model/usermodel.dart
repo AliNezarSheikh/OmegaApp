@@ -1,4 +1,4 @@
-import '../Constant/Components.dart';
+
 
 class usermodel{
  int? id;
@@ -31,7 +31,7 @@ class usermodel{
 
 }
    usermodel.signOut() {
-    currentuser = usermodel(email: null,id: null, first_name: null, last_name: null, gender: null, phone: null);
+    //currentuser = usermodel(email: null,id: null, first_name: null, last_name: null, gender: null, phone: null);
   }
 
 }

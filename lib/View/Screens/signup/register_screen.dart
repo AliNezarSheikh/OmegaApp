@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
+
 import '../home_screen.dart';
 import 'login_screen.dart';
 
@@ -127,7 +128,7 @@ class registerscreen extends StatelessWidget {
                                       Get.off(() => loginscreen(),
                                           transition: Transition.leftToRight,
                                           curve: Curves.easeInOut,
-                                          duration: Duration(seconds: 2));
+                                          duration: Duration(milliseconds: 700));
                                     }
 
                                   }
@@ -151,7 +152,7 @@ class registerscreen extends StatelessWidget {
                               Get.off(() => loginscreen(),
                                   transition: Transition.leftToRight,
                                   curve: Curves.easeInOut,
-                                  duration: Duration(seconds: 2));
+                                  duration: Duration(milliseconds: 700));
                             },
                             child: PrimaryText(
                                 words: " Login",
@@ -167,8 +168,8 @@ class registerscreen extends StatelessWidget {
                           Textcolor: fontcolorprimary,
                       onTap: () async {
                         await dashcontrol.getallproducts();
-                        Get.off(homescreen(),
-                            transition: Transition.circularReveal,
+                        Get.off(() => homescreen(),
+                          transition: Transition.fadeIn,
                             curve: Curves.easeInOut,
                             duration: Duration(seconds: 3));
                       }),

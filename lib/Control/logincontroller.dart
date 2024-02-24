@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/adressmodel.dart';
 import 'package:omega/Model/usermodel.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../Constant/Components.dart';
 import '../Constant/reusable.dart';
 import '../View/Screens/signup/login_screen.dart';
@@ -21,6 +22,7 @@ class logincontroller extends GetxController {
   RxBool successlogin = false.obs;
   RxBool successupdate = false.obs;
   RxString dropdownValue = list.first.obs;
+  RxString dropdownValueemarite = emarites.first.obs;
   @override
 
   void getvisiblepassword() {
@@ -156,29 +158,46 @@ class logincontroller extends GetxController {
       if (value.statusCode == 200) {
         isLoading.value = false;
         remeber.remove("token");
-        usermodel.signOut();
+        currentuser=null;
         homecontrol.currentindex = 0.obs;
         Get.off(loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeOut,
-            duration: Duration(seconds: 3));
+            duration: Duration(seconds: 1));
       } else {
         isLoading.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["error"]);
         remeber.remove("token");
-        usermodel.signOut();
+        currentuser=null;
         homecontrol.currentindex = 0.obs;
         Get.off(loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeOut,
-            duration: Duration(seconds: 3));
+            duration: Duration(seconds: 1));
       }
     }).catchError((error) {
       isLoading.value = false;
       showresult(context, Colors.red, error.toString());
     });
   }
-
+  Future<void> openWhatsApp({required BuildContext context}) async {
+    Uri url = Uri.parse("https://wa.me/+971501646033");
+    if (!await launchUrl(url)) {
+     showresult(context, Colors.red, "Could not launch Whatsapp");
+    }
+  }
+  Future<void> openEmail({required BuildContext context}) async {
+    Uri url = Uri.parse("mailto:alinsheikh2020@gmail.com?subject=Problem&body=Need Help:");
+    if (!await launchUrl(url)) {
+      showresult(context, Colors.red, "Could not launch Email");
+    }
+  }
+  Future<void> openphone({required BuildContext context}) async {
+    Uri url = Uri.parse("tel:+971-54-376-6177");
+    if (!await launchUrl(url)) {
+      showresult(context, Colors.red, "Could not launch Phone");
+    }
+  }
   Future<void> updateuser({
     required String email,
     required String token,

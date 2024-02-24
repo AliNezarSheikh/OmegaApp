@@ -1,11 +1,9 @@
+import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/reusable.dart';
-
-import 'package:accordion/accordion.dart';
-import 'package:omega/View/Screens/home_screen.dart';
 
 import '../../Constant/Components.dart';
 import 'add_new_card_screen.dart';

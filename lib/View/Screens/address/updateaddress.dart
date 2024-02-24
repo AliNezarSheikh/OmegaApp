@@ -2,9 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Model/adressmodel.dart';
-import 'package:omega/View/Screens/address/all%20address.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 
 import '../../../Constant/Components.dart';

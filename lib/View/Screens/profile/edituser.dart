@@ -2,7 +2,6 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 
@@ -51,6 +50,7 @@ class edituser extends StatelessWidget {
             ),
           ),
           elevation: 0.0,
+          title: PrimaryText(words: "Personal Info"),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -200,7 +200,7 @@ class edituser extends StatelessWidget {
                           context: context,
                           name: "Update",
                           onTap: () async {
-                            print(controller.dropdownValue.value);
+
                             if (formKey.currentState!.validate()) {
                               await controller.updateuser(
                                   email: emailFieldController.text,

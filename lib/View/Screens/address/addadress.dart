@@ -4,9 +4,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/View/Screens/address/all%20address.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 
 import '../../../Constant/reusable.dart';
@@ -19,8 +18,8 @@ class addadress extends StatelessWidget {
   TextEditingController phoneController = TextEditingController();
   TextEditingController firstname = TextEditingController();
   TextEditingController lastname = TextEditingController();
-  TextEditingController postalcode = TextEditingController();
-  TextEditingController country = TextEditingController();
+  //TextEditingController postalcode = TextEditingController();
+ // TextEditingController country = TextEditingController();
 
 
   logincontroller controller = Get.put(logincontroller());
@@ -110,19 +109,7 @@ class addadress extends StatelessWidget {
                         }
                       },
                       type: TextInputType.number),
-                  SizedBox(height: 20,),
-                  textinput(
-                      controller: country,
-                      hint: "Country",
-                      obscure: false,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return "Country Must Not Be Empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      type: TextInputType.text),
+
                   SizedBox(height: 20,),
                   textinput(
                     validator: (String? value) {
@@ -138,10 +125,61 @@ class addadress extends StatelessWidget {
                     controller: cityController,
                   ),
                   SizedBox(height: 20,),
-                  textinput(
+                  Row(
+                    children: [
+                      Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: SecondlyText(words: "Emarite")
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      Container(
+                        width: width!*0.4,
+                        height: 53,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          border: Border.all(
+                            color: fontcolorprimary,
+                            width: 1.0,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                              border:InputBorder.none
+                          ),
+
+                          borderRadius:  BorderRadius.circular(20.0),
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+
+                          value: controller.dropdownValueemarite.value,
+
+                          icon: const Icon(Icons.arrow_downward),
+                          elevation: 16,
+                          style:  TextStyle(color: fontcolorprimary),
+
+                          onChanged: (String? value) {
+                            controller.dropdownValueemarite=value!.obs;
+
+                          },
+                          items: emarites.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+               /*   textinput(
                     type: TextInputType.text,
                     obscure: false,
-                    hint: "State",
+                    hint: "Emarite",
                     controller: stateController,
                     validator: (String? value) {
                       if (value!.isEmpty) {
@@ -150,20 +188,8 @@ class addadress extends StatelessWidget {
                         return null;
                       }
                     },
-                  ),
-                  SizedBox(height: 20,),
-                  textinput(
-                      controller: postalcode,
-                      hint: "Postal Code",
-                      obscure: false,
-                      validator: (String? value) {
-                        if (value!.length<5) {
-                          return "Postal Code Must Not Be 5 Numbers";
-                        } else {
-                          return null;
-                        }
-                      },
-                      type: TextInputType.number),
+                  ),*/
+
                   SizedBox(height: 20,),
                   ConditionalBuilder(
                       condition: controller.isLoading.isFalse,
@@ -176,10 +202,10 @@ class addadress extends StatelessWidget {
                                   address1: adressController.text,
                                   city: cityController.text,
                                   phoneaddress: phoneController.text,
-                                  state_name: stateController.text,
-                                  context: context, token: token, postcode: postalcode.text, first_name: firstname.text, last_name: lastname.text, country: country.text);
+                                  state_name: controller.dropdownValueemarite.value.toString(),
+                                  context: context, token: token, postcode: "00000", first_name: firstname.text, last_name: lastname.text, country: "UAE");
                               if(controller.successaddress.isTrue){
-                                Get.off(() => homescreen(),
+                                Get.off(() => alladdress(),
                                     transition: Transition.leftToRight,
                                     curve: Curves.easeInOut,
                                     duration: Duration(seconds: 2));

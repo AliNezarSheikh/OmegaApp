@@ -2,7 +2,6 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/reusable.dart';
 
 import '../../../Control/logincontroller.dart';
@@ -38,6 +37,7 @@ class changepassword extends StatelessWidget {
             ),
           ),
           elevation: 0.0,
+          title: PrimaryText(words: "Change Password"),
         ),
         body: SingleChildScrollView(
           child: Padding(

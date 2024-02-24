@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/reusable.dart';
 
 import '../../../Constant/Components.dart';
 import '../../../Control/logincontroller.dart';
+import 'addadress.dart';
 
 class alladdress extends StatelessWidget {
   logincontroller controller = Get.put(logincontroller());
@@ -42,47 +42,61 @@ class alladdress extends StatelessWidget {
                body: checkcon.isLoading.isFalse
                    ? ConditionalBuilder(
                  condition: controller.isLoading.isFalse,
-                 builder: (context) => SingleChildScrollView(
-                   child: Padding(
-                     padding: const EdgeInsets.symmetric(
-                         vertical: 26.0, horizontal: 18),
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         SizedBox(
-                           height: 20,
-                         ),
-                         listadress.length==0?Center(child: PrimaryText(words: "No Address"),)
-                             :AnimationLimiter(
-                           child: ListView.separated(
-                               physics: BouncingScrollPhysics(),
-                               shrinkWrap: true,
-                               separatorBuilder: (context, index) {
-                                 return SizedBox(height: 20);
-                               },
-                               itemCount: listadress.length,
-                               itemBuilder: (context, index) {
-                                 return AnimationConfiguration.staggeredList(
-                                   position: index,
-                                   delay: Duration(milliseconds: 100),
-                                   child: SlideAnimation(
-                                     duration: Duration(milliseconds: 2500),
-                                     curve: Curves.fastLinearToSlowEaseIn,
-                                     horizontalOffset: 30,
-                                     verticalOffset: 300.0,
-                                     child: FlipAnimation(
-                                         duration: Duration(milliseconds: 3000),
+                 builder: (context) => Stack(
+                   children: [
+                     SingleChildScrollView(
+                       child: Padding(
+                         padding: const EdgeInsets.symmetric(
+                             vertical: 26.0, horizontal: 18),
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             SizedBox(
+                               height: 20,
+                             ),
+                             listadress.length==0?Center(child: PrimaryText(words: "No Address"),)
+                                 :AnimationLimiter(
+                               child: ListView.separated(
+                                   physics: BouncingScrollPhysics(),
+                                   shrinkWrap: true,
+                                   separatorBuilder: (context, index) {
+                                     return SizedBox(height: 20);
+                                   },
+                                   itemCount: listadress.length,
+                                   itemBuilder: (context, index) {
+                                     return AnimationConfiguration.staggeredList(
+                                       position: index,
+                                       delay: Duration(milliseconds: 100),
+                                       child: SlideAnimation(
+                                         duration: Duration(milliseconds: 2500),
                                          curve: Curves.fastLinearToSlowEaseIn,
-                                         flipAxis: FlipAxis.y,
-                                         child: adresslist(
-                                             listadress[index], context)),
-                                   ),
-                                 );
-                               }),
+                                         horizontalOffset: 30,
+                                         verticalOffset: 300.0,
+                                         child: FlipAnimation(
+                                             duration: Duration(milliseconds: 3000),
+                                             curve: Curves.fastLinearToSlowEaseIn,
+                                             flipAxis: FlipAxis.y,
+                                             child: adresslist(
+                                                 listadress[index], context)),
+                                       ),
+                                     );
+                                   }),
+                             ),
+                           ],
                          ),
-                       ],
+                       ),
                      ),
-                   ),
+                     Align(
+                       alignment: Alignment.bottomCenter,
+                       child: buildButton(context: context,name: "Add New Address",
+                           onTap: (){
+                             Get.to(() => addadress(),
+                                 transition: Transition.rightToLeft,
+                                 curve: Curves.easeInOut,
+                                 duration: Duration(milliseconds: 700));
+                       }),
+                     )
+                   ],
                  ),
                  fallback: (context) => Center(
                    child: CircularProgressIndicator(),
