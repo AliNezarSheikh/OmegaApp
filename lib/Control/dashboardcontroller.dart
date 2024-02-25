@@ -15,6 +15,7 @@ class dashcontroller extends GetxController {
   Rx<Color> selectedlistcolor = fontcolorprimary.obs;
   RxBool isLoad = false.obs;
   RxBool loadadd = false.obs;
+  RxList<productmodel> listwishs = <productmodel>[].obs;
 
   void changenlistindex(int index) {
     selectedlistindex.value = index;
@@ -116,7 +117,7 @@ class dashcontroller extends GetxController {
   Future<void> getwishlist() async {
     isLoad.value = true;
     Uri url = Uri.parse("$baseurl/customer/wishlist");
-    listwishs = [];
+    listwishs.value = [];
     await http.get(url, headers: {
       "Accept": "application/json",
       'Authorization': 'Bearer $token',

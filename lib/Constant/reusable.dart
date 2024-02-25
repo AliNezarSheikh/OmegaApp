@@ -411,7 +411,7 @@ await control.getproductbycategory(id: model.id!)  ;  },
                 ? fontcolorprimary
                 : fontcolorsecond),),
     );
-Widget ProductList(BuildContext context,productmodel model)=> InkWell(
+Widget ProductList(BuildContext context,productmodel model,dashcontroller control)=> InkWell(
   onTap: (){
     Get.to(productdetails(model: model));
   },
@@ -462,7 +462,7 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
                           right: 8.0),
                       child: InkWell(
                         onTap: () async {
-                         await dashcontrol.addorremovefromwish(productid: model.id!, token: token, context: context);
+                         await control.addorremovefromwish(productid: model.id!, token: token, context: context);
                         },
                         child: CircleAvatar(
                           child: Image(
@@ -511,7 +511,7 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
                         Spacer(),
                         Obx(
                           ()=> ConditionalBuilder(
-                            condition: dashcontrol.loadadd.isFalse,
+                            condition: control.loadadd.isFalse,
                             builder: (BuildContext context) { return Padding(
                               padding:
                               const EdgeInsets
@@ -519,7 +519,7 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
                                   right: 15.0),
                               child: InkWell(
                                 onTap: () async {
-                                  await dashcontrol.addtocart(productid: model.id!,token: token,context: context);
+                                  await control.addtocart(productid: model.id!,token: token,context: context);
                                 },
                                 child: SvgPicture.asset(
                                     "assets/images/img_plus_primary.svg",),
@@ -544,101 +544,102 @@ Widget ProductList(BuildContext context,productmodel model)=> InkWell(
     ),
   ),
 );
-Widget ProductlistItemWidget(context,productmodel model) => Container(
-      padding: EdgeInsets.all(10),
-      height: getheight(context) * 0.1719,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: fontcolorprimary.withOpacity(0.05),
-            spreadRadius: 4,
-            blurRadius: 5,
-            offset: Offset(
-              2,
-              4,
-            ),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image(
-              image: NetworkImage(
-                "${model.medium_image_url}",
-              ),
-              width: getwidth(context) * 0.3,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PrimaryText(words: "${model.name}", fontsize: 14),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.grey,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      SecondlyText(words: "${model.short_description}")
-                    ],
-                  ),
-                  SizedBox(
-                    height: height! * 0.02,
-                  ),
-                  PrimaryText(words: '${model.formatted_price} ', fontsize: 14),
-                ],
+Widget ProductlistItemWidget(context,productmodel model,dashcontroller control) =>
+    Container(
+        padding: EdgeInsets.all(10),
+        height: getheight(context) * 0.1719,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorprimary.withOpacity(0.05),
+              spreadRadius: 4,
+              blurRadius: 5,
+              offset: Offset(
+                2,
+                4,
               ),
             ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                child: InkWell(
-                  onTap: () async {
-                    await dashcontrol.addorremovefromwish(productid: model.id!, token: token, context: context);
-
-                    Get.off(homescreen());
-                  },
-                  child: CircleAvatar(
-                    child: Image(
-                      image: AssetImage(
-                        "assets/images/img_heart.png",
-                      ),
-                      width: getwidth(context) * 0.055,
-                      //color: Colors.red,
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image(
+                image: NetworkImage(
+                  "${model.medium_image_url}",
+                ),
+                width: getwidth(context) * 0.3,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PrimaryText(words: "${model.name}", fontsize: 14),
+                    SizedBox(
+                      height: 10,
                     ),
-                    backgroundColor: Colors.red.withOpacity(0.5),
-                    radius: 15,
-                  ),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.grey,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SecondlyText(words: "${model.short_description}")
+                      ],
+                    ),
+                    SizedBox(
+                      height: height! * 0.02,
+                    ),
+                    PrimaryText(words: '${model.formatted_price} ', fontsize: 14),
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
-                child: SvgPicture.asset("assets/images/img_plus_primary.svg"),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                  child: InkWell(
+                    onTap: () async {
+                      await control.addorremovefromwish(productid: model.id!, token: token, context: context);
+
+                      Get.off(homescreen());
+                    },
+                    child: CircleAvatar(
+                      child: Image(
+                        image: AssetImage(
+                          "assets/images/img_heart.png",
+                        ),
+                        width: getwidth(context) * 0.055,
+                        //color: Colors.red,
+                      ),
+                      backgroundColor: Colors.red.withOpacity(0.5),
+                      radius: 15,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                  child: SvgPicture.asset("assets/images/img_plus_primary.svg"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
 final random = Random();
 Widget CartlistItemWidget(context) => Dismissible(
       key: Key(random.nextInt(4).toString()),

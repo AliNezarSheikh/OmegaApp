@@ -115,7 +115,7 @@ class dashboard extends StatelessWidget {
                                         curve: Curves.fastLinearToSlowEaseIn,
                                         child: FadeInAnimation(
                                           child:
-                                              ProductList(context,listproducts[index]),
+                                              ProductList(context,listproducts[index],dashcon),
                                         ),
                                       ),
                                     );

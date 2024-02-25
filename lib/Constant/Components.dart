@@ -74,7 +74,7 @@ int? id;
  List<addressmodel> listadress = [];
 List<categorymodel> listcategories = [];
 List<productmodel> listproducts = [];
-List<productmodel> listwishs = [];
+
 late addressmodel useraddress;
 String baseurl="https://bagisto.lofialight.com/public/api/v1";
 GetStorage remeber=GetStorage();
