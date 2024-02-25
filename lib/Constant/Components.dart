@@ -74,6 +74,7 @@ int? id;
  List<addressmodel> listadress = [];
 List<categorymodel> listcategories = [];
 List<productmodel> listproducts = [];
+List<productmodel> listmiddle = [];
 
 late addressmodel useraddress;
 String baseurl="https://bagisto.lofialight.com/public/api/v1";

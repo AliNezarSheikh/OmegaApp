@@ -7,6 +7,7 @@ class productmodel{
   String? description;
   String? medium_image_url;
   String? original_image_url;
+  bool iswishlisted=false;
 
   productmodel({
     required this.id,
@@ -16,6 +17,7 @@ class productmodel{
     required this.medium_image_url,
     required this.original_image_url,
     required this.description,
+    required this.iswishlisted,
 });
 productmodel.fromJson(dynamic data){
   id=data["id"];

@@ -9,7 +9,7 @@ import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/dashboardcontroller.dart';
 
 class dashboard extends StatelessWidget {
-  dashcontroller dashcon = Get.put(dashcontroller());
+  dashcontroller dashcon = Get.put(dashcontroller(),permanent: true);
 
   Widget build(BuildContext context) {
 
@@ -89,46 +89,57 @@ class dashboard extends StatelessWidget {
                         itemCount: listcategories.length,
                       ),
                     ),
-                    Obx(
-                      () => ConditionalBuilder(
-                        condition: dashcon.isLoad.isFalse,
-                        builder: (context) => Column(
-                          children: [
-                            Container(
-                              child: AnimationLimiter(
-                                child: GridView.count(
-                                  crossAxisCount: 2,
-                                  shrinkWrap: true,
-                                  physics:
-                                      BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                  mainAxisSpacing: 10.0,
-                                  crossAxisSpacing: 1.0,
-                                  childAspectRatio: 1 / 1.4,
-                                  children: List.generate(listproducts.length,
-                                      (index) {
-                                    return AnimationConfiguration.staggeredGrid(
-                                      position: index,
-                                      duration: Duration(milliseconds: 1000),
-                                      columnCount: 2,
-                                      child: ScaleAnimation(
-                                        duration: Duration(milliseconds: 1200),
-                                        curve: Curves.fastLinearToSlowEaseIn,
-                                        child: FadeInAnimation(
-                                          child:
-                                              ProductList(context,listproducts[index],dashcon),
-                                        ),
+
+                    FutureBuilder(
+                      future: dashcon.getproductbycategory(id: listcategories[ dashcon.selectedlistindex.value].id!),
+                      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done){
+                          return Obx(
+                                () => ConditionalBuilder(
+                              condition: dashcon.isLoad.isFalse,
+                              builder: (context) => Column(
+                                children: [
+                                  Container(
+                                    child: AnimationLimiter(
+                                      child: GridView.count(
+                                        crossAxisCount: 2,
+                                        shrinkWrap: true,
+                                        physics:
+                                        BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                        mainAxisSpacing: 10.0,
+                                        crossAxisSpacing: 1.0,
+                                        childAspectRatio: 1 / 1.4,
+                                        children: List.generate(listproducts.length,
+                                                (index) {
+                                              return AnimationConfiguration.staggeredGrid(
+                                                position: index,
+                                                duration: Duration(milliseconds: 1000),
+                                                columnCount: 2,
+                                                child: ScaleAnimation(
+                                                  duration: Duration(milliseconds: 1200),
+                                                  curve: Curves.fastLinearToSlowEaseIn,
+                                                  child: FadeInAnimation(
+                                                    child:
+                                                    ProductList(context,listproducts[index],dashcon),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
                                       ),
-                                    );
-                                  }),
-                                ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              fallback: (context) => Center(
+                                child: CircularProgressIndicator(),
                               ),
                             ),
-                          ],
-                        ),
-                        fallback: (context) => Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
+                          );
+                        }else{
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      },
+
                     ),
                   ],
                 ),

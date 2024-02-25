@@ -40,21 +40,30 @@ class dashcontroller extends GetxController {
     });
   }
 
+  bool isInwishList(int id) {
+    try {
+      listwishs.firstWhere((element) => element.id == id);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> getallproducts() async {
     isLoad.value = true;
     Uri url = Uri.parse("$baseurl/products");
     listproducts = [];
+    listmiddle = [];
     await http.get(url, headers: {
       "Accept": "application/json",
     }).then((value) {
       if (value.statusCode == 200) {
         var products = jsonDecode(value.body);
-
         products["data"].forEach((element) {
-          listproducts.add(productmodel.fromJson(element));
+          listmiddle.add(productmodel.fromJson(element));
         });
-        isLoad.value = false;
       }
+      isLoad.value = false;
     }).catchError((error) {
       print(error.toString());
       isLoad.value = false;
@@ -63,11 +72,66 @@ class dashcontroller extends GetxController {
 
   Future<void> getproductbycategory({required int id}) async {
     listproducts = [];
+    listmiddle = [];
     isLoad.value = true;
+    //await getwishlist();
     Uri url = Uri.parse("$baseurl/products?category_id=$id");
     if (id == 1) {
       await getallproducts();
-    } else {
+      listmiddle.forEach((element) {
+        int id = element.id!;
+        bool isinwish = isInwishList(id);
+        listproducts.add(productmodel(
+            id: element.id,
+            name: element.name,
+            formatted_price: element.formatted_price,
+            short_description: element.short_description,
+            medium_image_url: element.medium_image_url,
+            original_image_url: element.original_image_url,
+            description: element.description,
+            iswishlisted: isinwish));
+      });
+    }     else {
+    await http.get(url, headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    }).then((value) {
+      if (value.statusCode == 200) {
+        var products = jsonDecode(value.body);
+        products["data"].forEach((element) {
+          listmiddle.add(productmodel.fromJson(element));
+        });
+        listmiddle.forEach((element) {
+          int id = element.id!;
+          bool isinwish = isInwishList(id);
+          listproducts.add(productmodel(
+              id: element.id,
+              name: element.name,
+              formatted_price: element.formatted_price,
+              short_description: element.short_description,
+              medium_image_url: element.medium_image_url,
+              original_image_url: element.original_image_url,
+              description: element.description,
+              iswishlisted: isinwish));
+        });
+        isLoad.value = false;
+      }
+    }).catchError((error) {
+      print(error.toString());
+      isLoad.value = false;
+    });
+  }
+  }
+  Future<void> getproductbycategoryforguest({required int id}) async {
+    listproducts = [];
+    listmiddle = [];
+    isLoad.value = true;
+    //await getwishlist();
+    Uri url = Uri.parse("$baseurl/products?category_id=$id");
+    if (id == 1) {
+      await getallproducts();
+   listproducts=listmiddle;
+    }     else {
       await http.get(url, headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -86,17 +150,16 @@ class dashcontroller extends GetxController {
       });
     }
   }
+
   Future<void> addorremovefromwish(
       {required int productid,
-        required String token,
-        required BuildContext context}) async {
-
+      required String token,
+      required BuildContext context}) async {
     Uri url = Uri.parse("$baseurl/customer/wishlist/${productid}");
     await http.post(url, headers: {
       "Accept": "application/json",
       'Authorization': 'Bearer $token',
-    }
-    ).then((value) async {
+    }).then((value) async {
       if (value.statusCode == 200) {
         await getwishlist();
         showresult(context, Colors.green, jsonDecode(value.body)["message"]);

@@ -2,7 +2,6 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
-import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/homecontroller.dart';
 
 class homescreen extends StatelessWidget {

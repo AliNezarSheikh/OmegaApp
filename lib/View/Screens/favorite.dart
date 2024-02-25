@@ -2,8 +2,6 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 
 import '../../Control/dashboardcontroller.dart';

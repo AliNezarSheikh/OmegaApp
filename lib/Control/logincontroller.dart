@@ -234,7 +234,7 @@ class logincontroller extends GetxController {
         successupdate.value = false;
         showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
       } else {
@@ -279,7 +279,7 @@ class logincontroller extends GetxController {
         successupdate.value = false;
         showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
       } else {
@@ -340,7 +340,7 @@ class logincontroller extends GetxController {
         successaddress.value = false;
         showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
       } else {
@@ -375,7 +375,7 @@ class logincontroller extends GetxController {
         isLoading.value = false;
        // showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
       }else {
@@ -402,7 +402,7 @@ class logincontroller extends GetxController {
         isLoading.value = false;
         showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
-            transition: Transition.circularReveal,
+            transition: Transition.fadeIn,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
       }

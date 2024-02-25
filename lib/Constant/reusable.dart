@@ -17,8 +17,8 @@ import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/productdetails.dart';
 import 'package:toastification/toastification.dart';
 
-
 import '../Control/dashboardcontroller.dart';
+import 'Components.dart';
 
 double? width;
 double? height;
@@ -463,18 +463,22 @@ Widget ProductList(BuildContext context,productmodel model,dashcontroller contro
                       child: InkWell(
                         onTap: () async {
                          await control.addorremovefromwish(productid: model.id!, token: token, context: context);
+                         await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
                         },
                         child: CircleAvatar(
                           child: Image(
                             image: AssetImage(
                               "assets/images/img_heart.png",
+
                             ),
                             width: width! *
                                 0.03,
-                            //color: Colors.red,
+                           // color: model.iswishlisted?Colors.red:null,
                           ),
-                          backgroundColor:
-                          Colors.black
+                          backgroundColor:model.iswishlisted?Colors.red
+                              .withOpacity(
+                              0.5)
+                        :  Colors.black
                               .withOpacity(
                               0.5),
                           radius: 10,
