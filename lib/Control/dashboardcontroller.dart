@@ -15,6 +15,7 @@ class dashcontroller extends GetxController {
   Rx<Color> selectedlistcolor = fontcolorprimary.obs;
   RxBool isLoad = false.obs;
   RxBool loadadd = false.obs;
+  RxBool isLoadwish=false.obs;
   RxList<productmodel> listwishs = <productmodel>[].obs;
 
   void changenlistindex(int index) {
@@ -54,6 +55,7 @@ class dashcontroller extends GetxController {
     Uri url = Uri.parse("$baseurl/products");
     listproducts = [];
     listmiddle = [];
+
     await http.get(url, headers: {
       "Accept": "application/json",
     }).then((value) {
@@ -78,6 +80,7 @@ class dashcontroller extends GetxController {
     Uri url = Uri.parse("$baseurl/products?category_id=$id");
     if (id == 1) {
       await getallproducts();
+      await getwishlist();
       listmiddle.forEach((element) {
         int id = element.id!;
         bool isinwish = isInwishList(id);
@@ -95,12 +98,13 @@ class dashcontroller extends GetxController {
     await http.get(url, headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-    }).then((value) {
+    }).then((value) async {
       if (value.statusCode == 200) {
         var products = jsonDecode(value.body);
         products["data"].forEach((element) {
           listmiddle.add(productmodel.fromJson(element));
         });
+        await getwishlist();
         listmiddle.forEach((element) {
           int id = element.id!;
           bool isinwish = isInwishList(id);
@@ -178,7 +182,7 @@ class dashcontroller extends GetxController {
   }
 
   Future<void> getwishlist() async {
-    isLoad.value = true;
+    isLoadwish.value = true;
     Uri url = Uri.parse("$baseurl/customer/wishlist");
     listwishs.value = [];
     await http.get(url, headers: {
@@ -190,11 +194,11 @@ class dashcontroller extends GetxController {
         wishproduct["data"].forEach((element) {
           listwishs.add(productmodel.fromJson(element["product"]));
         });
-        isLoad.value = false;
+        isLoadwish.value = false;
       }
     }).catchError((error) {
       print(error.toString());
-      isLoad.value = false;
+      isLoadwish.value = false;
     });
   }
 

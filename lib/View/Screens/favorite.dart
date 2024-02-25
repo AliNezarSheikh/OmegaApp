@@ -10,6 +10,7 @@ class favorite extends StatelessWidget {
   dashcontroller dashcon = Get.put(dashcontroller());
   @override
   Widget build(BuildContext context) {
+    dashcon.getwishlist();
     return FutureBuilder(
       future: dashcon.getwishlist(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

@@ -1,7 +1,10 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:omega/Control/dashboardcontroller.dart';
 import 'package:omega/Model/productmodel.dart';
+import 'package:omega/View/Screens/home_screen.dart';
 
 import '../../Constant/Components.dart';
 import '../../Constant/reusable.dart';
@@ -9,7 +12,7 @@ import '../../Constant/reusable.dart';
 class productdetails extends StatelessWidget {
   productmodel model;
   productdetails({required this.model});
-
+dashcontroller control=Get.put(dashcontroller());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +23,8 @@ class productdetails extends StatelessWidget {
           padding: const EdgeInsets.only(left: 12.0),
           child: IconButton(
             onPressed: () {
-              Get.back();
+              control.getproductbycategory(id: listcategories[control.selectedlistindex.value].id!);
+              Get.to(homescreen());
             },
             icon: SvgPicture.asset(
               "assets/images/img_arrow_left.svg",
@@ -84,34 +88,45 @@ class productdetails extends StatelessWidget {
                       ),
                     ),
                     Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, right: 16.0),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: Offset(0, 0), // controls the position of the shadow
-                              ),
-                            ],
-                          ),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SvgPicture.asset(
-                                "assets/images/img_heart_primary.svg",
-                                width: width! * 0.3,
+                    Obx(
+    ()=> ConditionalBuilder(
+                        condition: control.isLoad.isFalse,
+                        builder: (BuildContext context) { return  Padding(
+                          padding: const EdgeInsets.only(top: 8.0, right: 16.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 0), // controls the position of the shadow
+                                ),
+                              ],
+                            ),
+                            child: InkWell(
+                              onTap: () async{
+                                await control.addorremovefromwish(productid: model.id!, token: token, context: context);
+                                await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
+                                model.iswishlisted=!model.iswishlisted;
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: model.iswishlisted?Colors.red:Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SvgPicture.asset(
+                                    "assets/images/img_heart_primary.svg",
+                                    width: width! * 0.3,
+
+                                  ),
+                                ),
+                                radius: 25,
                               ),
                             ),
-                            radius: 25,
                           ),
-                        ),
+                        );},
+                        fallback:(BuildContext context) {return Center(child: CircularProgressIndicator(),);} ,
                       ),
                     ),
                   ],

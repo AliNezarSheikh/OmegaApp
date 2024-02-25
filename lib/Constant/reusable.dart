@@ -23,7 +23,7 @@ import 'Components.dart';
 double? width;
 double? height;
 logincontroller checkcon = Get.put(logincontroller());
-homecontroller homecontrol=Get.put(homecontroller());
+homecontroller homecontrol = Get.put(homecontroller());
 dashcontroller dashcontrol = Get.put(dashcontroller());
 getwidth(BuildContext context) {
   width = MediaQuery.of(context).size.width;
@@ -34,10 +34,12 @@ getheight(BuildContext context) {
   height = MediaQuery.of(context).size.height;
   return MediaQuery.of(context).size.height;
 }
+
 enum ButtonAction {
   cancel,
   Agree,
 }
+
 Widget PrimaryText(
         {required String words,
         Color? color,
@@ -59,18 +61,17 @@ Widget SecondlyText(
         double? fontsize,
         String? fontfami,
         TextDecoration? decoration,
-          TextAlign? align,
+        TextAlign? align,
         FontWeight? wight}) =>
     Text(
       words,
-      textAlign:align ==null ? TextAlign.start:align ,
+      textAlign: align == null ? TextAlign.start : align,
       style: TextStyle(
         color: color == null ? fontcolorsecond : color,
         fontSize: fontsize == null ? sizesecond : fontsize,
         fontFamily: fontfami == null ? fontfamilysecond : fontfami,
         fontWeight: wight == null ? fontwightsecond : wight,
         decoration: decoration == null ? TextDecoration.none : decoration,
-
       ),
     );
 
@@ -80,8 +81,8 @@ Widget textinput(
         required String hint,
         required bool obscure,
         Widget? eyeicon,
-          InputBorder? border,
-          String? lab,
+        InputBorder? border,
+        String? lab,
         String? Function(String?)? validator}) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -94,7 +95,7 @@ Widget textinput(
           suffixIcon: eyeicon,
           hintText: hint,
           border: border,
-          label: lab!=null ?Text(lab):null,
+          label: lab != null ? Text(lab) : null,
         ),
         style: TextStyle(
             fontSize: 16.0, fontFamily: 'Poppins', fontWeight: FontWeight.w200),
@@ -394,39 +395,206 @@ Widget buildbanner(BuildContext context) => Padding(
       ),
     );
 
-Widget buildlist(int index,categorymodel model,dashcontroller control) =>
-    Obx(
-        ()=> TextButton(
-          onPressed:     () async {
-            control.changenlistindex(index);
-await control.getproductbycategory(id: model.id!)  ;  },
-          child: SecondlyText(
+Widget buildlist(int index, categorymodel model, dashcontroller control) => Obx(
+      () => TextButton(
+        onPressed: () async {
+          control.changenlistindex(index);
+          await control.getproductbycategory(id: model.id!);
+        },
+        child: SecondlyText(
             words: "${model.name}",
             wight: FontWeight.w400,
-
-            decoration:  control.selectedlistindex== index
+            decoration: control.selectedlistindex == index
                 ? TextDecoration.underline
                 : TextDecoration.none,
             color: control.selectedlistindex == index
                 ? fontcolorprimary
-                : fontcolorsecond),),
+                : fontcolorsecond),
+      ),
     );
-Widget ProductList(BuildContext context,productmodel model,dashcontroller control)=> InkWell(
-  onTap: (){
-    Get.to(productdetails(model: model));
-  },
-  child: Padding(
-    padding:
-      const EdgeInsets.all( 6.0),
-    child: Container(
+Widget ProductList(
+        BuildContext context, productmodel model, dashcontroller control) =>
+    InkWell(
+      onTap: () {
+        Get.to(productdetails(model: model));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: fontcolorprimary.withOpacity(0.05),
+                spreadRadius: 3,
+                blurRadius: 4,
+                offset: Offset(
+                  2,
+                  4,
+                ),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Image(
+                        image: NetworkImage(
+                          "${model.medium_image_url}",
+                        ),
+                        width: width! * 0.5,
+                        fit: BoxFit.cover,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                        child: Obx(
+                          () => ConditionalBuilder(
+                            condition: control.isLoadwish.isFalse,
+                            builder: (BuildContext context) {
+                              return InkWell(
+                                onTap: () async {
+                                  await control.addorremovefromwish(
+                                      productid: model.id!,
+                                      token: token,
+                                      context: context);
+                                  model.iswishlisted = !model.iswishlisted;
+                                  control.listwishs.add(model);
+                                  //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
+                                },
+                                child: CircleAvatar(
+                                  child: Image(
+                                    image: AssetImage(
+                                      "assets/images/img_heart.png",
+                                    ),
+                                    width: width! * 0.03,
+                                    // color: model.iswishlisted?Colors.red:null,
+                                  ),
+                                  backgroundColor: model.iswishlisted
+                                      ? Colors.red.withOpacity(0.5)
+                                      : Colors.black.withOpacity(0.5),
+                                  radius: 10,
+                                ),
+                              );
+                            },
+                            fallback: (BuildContext context) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: CircleAvatar(
+                                    radius: 10,
+                                    child: CircularProgressIndicator()),
+                              );
+                            },
+                            /*child: InkWell(
+                            onTap: () async {
+                             await control.addorremovefromwish(productid: model.id!, token: token, context: context);
+                             model.iswishlisted=!model.iswishlisted;
+                             control.listwishs.add(model);
+                           //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
+                            },
+                            child: CircleAvatar(
+                              child: Image(
+                                image: AssetImage(
+                                  "assets/images/img_heart.png",
+
+                                ),
+                                width: width! *
+                                    0.03,
+                               // color: model.iswishlisted?Colors.red:null,
+                              ),
+                              backgroundColor:model.iswishlisted?Colors.red
+                                  .withOpacity(
+                                  0.5)
+                            :  Colors.black
+                                  .withOpacity(
+                                  0.5),
+                              radius: 10,
+                            ),
+                          ),*/
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 14.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PrimaryText(words: "${model.name}", fontsize: 14),
+                      SecondlyText(
+                          words: "${model.short_description}", fontsize: 12),
+                      SizedBox(
+                        height: height! * 0.005,
+                      ),
+                      Row(
+                        children: [
+                          PrimaryText(
+                              words: '${model.formatted_price} ', fontsize: 14),
+                          Spacer(),
+                          Obx(
+                            () => ConditionalBuilder(
+                              condition: control.loadadd.isFalse,
+                              builder: (BuildContext context) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 15.0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await control.addtocart(
+                                          productid: model.id!,
+                                          token: token,
+                                          context: context);
+                                    },
+                                    child: SvgPicture.asset(
+                                      "assets/images/img_plus_primary.svg",
+                                    ),
+                                  ),
+                                );
+                              },
+                              fallback: (BuildContext context) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 15.0),
+                                  child: CircleAvatar(
+                                      radius: 10,
+                                      child: CircularProgressIndicator()),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+Widget ProductlistItemWidget(
+        context, productmodel model, dashcontroller control) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: fontcolorprimary.withOpacity(0.05),
-            spreadRadius: 3,
-            blurRadius: 4,
+            spreadRadius: 4,
+            blurRadius: 5,
             offset: Offset(
               2,
               4,
@@ -434,216 +602,84 @@ Widget ProductList(BuildContext context,productmodel model,dashcontroller contro
           ),
         ],
       ),
-      child: Column(
-          children: [
-            Padding(
-              padding:
-              const EdgeInsets.all(12.0),
-              child: ClipRRect(
-                borderRadius:
-                BorderRadius.circular(15),
-                child: Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                      Image(
-                          image: NetworkImage(
-                            "${model.medium_image_url}",
-                          ),
-                          width: width! *
-                              0.5,
-                          fit: BoxFit.cover,
-                        ),
-
-
-                    Padding(
-                      padding:
-                      const EdgeInsets.only(
-                          top: 8.0,
-                          right: 8.0),
-                      child: InkWell(
-                        onTap: () async {
-                         await control.addorremovefromwish(productid: model.id!, token: token, context: context);
-                         await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
-                        },
-                        child: CircleAvatar(
-                          child: Image(
-                            image: AssetImage(
-                              "assets/images/img_heart.png",
-
-                            ),
-                            width: width! *
-                                0.03,
-                           // color: model.iswishlisted?Colors.red:null,
-                          ),
-                          backgroundColor:model.iswishlisted?Colors.red
-                              .withOpacity(
-                              0.5)
-                        :  Colors.black
-                              .withOpacity(
-                              0.5),
-                          radius: 10,
-                        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image(
+              image: NetworkImage(
+                "${model.medium_image_url}",
+              ),
+              width: getwidth(context) * 0.3,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryText(words: "${model.name}", fontsize: 14),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.grey,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 14.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
-                  children: [
-                    PrimaryText(
-                        words: "${model.name}",
-                        fontsize: 14),
-                    SecondlyText(
-                        words: "${model.short_description}",
-                        fontsize: 12),
-                    SizedBox(
-                      height: height!*0.005,
-                    ),
-                    Row(
-                      children: [
-                        PrimaryText(
-                            words: '${model.formatted_price} ',
-                            fontsize: 14),
-                        Spacer(),
-                        Obx(
-                          ()=> ConditionalBuilder(
-                            condition: control.loadadd.isFalse,
-                            builder: (BuildContext context) { return Padding(
-                              padding:
-                              const EdgeInsets
-                                  .only(
-                                  right: 15.0),
-                              child: InkWell(
-                                onTap: () async {
-                                  await control.addtocart(productid: model.id!,token: token,context: context);
-                                },
-                                child: SvgPicture.asset(
-                                    "assets/images/img_plus_primary.svg",),
-                              ),
-                            ); },
-                            fallback: (BuildContext context){
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 15.0),
-                                child: CircleAvatar(radius:10,child: CircularProgressIndicator()),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-    ),
-  ),
-);
-Widget ProductlistItemWidget(context,productmodel model,dashcontroller control) =>
-    Container(
-        padding: EdgeInsets.all(10),
-        height: getheight(context) * 0.1719,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: fontcolorprimary.withOpacity(0.05),
-              spreadRadius: 4,
-              blurRadius: 5,
-              offset: Offset(
-                2,
-                4,
-              ),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image(
-                image: NetworkImage(
-                  "${model.medium_image_url}",
-                ),
-                width: getwidth(context) * 0.3,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PrimaryText(words: "${model.name}", fontsize: 14),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.grey,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        SecondlyText(words: "${model.short_description}")
-                      ],
-                    ),
-                    SizedBox(
-                      height: height! * 0.02,
-                    ),
-                    PrimaryText(words: '${model.formatted_price} ', fontsize: 14),
-                  ],
-                ),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                  child: InkWell(
-                    onTap: () async {
-                      await control.addorremovefromwish(productid: model.id!, token: token, context: context);
-
-                      Get.off(homescreen());
-                    },
-                    child: CircleAvatar(
-                      child: Image(
-                        image: AssetImage(
-                          "assets/images/img_heart.png",
-                        ),
-                        width: getwidth(context) * 0.055,
-                        //color: Colors.red,
+                      SizedBox(
+                        width: 10,
                       ),
-                      backgroundColor: Colors.red.withOpacity(0.5),
-                      radius: 15,
+                      SecondlyText(words: "${model.short_description}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  PrimaryText(words: '${model.formatted_price} ', fontsize: 14),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: InkWell(
+                  onTap: () async {
+                    await control.addorremovefromwish(
+                        productid: model.id!, token: token, context: context);
+
+                    Get.off(homescreen());
+                  },
+                  child: CircleAvatar(
+                    child: Image(
+                      image: AssetImage(
+                        "assets/images/img_heart.png",
+                      ),
+                      width: getwidth(context) * 0.055,
+                      //color: Colors.red,
                     ),
+                    backgroundColor: Colors.red.withOpacity(0.5),
+                    radius: 15,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
-                  child: SvgPicture.asset("assets/images/img_plus_primary.svg"),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                child: SvgPicture.asset("assets/images/img_plus_primary.svg"),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
 final random = Random();
 Widget CartlistItemWidget(context) => Dismissible(
       key: Key(random.nextInt(4).toString()),
@@ -840,6 +876,7 @@ Widget buildHeader() {
     ]),
   );
 }
+
 /*Widget buildInfoCard(context) {
   return Column(
     children: <Widget>[
@@ -896,7 +933,7 @@ Widget buildinfo() {
         Row(
           children: [
             Container(
-              width: width!*0.35,
+              width: width! * 0.35,
               height: height! * 0.09,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -925,7 +962,9 @@ Widget buildinfo() {
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0),
                       child: PrimaryText(
-                        words: currentuser!.first_name==null? "": "${currentuser!.first_name}",
+                        words: currentuser!.first_name == null
+                            ? ""
+                            : "${currentuser!.first_name}",
                         color: fontcolorprimary,
                         fontsize: 16,
                         fontfami: "Inter",
@@ -937,7 +976,7 @@ Widget buildinfo() {
             ),
             Spacer(),
             Container(
-              width: width!*0.35,
+              width: width! * 0.35,
               height: height! * 0.09,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -966,7 +1005,9 @@ Widget buildinfo() {
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0),
                       child: PrimaryText(
-                        words: currentuser!.last_name==null? "": "${currentuser!.last_name}",
+                        words: currentuser!.last_name == null
+                            ? ""
+                            : "${currentuser!.last_name}",
                         color: fontcolorprimary,
                         fontsize: 16,
                         fontfami: "Inter",
@@ -1011,7 +1052,9 @@ Widget buildinfo() {
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: PrimaryText(
-                    words: currentuser!.email==null ? "" :"${currentuser!.email}",
+                    words: currentuser!.email == null
+                        ? ""
+                        : "${currentuser!.email}",
                     color: fontcolorprimary,
                     fontsize: 16,
                     fontfami: "Inter",
@@ -1213,10 +1256,17 @@ Widget addcardButton(
   );
 }*/
 
-void showresult(BuildContext context, Color color, String text,) =>
+void showresult(
+  BuildContext context,
+  Color color,
+  String text,
+) =>
     toastification.show(
       context: context,
-      icon: ImageIcon(AssetImage("assets/images/img_group_9.png"),color: Colors.blue,),
+      icon: ImageIcon(
+        AssetImage("assets/images/img_group_9.png"),
+        color: Colors.blue,
+      ),
       backgroundColor: color,
       autoCloseDuration: const Duration(seconds: 3),
       style: ToastificationStyle.flat,
@@ -1227,121 +1277,122 @@ void showresult(BuildContext context, Color color, String text,) =>
       ),
       borderRadius: BorderRadius.circular(12),
     );
-Widget adresslist(addressmodel model,context,) =>
-     Container(
-  padding: EdgeInsets.all(10),
-  height: getheight(context) * 0.1719,
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(20),
-    color: Colors.white,
-    boxShadow: [
-      BoxShadow(
-        color: fontcolorprimary.withOpacity(0.05),
-        spreadRadius: 4,
-        blurRadius: 5,
-        offset: Offset(
-          2,
-          4,
-        ),
-      ),
-    ],
-  ),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PrimaryText(words: "Adress: ${model.address1}", fontsize: 14),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  SecondlyText(words: "Emarite : ${model.state}"),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  SecondlyText(words: "City: ${model.city}")
-                ],
-              ),
-              SizedBox(
-                height: height! * 0.02,
-              ),
-              PrimaryText(words: 'Phone Number ${model.phoneaddress}', fontsize: 14),
-            ],
-          ),
-        ),
-      ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-            child: InkWell(
-              onTap: () {
-                Get.to(() => updateaddress(model: model),
-                    transition: Transition.rightToLeft,
-                    curve: Curves.easeInOut,
-                    duration: Duration(seconds: 2));
-              },
-              child: CircleAvatar(
-                backgroundColor: Colors.green.withOpacity(0.5),
-                radius: 15,
-                child: Icon(
-                  Icons.edit,
-                ),
-              ),
+Widget adresslist(
+  addressmodel model,
+  context,
+) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
-            child: InkWell(
-              onTap: (){
-                checkcon.showMaterialDialog(
-                    context: context,
-                    child: AlertDialog(
-                      title: const Text(
-                          'Are you sure you want to delete the adress?'),
-                      content: Text(
-                        'If you want to adress the item, choose AGREE or cancel the operation',
-                      ),
-                      actions: <Widget>[
-                        InkWell(
-                          child: const Text('Cancel'),
-                          onTap: () {
-                            Navigator.pop(
-                                context, ButtonAction.cancel);
-                          },
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        InkWell(
-                          child: const Text('Agree'),
-                          onTap:() async {
-                            Navigator.pop(
-                                context, ButtonAction.Agree);
-                            await checkcon.deleteaddress(id: model.id!, context: context);
-
-                          },
-                        ),
-                      ],
-                    ),);
-              },
-              child: Icon(
-                Icons.delete_outline,
-              ),
-            )
           ),
         ],
       ),
-    ],
-  ),
-);
-
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryText(words: "Adress: ${model.address1}", fontsize: 14),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SecondlyText(words: "Emarite : ${model.state}"),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "City: ${model.city}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  PrimaryText(
+                      words: 'Phone Number ${model.phoneaddress}',
+                      fontsize: 14),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: InkWell(
+                  onTap: () {
+                    Get.to(() => updateaddress(model: model),
+                        transition: Transition.rightToLeft,
+                        curve: Curves.easeInOut,
+                        duration: Duration(seconds: 2));
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.green.withOpacity(0.5),
+                    radius: 15,
+                    child: Icon(
+                      Icons.edit,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      checkcon.showMaterialDialog(
+                        context: context,
+                        child: AlertDialog(
+                          title: const Text(
+                              'Are you sure you want to delete the adress?'),
+                          content: Text(
+                            'If you want to adress the item, choose AGREE or cancel the operation',
+                          ),
+                          actions: <Widget>[
+                            InkWell(
+                              child: const Text('Cancel'),
+                              onTap: () {
+                                Navigator.pop(context, ButtonAction.cancel);
+                              },
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            InkWell(
+                              child: const Text('Agree'),
+                              onTap: () async {
+                                Navigator.pop(context, ButtonAction.Agree);
+                                await checkcon.deleteaddress(
+                                    id: model.id!, context: context);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Icon(
+                      Icons.delete_outline,
+                    ),
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
