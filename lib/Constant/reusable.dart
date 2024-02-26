@@ -412,8 +412,8 @@ Widget buildlist(int index, categorymodel model, dashcontroller control) => Obx(
                 : fontcolorsecond),
       ),
     );
-Widget ProductList(
-        BuildContext context, productmodel model, dashcontroller control,productmodel currentmodel) =>
+Widget ProductList(BuildContext context, productmodel model,
+        dashcontroller control, productmodel currentmodel) =>
     InkWell(
       onTap: () {
         Get.to(productdetails(model: model));
@@ -454,99 +454,47 @@ Widget ProductList(
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                        child:
-                           Obx(
-                             ()=> ConditionalBuilder(
-                              condition:control.mapload[currentmodel.id]==false,
-                              builder: (BuildContext context) {
-                                return InkWell(
-                                  onTap: () async {
-
-                                    await control.addorremovefromwish(
-                                        productid: model.id!,
-                                        token: token,
-                                        context: context);
-
+                        child: Obx(
+                          () => ConditionalBuilder(
+                            condition:
+                                control.maploadfav[currentmodel.id] == false,
+                            builder: (BuildContext context) {
+                              return InkWell(
+                                onTap: () async {
+                                  await control.addorremovefromwish(
+                                      productid: model.id!,
+                                      token: token,
+                                      context: context);
+                                  if(control.accept.value){
                                     model.iswishlisted = !model.iswishlisted;
                                     control.listwishs.add(model);
-                                    //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
-                                  },
-                                  child: CircleAvatar(
-                                    child: Image(
-                                      image: AssetImage(
-                                        "assets/images/img_heart.png",
-                                      ),
-                                      width: width! * 0.03,
-                                      // color: model.iswishlisted?Colors.red:null,
+                                  }
+                                },
+                                child: CircleAvatar(
+                                  child: Image(
+                                    image: AssetImage(
+                                      "assets/images/img_heart.png",
                                     ),
-                                    backgroundColor: model.iswishlisted
-                                        ? Colors.red.withOpacity(0.5)
-                                        : Colors.black.withOpacity(0.5),
+                                    width: width! * 0.03,
+                                    // color: model.iswishlisted?Colors.red:null,
+                                  ),
+                                  backgroundColor: model.iswishlisted
+                                      ? Colors.red.withOpacity(0.5)
+                                      : Colors.black.withOpacity(0.5),
+                                  radius: 10,
+                                ),
+                              );
+                            },
+                            fallback: (BuildContext context) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: CircleAvatar(
                                     radius: 10,
-                                  ),
-                                );
-                              },
-                              fallback: (BuildContext context) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 15.0),
-                                  child: CircleAvatar(
-                                      radius: 10,
-                                      child: CircularProgressIndicator()),
-                                );
-                              },
-                              /*child: InkWell(
-                              onTap: () async {
-                               await control.addorremovefromwish(productid: model.id!, token: token, context: context);
-                               model.iswishlisted=!model.iswishlisted;
-                               control.listwishs.add(model);
-                             //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
-                              },
-                              child: CircleAvatar(
-                                child: Image(
-                                  image: AssetImage(
-                                    "assets/images/img_heart.png",
-
-                                  ),
-                                  width: width! *
-                                      0.03,
-                                 // color: model.iswishlisted?Colors.red:null,
-                                ),
-                                backgroundColor:model.iswishlisted?Colors.red
-                                    .withOpacity(
-                                    0.5)
-                              :  Colors.black
-                                    .withOpacity(
-                                    0.5),
-                                radius: 10,
-                              ),
-                                                       ),*/
-                                                       /*InkWell(
-                              onTap: () async {
-                                await control.addorremovefromwish(
-                                    productid: model.id!,
-                                    token: token,
-                                    context: context);
-                                model.iswishlisted = !model.iswishlisted;
-                                control.listwishs.add(model);
-                                //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
-                              },
-                              child: control.startLoading(currentmodel.id!)?CircularProgressIndicator():CircleAvatar(
-                                child: Image(
-                                  image: AssetImage(
-                                    "assets/images/img_heart.png",
-                                  ),
-                                  width: width! * 0.03,
-                                  // color: model.iswishlisted?Colors.red:null,
-                                ),
-                                backgroundColor: model.iswishlisted
-                                    ? Colors.red.withOpacity(0.5)
-                                    : Colors.black.withOpacity(0.5),
-                                radius: 10,
-                              ),
-                                                       ),*/
-                                                       ),
-                           ),
-
+                                    child: CircularProgressIndicator()),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -572,7 +520,8 @@ Widget ProductList(
                           Spacer(),
                           Obx(
                             () => ConditionalBuilder(
-                              condition: control.loadadd.isFalse,
+                              condition:
+                                  control.maploadcart[currentmodel.id] == false,
                               builder: (BuildContext context) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 15.0),
@@ -905,54 +854,7 @@ Widget buildHeader() {
   );
 }
 
-/*Widget buildInfoCard(context) {
-  return Column(
-    children: <Widget>[
-      Container(
-        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-        child: Card(
-          elevation: 5.0,
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.only(
-                top: 16.0, bottom: 16.0, right: 10.0, left: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                new Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    PrimaryText(words: "Store Credits",fontsize: 18.0,wight: FontWeight.w400),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0),
 
-                      child: PrimaryText(words: currentuser!.store_credits.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
-                    ),
-                  ],
-                ),
-                new Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    PrimaryText(words: "Completed Orders",fontsize: 18.0,wight: FontWeight.w400),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0),
-
-                      child: PrimaryText(words: currentuser!.completed_orders.toString(),fontsize: 18.0,wight: FontWeight.w600,color: fontcolorsecond),
-                    ),
-                  ],
-                ),
-
-
-              ],
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-}*/
 Widget buildinfo() {
   return Padding(
     padding: const EdgeInsets.all(16.0),

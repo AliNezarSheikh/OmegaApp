@@ -13,28 +13,44 @@ class dashcontroller extends GetxController {
   RxInt selectedlistindex = 0.obs;
   Rx<Color> selectedlistcolor = fontcolorprimary.obs;
   RxBool isLoad = false.obs;
-  RxBool loadadd = false.obs;
-  RxBool isLoadwish=false.obs;
+  RxBool accept=false.obs;
+  //RxBool loadadd = false.obs;
+  RxBool isLoadwish = false.obs;
   RxList<productmodel> listwishs = <productmodel>[].obs;
-  RxMap <int,bool> mapload=<int,bool>{}.obs;
-  void startLoading(int id) {
+  RxMap<int, bool> maploadfav = <int, bool>{}.obs;
+  RxMap<int, bool> maploadcart = <int, bool>{}.obs;
+  void startLoadingfav(int id) {
     final index = listproducts.indexWhere((item) => item.id == id);
     if (index != -1) {
       listproducts[index].isLoading = true;
-      mapload[listproducts[index].id!]=listproducts[index].isLoading;
-      print(mapload);
+      maploadfav[listproducts[index].id!] = listproducts[index].isLoading;
     }
   }
 
-  void stopLoading(int id) {
+  void stopLoadingfav(int id) {
     final index = listproducts.indexWhere((item) => item.id == id);
     if (index != -1) {
       listproducts[index].isLoading = false;
-      mapload[listproducts[index].id!]=listproducts[index].isLoading;
-
-
+      maploadfav[listproducts[index].id!] = listproducts[index].isLoading;
     }
   }
+
+  void startLoadingcart(int id) {
+    final index = listproducts.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      listproducts[index].isLoading = true;
+      maploadcart[listproducts[index].id!] = listproducts[index].isLoading;
+    }
+  }
+
+  void stopLoadingcart(int id) {
+    final index = listproducts.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      listproducts[index].isLoading = false;
+      maploadcart[listproducts[index].id!] = listproducts[index].isLoading;
+    }
+  }
+
   void changenlistindex(int index) {
     selectedlistindex.value = index;
     selectedlistcolor.value = fontcolorprimary;
@@ -101,10 +117,10 @@ class dashcontroller extends GetxController {
       listmiddle.forEach((element) {
         int id = element.id!;
         bool isinwish = isInwishList(id);
-        mapload.addAll({element.id!:false});
-
+        maploadfav.addAll({element.id!: false});
+        maploadcart.addAll({element.id!: false});
         listproducts.add(productmodel(
-          isLoading: false,
+            isLoading: false,
             id: element.id,
             name: element.name,
             formatted_price: element.formatted_price,
@@ -114,49 +130,52 @@ class dashcontroller extends GetxController {
             description: element.description,
             iswishlisted: isinwish));
       });
-    }     else {
-    await http.get(url, headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    }).then((value) async {
-      if (value.statusCode == 200) {
-        var products = jsonDecode(value.body);
-        products["data"].forEach((element) {
-          listmiddle.add(productmodel.fromJson(element));
-        });
-        await getwishlist();
-        listmiddle.forEach((element) {
-          int id = element.id!;
-          bool isinwish = isInwishList(id);
-          listproducts.add(productmodel(
-            isLoading: false,
-              id: element.id,
-              name: element.name,
-              formatted_price: element.formatted_price,
-              short_description: element.short_description,
-              medium_image_url: element.medium_image_url,
-              original_image_url: element.original_image_url,
-              description: element.description,
-              iswishlisted: isinwish));
-        });
+    } else {
+      await http.get(url, headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      }).then((value) async {
+        if (value.statusCode == 200) {
+          var products = jsonDecode(value.body);
+          products["data"].forEach((element) {
+            listmiddle.add(productmodel.fromJson(element));
+          });
+          await getwishlist();
+          listmiddle.forEach((element) {
+            int id = element.id!;
+            bool isinwish = isInwishList(id);
+            listproducts.add(productmodel(
+                isLoading: false,
+                id: element.id,
+                name: element.name,
+                formatted_price: element.formatted_price,
+                short_description: element.short_description,
+                medium_image_url: element.medium_image_url,
+                original_image_url: element.original_image_url,
+                description: element.description,
+                iswishlisted: isinwish));
+          });
+          isLoad.value = false;
+        }
+      }).catchError((error) {
+        print(error.toString());
         isLoad.value = false;
-      }
-    }).catchError((error) {
-      print(error.toString());
-      isLoad.value = false;
-    });
+      });
+    }
   }
-  }
+
   Future<void> getproductbycategoryforguest({required int id}) async {
     listproducts = [];
     listmiddle = [];
     isLoad.value = true;
-    //await getwishlist();
+
     Uri url = Uri.parse("$baseurl/products?category_id=$id");
     if (id == 1) {
       await getallproducts();
-   listproducts=listmiddle;
-    }     else {
+     listmiddle.forEach((element) {
+       listproducts.add(element);
+     });
+    } else {
       await http.get(url, headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -180,7 +199,7 @@ class dashcontroller extends GetxController {
       {required int productid,
       required String token,
       required BuildContext context}) async {
-    startLoading(productid);
+    startLoadingfav(productid);
     Uri url = Uri.parse("$baseurl/customer/wishlist/${productid}");
     await http.post(url, headers: {
       "Accept": "application/json",
@@ -188,20 +207,21 @@ class dashcontroller extends GetxController {
     }).then((value) async {
       if (value.statusCode == 200) {
         await getwishlist();
+        accept.value=true;
         showresult(context, Colors.green, jsonDecode(value.body)["message"]);
-        stopLoading(productid);
+        stopLoadingfav(productid);
       } else if (value.statusCode == 401) {
-        loadadd.value = false;
         showresult(context, Colors.red, "You need to Login");
-        stopLoading(productid);
+        stopLoadingfav(productid);
+        accept.value=false;
       } else {
-        loadadd.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
-        stopLoading(productid);
+        stopLoadingfav(productid);
+        accept.value=false;
       }
     }).catchError((error) {
-      loadadd.value = false;
-      stopLoading(productid);
+      stopLoadingfav(productid);
+      accept.value=false;
       showresult(context, Colors.red, error.toString());
     });
   }
@@ -220,6 +240,10 @@ class dashcontroller extends GetxController {
           listwishs.add(productmodel.fromJson(element["product"]));
         });
         isLoadwish.value = false;
+      }else if(value.statusCode == 401){
+        isLoadwish.value = false;
+      }else{
+        isLoadwish.value = false;
       }
     }).catchError((error) {
       print(error.toString());
@@ -231,7 +255,7 @@ class dashcontroller extends GetxController {
       {required int productid,
       required String token,
       required BuildContext context}) async {
-    loadadd.value = true;
+    startLoadingcart(productid);
     Uri url = Uri.parse("$baseurl/customer/cart/add/${productid}");
     await http.post(url, headers: {
       "Accept": "application/json",
@@ -242,20 +266,17 @@ class dashcontroller extends GetxController {
       "is_buy_now": "false",
     }).then((value) {
       if (value.statusCode == 200) {
-        loadadd.value = false;
+        stopLoadingcart(productid);
         showresult(context, Colors.green, jsonDecode(value.body)["message"]);
       } else if (value.statusCode == 401) {
-        loadadd.value = false;
-
+        stopLoadingcart(productid);
         showresult(context, Colors.red, "You need to Login");
       } else {
-        loadadd.value = false;
-
+        stopLoadingcart(productid);
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
-      loadadd.value = false;
-
+      stopLoadingcart(productid);
       showresult(context, Colors.red, error.toString());
     });
   }

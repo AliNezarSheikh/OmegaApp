@@ -104,6 +104,7 @@ class dashboard extends StatelessWidget {
                                 () => ConditionalBuilder(
                               condition: dashcon.isLoad.isFalse,
                               builder: (context) => Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
                                     child: AnimationLimiter(

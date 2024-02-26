@@ -6,10 +6,11 @@ import 'package:omega/Constant/reusable.dart';
 
 import '../../Control/dashboardcontroller.dart';
 
-class favorite extends StatelessWidget {
+class favorite extends GetView<dashcontroller> {
   dashcontroller dashcon = Get.put(dashcontroller());
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
       future: dashcon.getwishlist(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -30,10 +31,12 @@ class favorite extends StatelessWidget {
                   ),
                   Obx(
                     () => ConditionalBuilder(
-                      condition: dashcon.listwishs.isNotEmpty,
+                      condition: dashcon.isLoadwish.isFalse,
                       builder: (BuildContext context) {
                         return AnimationLimiter(
-                          child: ListView.separated(
+                          child:dashcon.listwishs.length == 0?Center(
+                            child:
+                            PrimaryText(words: "No Favorite"),): ListView.separated(
                               physics: BouncingScrollPhysics(),
                               shrinkWrap: true,
                               separatorBuilder: (context, index) {
@@ -41,12 +44,7 @@ class favorite extends StatelessWidget {
                               },
                               itemCount: dashcon.listwishs.length,
                               itemBuilder: (context, index) {
-                                return dashcon.listwishs.length == 0
-                                    ? Center(
-                                        child:
-                                            PrimaryText(words: "No Favorite"),
-                                      )
-                                    : AnimationConfiguration.staggeredList(
+                                return AnimationConfiguration.staggeredList(
                                         position: index,
                                         delay: Duration(milliseconds: 100),
                                         child: SlideAnimation(
@@ -72,7 +70,7 @@ class favorite extends StatelessWidget {
                       },
                       fallback: (BuildContext context) {
                         return Center(
-                          child: PrimaryText(words: "No Favorite"),
+                          child: CircularProgressIndicator(),
                         );
                       },
                     ),
