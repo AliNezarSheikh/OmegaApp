@@ -74,15 +74,21 @@ class dashboard extends StatelessWidget {
                         viewportFraction: 1.0,
                       ),
                     ),
+
                     Container(
                       height: 50,
                       child: ListView.builder(
                         shrinkWrap: true,
+
+
                         itemBuilder: (context, index) {
+
                           return buildlist(
+
                             index,
                             listcategories[index],
                             dashcon,
+
                           );
                         },
                         scrollDirection: Axis.horizontal,
@@ -111,6 +117,7 @@ class dashboard extends StatelessWidget {
                                         childAspectRatio: 1 / 1.4,
                                         children: List.generate(listproducts.length,
                                                 (index) {
+                                          var item=listproducts[index];
                                               return AnimationConfiguration.staggeredGrid(
                                                 position: index,
                                                 duration: Duration(milliseconds: 1000),
@@ -120,7 +127,7 @@ class dashboard extends StatelessWidget {
                                                   curve: Curves.fastLinearToSlowEaseIn,
                                                   child: FadeInAnimation(
                                                     child:
-                                                    ProductList(context,listproducts[index],dashcon),
+                                                    ProductList(context,listproducts[index],dashcon,item),
                                                   ),
                                                 ),
                                               );

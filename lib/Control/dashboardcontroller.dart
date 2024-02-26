@@ -6,7 +6,6 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/Model/productmodel.dart';
-
 import '../Constant/Components.dart';
 import '../Constant/reusable.dart';
 
@@ -17,7 +16,25 @@ class dashcontroller extends GetxController {
   RxBool loadadd = false.obs;
   RxBool isLoadwish=false.obs;
   RxList<productmodel> listwishs = <productmodel>[].obs;
+  RxMap <int,bool> mapload=<int,bool>{}.obs;
+  void startLoading(int id) {
+    final index = listproducts.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      listproducts[index].isLoading = true;
+      mapload[listproducts[index].id!]=listproducts[index].isLoading;
+      print(mapload);
+    }
+  }
 
+  void stopLoading(int id) {
+    final index = listproducts.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      listproducts[index].isLoading = false;
+      mapload[listproducts[index].id!]=listproducts[index].isLoading;
+
+
+    }
+  }
   void changenlistindex(int index) {
     selectedlistindex.value = index;
     selectedlistcolor.value = fontcolorprimary;
@@ -84,7 +101,10 @@ class dashcontroller extends GetxController {
       listmiddle.forEach((element) {
         int id = element.id!;
         bool isinwish = isInwishList(id);
+        mapload.addAll({element.id!:false});
+
         listproducts.add(productmodel(
+          isLoading: false,
             id: element.id,
             name: element.name,
             formatted_price: element.formatted_price,
@@ -109,6 +129,7 @@ class dashcontroller extends GetxController {
           int id = element.id!;
           bool isinwish = isInwishList(id);
           listproducts.add(productmodel(
+            isLoading: false,
               id: element.id,
               name: element.name,
               formatted_price: element.formatted_price,
@@ -159,6 +180,7 @@ class dashcontroller extends GetxController {
       {required int productid,
       required String token,
       required BuildContext context}) async {
+    startLoading(productid);
     Uri url = Uri.parse("$baseurl/customer/wishlist/${productid}");
     await http.post(url, headers: {
       "Accept": "application/json",
@@ -167,16 +189,19 @@ class dashcontroller extends GetxController {
       if (value.statusCode == 200) {
         await getwishlist();
         showresult(context, Colors.green, jsonDecode(value.body)["message"]);
+        stopLoading(productid);
       } else if (value.statusCode == 401) {
         loadadd.value = false;
         showresult(context, Colors.red, "You need to Login");
+        stopLoading(productid);
       } else {
         loadadd.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+        stopLoading(productid);
       }
     }).catchError((error) {
       loadadd.value = false;
-
+      stopLoading(productid);
       showresult(context, Colors.red, error.toString());
     });
   }

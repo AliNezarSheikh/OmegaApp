@@ -413,7 +413,7 @@ Widget buildlist(int index, categorymodel model, dashcontroller control) => Obx(
       ),
     );
 Widget ProductList(
-        BuildContext context, productmodel model, dashcontroller control) =>
+        BuildContext context, productmodel model, dashcontroller control,productmodel currentmodel) =>
     InkWell(
       onTap: () {
         Get.to(productdetails(model: model));
@@ -454,71 +454,99 @@ Widget ProductList(
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                        child: Obx(
-                          () => ConditionalBuilder(
-                            condition: control.isLoadwish.isFalse,
-                            builder: (BuildContext context) {
-                              return InkWell(
-                                onTap: () async {
-                                  await control.addorremovefromwish(
-                                      productid: model.id!,
-                                      token: token,
-                                      context: context);
-                                  model.iswishlisted = !model.iswishlisted;
-                                  control.listwishs.add(model);
-                                  //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
-                                },
-                                child: CircleAvatar(
-                                  child: Image(
-                                    image: AssetImage(
-                                      "assets/images/img_heart.png",
-                                    ),
-                                    width: width! * 0.03,
-                                    // color: model.iswishlisted?Colors.red:null,
-                                  ),
-                                  backgroundColor: model.iswishlisted
-                                      ? Colors.red.withOpacity(0.5)
-                                      : Colors.black.withOpacity(0.5),
-                                  radius: 10,
-                                ),
-                              );
-                            },
-                            fallback: (BuildContext context) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 15.0),
-                                child: CircleAvatar(
-                                    radius: 10,
-                                    child: CircularProgressIndicator()),
-                              );
-                            },
-                            /*child: InkWell(
-                            onTap: () async {
-                             await control.addorremovefromwish(productid: model.id!, token: token, context: context);
-                             model.iswishlisted=!model.iswishlisted;
-                             control.listwishs.add(model);
-                           //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
-                            },
-                            child: CircleAvatar(
-                              child: Image(
-                                image: AssetImage(
-                                  "assets/images/img_heart.png",
+                        child:
+                           Obx(
+                             ()=> ConditionalBuilder(
+                              condition:control.mapload[currentmodel.id]==false,
+                              builder: (BuildContext context) {
+                                return InkWell(
+                                  onTap: () async {
 
+                                    await control.addorremovefromwish(
+                                        productid: model.id!,
+                                        token: token,
+                                        context: context);
+
+                                    model.iswishlisted = !model.iswishlisted;
+                                    control.listwishs.add(model);
+                                    //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
+                                  },
+                                  child: CircleAvatar(
+                                    child: Image(
+                                      image: AssetImage(
+                                        "assets/images/img_heart.png",
+                                      ),
+                                      width: width! * 0.03,
+                                      // color: model.iswishlisted?Colors.red:null,
+                                    ),
+                                    backgroundColor: model.iswishlisted
+                                        ? Colors.red.withOpacity(0.5)
+                                        : Colors.black.withOpacity(0.5),
+                                    radius: 10,
+                                  ),
+                                );
+                              },
+                              fallback: (BuildContext context) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 15.0),
+                                  child: CircleAvatar(
+                                      radius: 10,
+                                      child: CircularProgressIndicator()),
+                                );
+                              },
+                              /*child: InkWell(
+                              onTap: () async {
+                               await control.addorremovefromwish(productid: model.id!, token: token, context: context);
+                               model.iswishlisted=!model.iswishlisted;
+                               control.listwishs.add(model);
+                             //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
+                              },
+                              child: CircleAvatar(
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/images/img_heart.png",
+
+                                  ),
+                                  width: width! *
+                                      0.03,
+                                 // color: model.iswishlisted?Colors.red:null,
                                 ),
-                                width: width! *
-                                    0.03,
-                               // color: model.iswishlisted?Colors.red:null,
+                                backgroundColor:model.iswishlisted?Colors.red
+                                    .withOpacity(
+                                    0.5)
+                              :  Colors.black
+                                    .withOpacity(
+                                    0.5),
+                                radius: 10,
                               ),
-                              backgroundColor:model.iswishlisted?Colors.red
-                                  .withOpacity(
-                                  0.5)
-                            :  Colors.black
-                                  .withOpacity(
-                                  0.5),
-                              radius: 10,
-                            ),
-                          ),*/
-                          ),
-                        ),
+                                                       ),*/
+                                                       /*InkWell(
+                              onTap: () async {
+                                await control.addorremovefromwish(
+                                    productid: model.id!,
+                                    token: token,
+                                    context: context);
+                                model.iswishlisted = !model.iswishlisted;
+                                control.listwishs.add(model);
+                                //  await control.getproductbycategory(id: listcategories[ control.selectedlistindex.value ].id!);
+                              },
+                              child: control.startLoading(currentmodel.id!)?CircularProgressIndicator():CircleAvatar(
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/images/img_heart.png",
+                                  ),
+                                  width: width! * 0.03,
+                                  // color: model.iswishlisted?Colors.red:null,
+                                ),
+                                backgroundColor: model.iswishlisted
+                                    ? Colors.red.withOpacity(0.5)
+                                    : Colors.black.withOpacity(0.5),
+                                radius: 10,
+                              ),
+                                                       ),*/
+                                                       ),
+                           ),
+
                       ),
                     ],
                   ),
