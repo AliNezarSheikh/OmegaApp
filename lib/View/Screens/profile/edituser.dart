@@ -208,7 +208,7 @@ class edituser extends StatelessWidget {
                                   firstname: firstnameController.text,
                                   lastname: lastnameController.text,
                                   context: context,
-                                  token: token,gender:controller.dropdownValue.value.toString() );
+                                  token: token!,gender:controller.dropdownValue.value.toString() );
 
                               if (controller.successupdate.isTrue) {
                                 Get.off(() => homescreen(),

@@ -101,14 +101,17 @@ class logincontroller extends GetxController {
       "device_name": devicename,
     }).then((value) async {
       if (value.statusCode == 200) {
-        isLoading.value = false;
+
         Map<String, dynamic> result = jsonDecode(value.body);
         token = result["token"];
         currentuser = usermodel.fromJson(result);
+        await dashcontrol.getcart(token: token!, context: context);
+        await dashcontrol.getproductbycategory(id:1);
         if (isremember == true) {
           remeber.write("token", token);
         }
         successlogin.value = true;
+        isLoading.value = false;
       } else {
         isLoading.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
@@ -396,7 +399,7 @@ class logincontroller extends GetxController {
       'Authorization': 'Bearer $token',
     }).then((value) async {
       if(value.statusCode==200){
-        await getadress(token: token,);
+        await getadress(token: token!,);
         showresult(context, Colors.green, "Adress deleted Success");
       }else  if(value.statusCode==401){
         isLoading.value = false;

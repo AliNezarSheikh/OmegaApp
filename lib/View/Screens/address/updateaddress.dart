@@ -216,7 +216,7 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                   city: cityController.text,
                                   phoneaddress: phoneController.text,
                                   state_name: stateController.text,
-                                  context: context, token: token, postcode: postalcode.text, first_name: firstname.text, last_name: lastname.text, country: country.text);
+                                  context: context, token: token!, postcode: postalcode.text, first_name: firstname.text, last_name: lastname.text, country: country.text);
                               if(controller.successaddress.isTrue){
                                 Get.off(() => homescreen(),
                                     transition: Transition.rightToLeft,

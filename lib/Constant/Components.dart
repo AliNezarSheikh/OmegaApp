@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:omega/Model/cartmodel.dart';
 import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/Model/usermodel.dart';
 
@@ -64,9 +65,10 @@ Future<String> getDeviceName() async {
 }
 String devicename="";
 String? remembertoken;
-String token="";
+String? token="";
  usermodel? currentuser;
 categorymodel? catmod;
+cartmodel? currentcart;
 BuildContext? context;
 const List<String> list = <String>['Male', 'Female',];
 const List<String> emarites = <String>['Abu Dhabi', 'Dubai','Sharjah','Ajman','Umm Al Quwain','Ras Al Khaimah','Fujairah'];
@@ -75,6 +77,7 @@ int? id;
 List<categorymodel> listcategories = [];
 List<productmodel> listproducts = [];
 List<productmodel> listmiddle = [];
+List<itemincart> listcart=[];
 
 
 late addressmodel useraddress;

@@ -19,6 +19,7 @@ Future<void> main() async {
     ),
   );
   await GetStorage.init();
+  token=remeber.read("token")!=null?remeber.read("token"):"";
   runApp(MyApp());
 }
 

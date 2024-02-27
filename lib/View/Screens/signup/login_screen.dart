@@ -96,7 +96,6 @@ class loginscreen extends StatelessWidget {
                             name: "Login",
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
-                              //  await dashcontrol.getcategories();
                                 await controller.loginuser(
                                     email: emailFieldController.text,
                                     password: passwordFieldController.text, context: context,
@@ -106,9 +105,9 @@ class loginscreen extends StatelessWidget {
                                   controller.successlogin.value=false;
                                   if(controller.rememberMe.isTrue){
                                     remeber.write("token", token);
-                                    print(remeber.read("token", ));
                                   }
-                                  await dashcontrol.getproductbycategory(id:1);
+
+
                                   Get.off(() => homescreen(),
                                       transition: Transition.fadeIn,
                                       curve: Curves.easeInOut,

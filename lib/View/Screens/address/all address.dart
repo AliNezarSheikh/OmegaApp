@@ -15,7 +15,7 @@ class alladdress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-     return FutureBuilder(future:  controller.getadress(token: token,),
+     return FutureBuilder(future:  controller.getadress(token: token!,),
        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
          if (snapshot.connectionState == ConnectionState.done){
            return Obx(

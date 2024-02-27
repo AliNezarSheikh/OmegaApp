@@ -10,6 +10,7 @@ import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Model/adressmodel.dart';
+import 'package:omega/Model/cartmodel.dart';
 import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/Model/productmodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
@@ -18,7 +19,7 @@ import 'package:omega/View/Screens/productdetails.dart';
 import 'package:toastification/toastification.dart';
 
 import '../Control/dashboardcontroller.dart';
-import 'Components.dart';
+
 
 double? width;
 double? height;
@@ -337,61 +338,78 @@ Widget buildIconButton(
 
 Widget buildbanner(BuildContext context) => Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: Container(
-        child: Stack(alignment: Alignment.topRight, children: [
-          Stack(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 18.0, vertical: 18),
-                child: Container(
-                  width: getwidth(context),
-                  height: getwidth(context) * 0.5,
-                  decoration: BoxDecoration(
-                    color: themesecond,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 15.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PrimaryText(words: "Shop with us!", fontsize: 14),
-                        SizedBox(
-                          height: 12.0,
-                        ),
-                        SizedBox(
-                          width: getheight(context) * 0.2,
-                          child: Text(
-                            "Get 40% Off for all items",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: fontcolorprimary,
-                              fontSize: sizeprimary,
-                              fontFamily: fontfamilyprimary,
-                              fontWeight: FontWeight.w700,
-                            ),
+      child: Transform(
+        transform: Matrix4.identity()
+          ..setEntry(3, 2, 0.001) // Add a small perspective
+          ..rotateX(0.2)..getTranslation(),
+        child: Container(
+          child: Stack(alignment: Alignment.topRight, children: [
+            Stack(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18.0, vertical: 18),
+                  child: Container(
+                    width: getwidth(context),
+                    height: getwidth(context) * 0.5,
+                    decoration: BoxDecoration(
+                      color: Colors.cyanAccent,
+                      boxShadow: [
+                        BoxShadow(
+                          color: fontcolorprimary.withOpacity(0.05),
+                          spreadRadius: 8,
+                          blurRadius: 5,
+                          offset: Offset(
+                            4,
+                            4,
                           ),
                         ),
                       ],
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5.0, horizontal: 15.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          PrimaryText(words: "Shop with us!", fontsize: 14),
+                          SizedBox(
+                            height: 12.0,
+                          ),
+                          SizedBox(
+                            width: getheight(context) * 0.2,
+                            child: Text(
+                              "Get 40% Off for all items",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: fontcolorprimary,
+                                fontSize: sizeprimary,
+                                fontFamily: fontfamilyprimary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 32.0, bottom: 32.0),
-            child: SvgPicture.asset(
-              "assets/images/img_mask_group.svg",
-              width: getwidth(context) * 0.4,
+              ],
             ),
-          ),
-        ]),
+            Padding(
+              padding: const EdgeInsets.only(right: 0.0, bottom: 32.0),
+              child: Image.asset(
+                "assets/images/ads.png",
+                width: width!* 0.6,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ]),
+        ),
       ),
     );
 
@@ -463,9 +481,9 @@ Widget ProductList(BuildContext context, productmodel model,
                                 onTap: () async {
                                   await control.addorremovefromwish(
                                       productid: model.id!,
-                                      token: token,
+                                      token: token!,
                                       context: context);
-                                  if(control.accept.value){
+                                  if (control.accept.value) {
                                     model.iswishlisted = !model.iswishlisted;
                                     control.listwishs.add(model);
                                   }
@@ -529,7 +547,7 @@ Widget ProductList(BuildContext context, productmodel model,
                                     onTap: () async {
                                       await control.addtocart(
                                           productid: model.id!,
-                                          token: token,
+                                          token: token!,
                                           context: context);
                                     },
                                     child: SvgPicture.asset(
@@ -560,7 +578,7 @@ Widget ProductList(BuildContext context, productmodel model,
       ),
     );
 Widget ProductlistItemWidget(
-        context, productmodel model, dashcontroller control) =>
+        context, productmodel model, dashcontroller control, productmodel currentmodel) =>
     Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
@@ -628,38 +646,100 @@ Widget ProductlistItemWidget(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                child: InkWell(
-                  onTap: () async {
-                    await control.addorremovefromwish(
-                        productid: model.id!, token: token, context: context);
+                child: Obx(
+                ()=> ConditionalBuilder(
+                    condition: control.maploadfav[currentmodel.id] == false,
+                    builder: (BuildContext context) { return  InkWell(
+                      onTap: () async {
+                        await control.addorremovefromwish(
+                            productid: currentmodel.id!, token: token!, context: context);
+                        if (control.accept.value) {
+                          model.iswishlisted = !model.iswishlisted;
+                          control.listwishs.add(model);
+                        }
 
-                    Get.off(homescreen());
-                  },
-                  child: CircleAvatar(
-                    child: Image(
-                      image: AssetImage(
-                        "assets/images/img_heart.png",
+                        Get.off(homescreen());
+                      },
+                      child: CircleAvatar(
+                        child: Image(
+                          image: AssetImage(
+                            "assets/images/img_heart.png",
+                          ),
+                          color: Colors.red,
+                          width: getwidth(context) * 0.055,
+                          //color: Colors.red,
+                        ),
+                        backgroundColor: themesecond.withOpacity(0.5),
+                        radius: 15,
                       ),
-                      width: getwidth(context) * 0.055,
-                      //color: Colors.red,
-                    ),
-                    backgroundColor: Colors.red.withOpacity(0.5),
-                    radius: 15,
+                    ); },
+                    fallback: (BuildContext context) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: CircleAvatar(
+                            radius: 10,
+                            child: CircularProgressIndicator()),
+                      );
+                    },
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
-                child: SvgPicture.asset("assets/images/img_plus_primary.svg"),
+              Obx(
+                    () => ConditionalBuilder(
+                  condition:
+                  control.maploadcart[currentmodel.id] == false,
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                      child: InkWell(
+                        onTap: () async {
+                          await control.addtocart(
+                              productid: model.id!,
+                              token: token!,
+                              context: context);
+                        },
+                        child: SvgPicture.asset(
+                          "assets/images/img_plus_primary.svg",
+                        ),
+                      ),
+                    );
+                  },
+                  fallback: (BuildContext context) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: CircleAvatar(
+                          radius: 10,
+                          child: CircularProgressIndicator()),
+                    );
+                  },
+                ),
               ),
+            /*  Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                child: InkWell(
+                  onTap: () async {
+                    await control.addtocart(productid: currentmodel.id!, token: token!, context: context);
+                  },
+                    child:
+                        SvgPicture.asset("assets/images/img_plus_primary.svg")),
+              ),*/
             ],
           ),
         ],
       ),
     );
-final random = Random();
-Widget CartlistItemWidget(context) => Dismissible(
-      key: Key(random.nextInt(4).toString()),
+
+Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart,dashcontroller control) =>
+    Dismissible(
+      key: Key(currentitemincart.itemidincart.toString()),
+      onDismissed: (direction) async {
+        await control.removeitemfromcart(
+            productidincart: currentitemincart.itemidincart!,
+            token: token!, context: context);
+        listcart.remove(currentitemincart);
+        print(listcart.length);
+
+      },
       background: Container(
         width: getwidth(context) * 0.25,
         decoration: BoxDecoration(
@@ -681,7 +761,6 @@ Widget CartlistItemWidget(context) => Dismissible(
           ],
         ),
       ),
-      //onDismissed: (){},
       child: Container(
         padding: EdgeInsets.all(10),
         height: getheight(context) * 0.1719,
@@ -707,8 +786,8 @@ Widget CartlistItemWidget(context) => Dismissible(
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
               child: Image(
-                image: AssetImage(
-                  "assets/images/img_bg.png",
+                image: NetworkImage(
+                  "${model.medium_image_url}",
                 ),
                 width: getwidth(context) * 0.3,
                 fit: BoxFit.cover,
@@ -720,7 +799,7 @@ Widget CartlistItemWidget(context) => Dismissible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PrimaryText(words: "Airforce Jump", fontsize: 14),
+                    PrimaryText(words: "${model.name}", fontsize: 14),
                     SizedBox(
                       height: 10,
                     ),
@@ -733,13 +812,14 @@ Widget CartlistItemWidget(context) => Dismissible(
                         SizedBox(
                           width: 10,
                         ),
-                        SecondlyText(words: "Dark Grey")
+                        SecondlyText(words: "${model.short_description}"),
                       ],
                     ),
                     SizedBox(
                       height: height! * 0.02,
                     ),
-                    PrimaryText(words: '\$245.00 ', fontsize: 14),
+                    PrimaryText(
+                        words: '${model.formatted_total} ', fontsize: 14),
                   ],
                 ),
               ),
@@ -768,7 +848,8 @@ Widget CartlistItemWidget(context) => Dismissible(
                       SizedBox(
                         width: 10,
                       ),
-                      SecondlyText(words: "1", wight: FontWeight.w700),
+                      SecondlyText(
+                          words: "${model.quantity}", wight: FontWeight.w700),
                       SizedBox(
                         width: 10,
                       ),
@@ -853,7 +934,6 @@ Widget buildHeader() {
     ]),
   );
 }
-
 
 Widget buildinfo() {
   return Padding(

@@ -38,12 +38,14 @@ class favorite extends GetView<dashcontroller> {
                             child:
                             PrimaryText(words: "No Favorite"),): ListView.separated(
                               physics: BouncingScrollPhysics(),
+
                               shrinkWrap: true,
                               separatorBuilder: (context, index) {
                                 return SizedBox(height: 20);
                               },
                               itemCount: dashcon.listwishs.length,
                               itemBuilder: (context, index) {
+                                var item=dashcon.listwishs[index];
                                 return AnimationConfiguration.staggeredList(
                                         position: index,
                                         delay: Duration(milliseconds: 100),
@@ -62,7 +64,7 @@ class favorite extends GetView<dashcontroller> {
                                               child: ProductlistItemWidget(
                                                   context,
                                                   dashcon.listwishs[index],
-                                                  dashcon)),
+                                                  dashcon,item)),
                                         ),
                                       );
                               }),

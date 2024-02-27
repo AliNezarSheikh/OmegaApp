@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/homecontroller.dart';
 
 class homescreen extends StatelessWidget {
@@ -18,7 +19,6 @@ class homescreen extends StatelessWidget {
           elevation: 0.0,
           onTap: (index) async {
             controller.changenavindex(index);
-
           },
           items: [
             BottomNavigationBarItem(
@@ -34,10 +34,15 @@ class homescreen extends StatelessWidget {
               label: "",
             ),
             BottomNavigationBarItem(
-              icon: Badge(
-                  child: ImageIcon(
-                AssetImage("assets/images/img_thumbs_up.png"),
-              )),
+              icon: Obx(
+            ()=> Badge(
+                  label: Text("${homecontroller.itemsincart.value}"),
+
+                    backgroundColor: Colors.green,
+                    child: ImageIcon(
+                  AssetImage("assets/images/img_thumbs_up.png"),
+                )),
+              ),
               // label: "",
             ),
             BottomNavigationBarItem(
