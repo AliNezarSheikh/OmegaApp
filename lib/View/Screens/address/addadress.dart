@@ -173,19 +173,7 @@ class addadress extends StatelessWidget {
                       ),
                     ],
                   ),
-               /*   textinput(
-                    type: TextInputType.text,
-                    obscure: false,
-                    hint: "Emarite",
-                    controller: stateController,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return "State Must Not Be Empty ";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),*/
+
 
                   SizedBox(height: 20,),
                   ConditionalBuilder(

@@ -736,8 +736,6 @@ Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart
         await control.removeitemfromcart(
             productidincart: currentitemincart.itemidincart!,
             token: token!, context: context);
-        listcart.remove(currentitemincart);
-        print(listcart.length);
 
       },
       background: Container(
@@ -818,8 +816,10 @@ Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart
                     SizedBox(
                       height: height! * 0.02,
                     ),
-                    PrimaryText(
-                        words: '${model.formatted_total} ', fontsize: 14),
+                    Obx(
+                        ()=> PrimaryText(
+                          words: '${currentitemincart.currenttotal} ', fontsize: 14),
+                    ),
                   ],
                 ),
               ),
@@ -842,18 +842,33 @@ Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart
                             )),
                         child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 2),
-                            child: SvgPicture.asset(
-                                "assets/images/img_minus_blue_gray_300.svg")),
+                            child: InkWell(
+                              onTap: () async {
+                                control.decreasequantity(currentitemincart.itemidincart!, context: context);
+                                //await control.updateitemincart(productidincart: currentitemincart.itemidincart!, count: currentitemincart.counter!.value,token: token!,context: context);
+
+                              },
+                              child: SvgPicture.asset(
+                                  "assets/images/img_minus_blue_gray_300.svg"),
+                            )),
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      SecondlyText(
-                          words: "${model.quantity}", wight: FontWeight.w700),
+                       Obx(
+                           ()=> SecondlyText(
+                              words: "${currentitemincart.counter}", wight: FontWeight.w700),
+                       ),
+
                       SizedBox(
                         width: 10,
                       ),
-                      SvgPicture.asset("assets/images/img_plus_primary.svg"),
+                      InkWell(
+                        onTap: () async {
+                          await control.increasequantity(currentitemincart.itemidincart!,context: context);
+                        //  await control.updateitemincart(productidincart: currentitemincart.itemidincart!, count: currentitemincart.counter!.value,token: token!,context: context);
+                        },
+                          child: SvgPicture.asset("assets/images/img_plus_primary.svg")),
                     ],
                   ),
                 ),

@@ -19,8 +19,7 @@ TextEditingController stateController = TextEditingController();
 TextEditingController phoneController = TextEditingController();
 TextEditingController firstname = TextEditingController();
 TextEditingController lastname = TextEditingController();
-TextEditingController postalcode = TextEditingController();
-TextEditingController country = TextEditingController();
+
 
 
 logincontroller controller = Get.put(logincontroller());
@@ -29,12 +28,12 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Widget build(BuildContext context) {
     adressController.text=model.address1!;
     cityController.text=model.city!;
-    country.text=model.country!;
+
     stateController.text=model.state!;
     phoneController.text=model.phoneaddress!;
     firstname.text=model.firstname!;
     lastname.text=model.lastname!;
-    postalcode.text=model.postcode!;
+
     return Obx(
           ()=> Scaffold(
         appBar: AppBar(
@@ -132,23 +131,8 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                       ),
                       lab: "Phone",
                       type: TextInputType.number),
-                  SizedBox(height: 20,),
-                  textinput(
-                      controller: country,
-                      hint: "Country",
-                      obscure: false,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return "Country Must Not Be Empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      lab: "Country",
-                      type: TextInputType.text),
+
+
                   SizedBox(height: 20,),
                   textinput(
                     validator: (String? value) {
@@ -168,40 +152,58 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                     controller: cityController,
                   ),
                   SizedBox(height: 20,),
-                  textinput(
-                    type: TextInputType.text,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    lab: "State",
-                    obscure: false,
-                    hint: "State",
-                    controller: stateController,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return "State Must Not Be Empty ";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: 20,),
-                  textinput(
-                      controller: postalcode,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                  Row(
+                    children: [
+                      Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: SecondlyText(words: "Emarite")
                       ),
-                      lab: "Postal Code",
-                      hint: "Postal Code",
-                      obscure: false,
-                      validator: (String? value) {
-                        if (value!.length<5) {
-                          return "Postal Code Must Not Be 5 Numbers";
-                        } else {
-                          return null;
-                        }
-                      },
-                      type: TextInputType.number),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      Container(
+                        width: width!*0.4,
+                        height: 53,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          border: Border.all(
+                            color: fontcolorprimary,
+                            width: 1.0,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                              border:InputBorder.none
+                          ),
+
+                          borderRadius:  BorderRadius.circular(20.0),
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+
+                          value: controller.dropdownValueemarite.value,
+
+                          icon: const Icon(Icons.arrow_downward),
+                          elevation: 16,
+                          style:  TextStyle(color: fontcolorprimary),
+
+                          onChanged: (String? value) {
+                            controller.dropdownValueemarite=value!.obs;
+
+                          },
+                          items: emarites.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+
                   SizedBox(height: 20,),
                   ConditionalBuilder(
                       condition: controller.isLoading.isFalse,
@@ -216,7 +218,7 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                   city: cityController.text,
                                   phoneaddress: phoneController.text,
                                   state_name: stateController.text,
-                                  context: context, token: token!, postcode: postalcode.text, first_name: firstname.text, last_name: lastname.text, country: country.text);
+                                  context: context, token: token!, postcode:"00000", first_name: firstname.text, last_name: lastname.text, country:"UAE");
                               if(controller.successaddress.isTrue){
                                 Get.off(() => homescreen(),
                                     transition: Transition.rightToLeft,
