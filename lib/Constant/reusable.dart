@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +14,9 @@ import 'package:omega/Model/productmodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/productdetails.dart';
-import 'package:toastification/toastification.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:toastification/toastification.dart';
+
 import '../Control/dashboardcontroller.dart';
 
 double? width;
@@ -296,44 +295,6 @@ Widget buildIconButton(
     ),
   );
 }
-
-/*Widget buildannoymusButton(context, String sentence) {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: InkWell(
-      onTap: () {},
-      child: Container(
-        width: double.infinity,
-        height: height! * 0.06,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          border: Border.all(
-              color: fontcolorprimary, style: BorderStyle.solid, width: 1),
-        ),
-        child: Center(
-            child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/annoyms.png',
-              height: 50,
-              width: 50,
-            ),
-            SizedBox(
-              width: 3.0,
-            ),
-            PrimaryText(
-              words: sentence,
-              fontsize: 14,
-              wight: FontWeight.w600,
-            ),
-          ],
-        )),
-      ),
-    ),
-  );
-}*/
 
 Widget buildbanner(BuildContext context) => Padding(
       padding: const EdgeInsets.only(top: 8.0),
@@ -1317,6 +1278,185 @@ Widget CartlistItemWidget(context, itemincart model,
         ),
       ),
     );
+Widget cartlistload(
+  BuildContext context,
+) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Shimmer(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.grey[300]!,
+                  Colors.grey[100]!,
+                  Colors.grey[300]!
+                ],
+                stops: [0.4, 0.5, 0.6],
+              ),
+              child: Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                height: getheight(context) * 0.15,
+                width: width! * 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Shimmer(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.grey[300]!,
+                        Colors.grey[100]!,
+                        Colors.grey[300]!
+                      ],
+                      stops: [0.4, 0.5, 0.6],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      color: Colors.white,
+                      height: getheight(context) * 0.009,
+                      child: PrimaryText(
+                          words:
+                              "       "), // Replace with your desired shimmer color
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.grey,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: getheight(context) * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(
+                                words: "               ", fontsize: 12)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  Shimmer(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.grey[300]!,
+                        Colors.grey[100]!,
+                        Colors.grey[300]!
+                      ],
+                      stops: [0.4, 0.5, 0.6],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      color: Colors.white,
+                      height: getheight(context) * 0.009,
+                      child: PrimaryText(
+                          words:
+                              "       "), // Replace with your desired shimmer color
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                          border: Border.all(
+                            color: Color(0XFFA2A5B1),
+                          )),
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          child: InkWell(
+                            child: SvgPicture.asset(
+                                "assets/images/img_minus_blue_gray_300.svg"),
+                          )),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Shimmer(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.grey[300]!,
+                          Colors.grey[100]!,
+                          Colors.grey[300]!
+                        ],
+                        stops: [0.4, 0.5, 0.6],
+                      ),
+                      child: Container(
+                          height: getheight(context) * 0.01,
+                          color: Colors.white,
+                          child: SecondlyText(words: "  ", fontsize: 12)),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                        child: SvgPicture.asset(
+                            "assets/images/img_plus_primary.svg")),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
 Widget profileButton(
     {required context,
     required String name,
@@ -1854,6 +1994,162 @@ Widget adresslist(
                     child: Icon(
                       Icons.delete_outline,
                     ),
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
+Widget Loadadresslist(
+  context,
+) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      PrimaryText(words: "Adress: ", fontsize: 14),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.all(8),
+                          color: Colors.white,
+                          height: getheight(context) * 0.009,
+                          child: PrimaryText(
+                              words:
+                                  "       "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          SecondlyText(words: "Emarite :"),
+                          Shimmer(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.grey[300]!,
+                                Colors.grey[100]!,
+                                Colors.grey[300]!
+                              ],
+                              stops: [0.4, 0.5, 0.6],
+                            ),
+                            child: Container(
+                                height: getheight(context) * 0.01,
+                                color: Colors.white,
+                                child: SecondlyText(words: "  ", fontsize: 12)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Row(
+                        children: [
+                          SecondlyText(words: "City:"),
+                          Shimmer(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.grey[300]!,
+                                Colors.grey[100]!,
+                                Colors.grey[300]!
+                              ],
+                              stops: [0.4, 0.5, 0.6],
+                            ),
+                            child: Container(
+                                height: getheight(context) * 0.01,
+                                color: Colors.white,
+                                child: SecondlyText(words: "  ", fontsize: 12)),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  Row(
+                    children: [
+                      PrimaryText(words: 'Phone Number:', fontsize: 14),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: getheight(context) * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(words: "  ", fontsize: 12)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Shimmer.fromColors(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 3.0, right: 3.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.green.withOpacity(0.5),
+                    radius: 15,
+                    child: Icon(
+                      Icons.edit,
+                    ),
+                  ),
+                ),
+                baseColor: Colors.green,
+                highlightColor: Colors.grey[100]!,
+              ),
+
+              Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                  child: Icon(
+                    Icons.delete_outline,
                   )),
             ],
           ),

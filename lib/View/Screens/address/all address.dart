@@ -4,6 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/reusable.dart';
+import 'package:omega/View/Screens/home_screen.dart';
 
 import '../../../Constant/Components.dart';
 import '../../../Control/logincontroller.dart';
@@ -27,7 +28,7 @@ class alladdress extends StatelessWidget {
                    padding: const EdgeInsets.only(left: 12.0),
                    child: IconButton(
                      onPressed: () {
-                       Get.back();
+                       Get.off(()=>homescreen());
                      },
                      icon: SvgPicture.asset(
                        "assets/images/img_arrow_left.svg",
