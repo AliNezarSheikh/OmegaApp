@@ -44,6 +44,7 @@ dependencies:
   toastification: ^1.2.0
   device_info_plus: ^9.1.2
   url_launcher: ^6.2.5
+  shimmer: ^3.0.0
 
 
 

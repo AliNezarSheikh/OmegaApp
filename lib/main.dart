@@ -7,6 +7,7 @@ import 'package:omega/Control/homecontroller.dart';
 
 import 'View/Screens/address/all address.dart';
 import 'View/Screens/signup/splash_screen.dart';
+import 'View/test.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

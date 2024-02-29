@@ -17,9 +17,8 @@ import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/productdetails.dart';
 import 'package:toastification/toastification.dart';
-
+import 'package:shimmer/shimmer.dart';
 import '../Control/dashboardcontroller.dart';
-
 
 double? width;
 double? height;
@@ -341,14 +340,15 @@ Widget buildbanner(BuildContext context) => Padding(
       child: Transform(
         transform: Matrix4.identity()
           ..setEntry(3, 2, 0.001) // Add a small perspective
-          ..rotateX(0.2)..getTranslation(),
+          ..rotateX(0.2)
+          ..getTranslation(),
         child: Container(
           child: Stack(alignment: Alignment.topRight, children: [
             Stack(
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 18.0, vertical: 18),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 18.0, vertical: 18),
                   child: Container(
                     width: getwidth(context),
                     height: getwidth(context) * 0.5,
@@ -404,7 +404,7 @@ Widget buildbanner(BuildContext context) => Padding(
               padding: const EdgeInsets.only(right: 0.0, bottom: 32.0),
               child: Image.asset(
                 "assets/images/ads.png",
-                width: width!* 0.6,
+                width: width! * 0.6,
                 fit: BoxFit.cover,
               ),
             ),
@@ -412,7 +412,94 @@ Widget buildbanner(BuildContext context) => Padding(
         ),
       ),
     );
-
+Widget loadingbanner(BuildContext context) => Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 18),
+          child: Shimmer(
+            gradient: SweepGradient(
+              colors: [Colors.grey[300]!, Colors.grey[100]!, Colors.grey[300]!],
+              stops: [0.4, 0.5, 0.6],
+            ),
+            child: Transform(
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.001) // Add a small perspective
+                ..rotateX(0.2)
+                ..getTranslation(),
+              child: Container(
+                width: getwidth(context),
+                height: getwidth(context) * 0.5,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  boxShadow: [
+                    BoxShadow(
+                      color: fontcolorprimary.withOpacity(0.05),
+                      spreadRadius: 8,
+                      blurRadius: 5,
+                      offset: Offset(
+                        4,
+                        4,
+                      ),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 5.0, horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.all(8),
+                          color: Colors.white,
+                          height: getheight(context) * 0.009,
+                          child: PrimaryText(
+                              words:
+                                  "       "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12.0,
+                      ),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.all(8),
+                          color: Colors.white,
+                          height: getheight(context) * 0.009,
+                          child: PrimaryText(
+                              words:
+                                  "       "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
 Widget buildlist(int index, categorymodel model, dashcontroller control) => Obx(
       () => TextButton(
         onPressed: () async {
@@ -430,6 +517,24 @@ Widget buildlist(int index, categorymodel model, dashcontroller control) => Obx(
                 : fontcolorsecond),
       ),
     );
+Widget loadinglist(BuildContext context) => Shimmer(
+      gradient: LinearGradient(
+        colors: [Colors.grey[300]!, Colors.grey[100]!, Colors.grey[300]!],
+        stops: [0.4, 0.5, 0.6],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Container(
+          height: getheight(context) * 0.001,
+          // width: getwidth(context)*0.2,
+          color: Colors.white,
+          child: TextButton(
+              onPressed: () {},
+              child: SecondlyText(words: "               ", fontsize: 12)),
+        ),
+      ),
+    );
+
 Widget ProductList(BuildContext context, productmodel model,
         dashcontroller control, productmodel currentmodel) =>
     InkWell(
@@ -504,11 +609,25 @@ Widget ProductList(BuildContext context, productmodel model,
                               );
                             },
                             fallback: (BuildContext context) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 15.0),
-                                child: CircleAvatar(
+                              return Shimmer.fromColors(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 3.0, right: 3.0),
+                                  child: CircleAvatar(
+                                    child: Image(
+                                      image: AssetImage(
+                                        "assets/images/img_heart.png",
+                                      ),
+                                      width: getwidth(context) * 0.03,
+                                      // color: model.iswishlisted?Colors.red:null,
+                                    ),
+                                    backgroundColor:
+                                        Colors.black.withOpacity(0.5),
                                     radius: 10,
-                                    child: CircularProgressIndicator()),
+                                  ),
+                                ),
+                                baseColor: Colors.red,
+                                highlightColor: Colors.grey[100]!,
                               );
                             },
                           ),
@@ -577,8 +696,159 @@ Widget ProductList(BuildContext context, productmodel model,
         ),
       ),
     );
-Widget ProductlistItemWidget(
-        context, productmodel model, dashcontroller control, productmodel currentmodel) =>
+Widget ProductListLoading(BuildContext context) => Padding(
+      padding: const EdgeInsets.all(6.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorprimary.withOpacity(0.05),
+              spreadRadius: 3,
+              blurRadius: 4,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Shimmer(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.grey[300]!,
+                          Colors.grey[100]!,
+                          Colors.grey[300]!
+                        ],
+                        stops: [0.4, 0.5, 0.6],
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                        height: getheight(context) * 0.15,
+                        width: getwidth(context)! * 0.5,
+                      ),
+                    ),
+                    Shimmer.fromColors(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                        child: CircleAvatar(
+                          child: Image(
+                            image: AssetImage(
+                              "assets/images/img_heart.png",
+                            ),
+                            width: getwidth(context) * 0.03,
+                            // color: model.iswishlisted?Colors.red:null,
+                          ),
+                          backgroundColor: Colors.black.withOpacity(0.5),
+                          radius: 10,
+                        ),
+                      ),
+                      baseColor: Colors.red,
+                      highlightColor: Colors.grey[100]!,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 14.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Shimmer(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.grey[300]!,
+                          Colors.grey[100]!,
+                          Colors.grey[300]!
+                        ],
+                        stops: [0.4, 0.5, 0.6],
+                      ),
+                      child: Container(
+                        height: getheight(context) * 0.01,
+                        color: Colors.white,
+                        child: PrimaryText(
+                            words: "                             ",
+                            fontsize: 14),
+                      ),
+                    ),
+                    SizedBox(
+                      height: getheight(context) * 0.01,
+                    ),
+                    Shimmer(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.grey[300]!,
+                          Colors.grey[100]!,
+                          Colors.grey[300]!
+                        ],
+                        stops: [0.4, 0.5, 0.6],
+                      ),
+                      child: Container(
+                          height: getheight(context) * 0.01,
+                          color: Colors.white,
+                          child: SecondlyText(
+                              words: "               ", fontsize: 12)),
+                    ),
+                    SizedBox(
+                      height: getheight(context) * 0.005,
+                    ),
+                    Row(
+                      children: [
+                        Shimmer(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.grey[300]!,
+                              Colors.grey[100]!,
+                              Colors.grey[300]!
+                            ],
+                            stops: [0.4, 0.5, 0.6],
+                          ),
+                          child: Container(
+                            margin: EdgeInsets.all(8),
+                            color: Colors.white,
+                            height: getheight(context) * 0.009,
+                            child: PrimaryText(
+                                words:
+                                    "       "), // Replace with your desired shimmer color
+                          ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15.0),
+                          child: SvgPicture.asset(
+                            "assets/images/img_plus_primary.svg",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+Widget favoritelistItemWidget(context, productmodel model,
+        dashcontroller control, productmodel currentmodel) =>
     Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
@@ -647,47 +917,62 @@ Widget ProductlistItemWidget(
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, right: 8.0),
                 child: Obx(
-                ()=> ConditionalBuilder(
+                  () => ConditionalBuilder(
                     condition: control.maploadfav[currentmodel.id] == false,
-                    builder: (BuildContext context) { return  InkWell(
-                      onTap: () async {
-                        await control.addorremovefromwish(
-                            productid: currentmodel.id!, token: token!, context: context);
-                        if (control.accept.value) {
-                          model.iswishlisted = !model.iswishlisted;
-                          control.listwishs.add(model);
-                        }
+                    builder: (BuildContext context) {
+                      return InkWell(
+                        onTap: () async {
+                          await control.addorremovefromwish(
+                              productid: currentmodel.id!,
+                              token: token!,
+                              context: context);
+                          if (control.accept.value) {
+                            model.iswishlisted = !model.iswishlisted;
+                            control.listwishs.add(model);
+                          }
 
-                        Get.off(homescreen());
-                      },
-                      child: CircleAvatar(
-                        child: Image(
-                          image: AssetImage(
-                            "assets/images/img_heart.png",
-                          ),
-                          color: Colors.red,
-                          width: getwidth(context) * 0.055,
-                          //color: Colors.red,
-                        ),
-                        backgroundColor: themesecond.withOpacity(0.5),
-                        radius: 15,
-                      ),
-                    ); },
-                    fallback: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
+                          Get.off(homescreen());
+                        },
                         child: CircleAvatar(
+                          child: Image(
+                            image: AssetImage(
+                              "assets/images/img_heart.png",
+                            ),
+                            color: Colors.red,
+                            width: getwidth(context) * 0.055,
+                            //color: Colors.red,
+                          ),
+                          backgroundColor: themesecond.withOpacity(0.5),
+                          radius: 15,
+                        ),
+                      );
+                    },
+                    fallback: (BuildContext context) {
+                      return Shimmer.fromColors(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 3.0, right: 3.0),
+                          child: CircleAvatar(
+                            child: Image(
+                              image: AssetImage(
+                                "assets/images/img_heart.png",
+                              ),
+                              width: getwidth(context) * 0.03,
+                              // color: model.iswishlisted?Colors.red:null,
+                            ),
+                            backgroundColor: Colors.black.withOpacity(0.5),
                             radius: 10,
-                            child: CircularProgressIndicator()),
+                          ),
+                        ),
+                        baseColor: Colors.red,
+                        highlightColor: Colors.grey[100]!,
                       );
                     },
                   ),
                 ),
               ),
               Obx(
-                    () => ConditionalBuilder(
-                  condition:
-                  control.maploadcart[currentmodel.id] == false,
+                () => ConditionalBuilder(
+                  condition: control.maploadcart[currentmodel.id] == false,
                   builder: (BuildContext context) {
                     return Padding(
                       padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
@@ -708,35 +993,184 @@ Widget ProductlistItemWidget(
                     return Padding(
                       padding: const EdgeInsets.only(right: 15.0),
                       child: CircleAvatar(
-                          radius: 10,
-                          child: CircularProgressIndicator()),
+                          radius: 10, child: CircularProgressIndicator()),
                     );
                   },
                 ),
               ),
-            /*  Padding(
-                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
-                child: InkWell(
-                  onTap: () async {
-                    await control.addtocart(productid: currentmodel.id!, token: token!, context: context);
-                  },
-                    child:
-                        SvgPicture.asset("assets/images/img_plus_primary.svg")),
-              ),*/
             ],
           ),
         ],
       ),
     );
 
-Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart,dashcontroller control) =>
+Widget favoriteloading(context) => Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Shimmer(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.grey[300]!,
+                  Colors.grey[100]!,
+                  Colors.grey[300]!
+                ],
+                stops: [0.4, 0.5, 0.6],
+              ),
+              child: Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                height: getheight(context) * 0.15,
+                width: width! * 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Shimmer(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.grey[300]!,
+                        Colors.grey[100]!,
+                        Colors.grey[300]!
+                      ],
+                      stops: [0.4, 0.5, 0.6],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      color: Colors.white,
+                      height: getheight(context) * 0.009,
+                      child: PrimaryText(
+                          words:
+                              "       "), // Replace with your desired shimmer color
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.grey,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: getheight(context) * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(
+                                words: "               ", fontsize: 12)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  Shimmer(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.grey[300]!,
+                        Colors.grey[100]!,
+                        Colors.grey[300]!
+                      ],
+                      stops: [0.4, 0.5, 0.6],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      color: Colors.white,
+                      height: getheight(context) * 0.009,
+                      child: PrimaryText(
+                          words:
+                              "       "), // Replace with your desired shimmer color
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: Shimmer.fromColors(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                    child: CircleAvatar(
+                      child: Image(
+                        image: AssetImage(
+                          "assets/images/img_heart.png",
+                        ),
+                        width: getwidth(context) * 0.03,
+                        // color: model.iswishlisted?Colors.red:null,
+                      ),
+                      backgroundColor: Colors.black.withOpacity(0.5),
+                      radius: 10,
+                    ),
+                  ),
+                  baseColor: Colors.red,
+                  highlightColor: Colors.grey[100]!,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                child: SvgPicture.asset(
+                  "assets/images/img_plus_primary.svg",
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
+Widget CartlistItemWidget(context, itemincart model,
+        itemincart currentitemincart, dashcontroller control) =>
     Dismissible(
       key: Key(currentitemincart.itemidincart.toString()),
       onDismissed: (direction) async {
         await control.removeitemfromcart(
             productidincart: currentitemincart.itemidincart!,
-            token: token!, context: context);
-
+            token: token!,
+            context: context);
       },
       background: Container(
         width: getwidth(context) * 0.25,
@@ -817,8 +1251,9 @@ Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart
                       height: height! * 0.02,
                     ),
                     Obx(
-                        ()=> PrimaryText(
-                          words: '${currentitemincart.currenttotal} ', fontsize: 14),
+                      () => PrimaryText(
+                          words: '${currentitemincart.currenttotal} ',
+                          fontsize: 14),
                     ),
                   ],
                 ),
@@ -844,9 +1279,10 @@ Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart
                             padding: EdgeInsets.symmetric(horizontal: 2),
                             child: InkWell(
                               onTap: () async {
-                                control.decreasequantity(currentitemincart.itemidincart!, context: context);
+                                control.decreasequantity(
+                                    currentitemincart.itemidincart!,
+                                    context: context);
                                 //await control.updateitemincart(productidincart: currentitemincart.itemidincart!, count: currentitemincart.counter!.value,token: token!,context: context);
-
                               },
                               child: SvgPicture.asset(
                                   "assets/images/img_minus_blue_gray_300.svg"),
@@ -855,20 +1291,23 @@ Widget CartlistItemWidget(context, itemincart model,itemincart currentitemincart
                       SizedBox(
                         width: 10,
                       ),
-                       Obx(
-                           ()=> SecondlyText(
-                              words: "${currentitemincart.counter}", wight: FontWeight.w700),
-                       ),
-
+                      Obx(
+                        () => SecondlyText(
+                            words: "${currentitemincart.counter}",
+                            wight: FontWeight.w700),
+                      ),
                       SizedBox(
                         width: 10,
                       ),
                       InkWell(
-                        onTap: () async {
-                          await control.increasequantity(currentitemincart.itemidincart!,context: context);
-                        //  await control.updateitemincart(productidincart: currentitemincart.itemidincart!, count: currentitemincart.counter!.value,token: token!,context: context);
-                        },
-                          child: SvgPicture.asset("assets/images/img_plus_primary.svg")),
+                          onTap: () async {
+                            await control.increasequantity(
+                                currentitemincart.itemidincart!,
+                                context: context);
+                            //  await control.updateitemincart(productidincart: currentitemincart.itemidincart!, count: currentitemincart.counter!.value,token: token!,context: context);
+                          },
+                          child: SvgPicture.asset(
+                              "assets/images/img_plus_primary.svg")),
                     ],
                   ),
                 ),
