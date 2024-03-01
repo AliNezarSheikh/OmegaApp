@@ -2005,3 +2005,161 @@ Widget adresslist(
       ),
     );
 
+Widget adresslistload(
+
+    context,
+    ) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      PrimaryText(words: "Adress: ", fontsize: 14),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.all(8),
+                          color: Colors.white,
+                          height: getheight(context) * 0.009,
+                          child: PrimaryText(
+                              words:
+                              "       "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SecondlyText(words: "Emarite : "),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: getheight(context) * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(words: "  ", fontsize: 12)),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "City: "),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: getheight(context) * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(words: "  ", fontsize: 12)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  Row(
+                    children: [
+                      PrimaryText(
+                          words: 'Phone Number: ',
+                          fontsize: 14),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.all(8),
+                          color: Colors.white,
+                          height: getheight(context) * 0.009,
+                          child: PrimaryText(
+                              words:
+                              "       "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.green,
+                  highlightColor: Colors.grey[100]!,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.green.withOpacity(0.5),
+                    radius: 15,
+                    child: Icon(
+                      Icons.edit,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                  child: InkWell(
+
+                    child: Icon(
+                      Icons.delete_outline,
+                    ),
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
+

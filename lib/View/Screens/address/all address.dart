@@ -98,15 +98,179 @@ class alladdress extends StatelessWidget {
                          )
                        ],
                      ),
-                     fallback: (context) => Center(
-                       child: CircularProgressIndicator(),
-                     ),
+                     fallback: (context) =>
+                         Stack(
+                           children: [
+                             SingleChildScrollView(
+                               child: Padding(
+                                 padding: const EdgeInsets.symmetric(
+                                     vertical: 26.0, horizontal: 18),
+                                 child: Column(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     SizedBox(
+                                       height: 20,
+                                     ),
+
+                                         AnimationLimiter(
+                                       child: ListView.separated(
+                                           physics: BouncingScrollPhysics(),
+                                           shrinkWrap: true,
+                                           separatorBuilder: (context, index) {
+                                             return SizedBox(height: 20);
+                                           },
+                                           itemCount: 3,
+                                           itemBuilder: (context, index) {
+                                             return AnimationConfiguration.staggeredList(
+                                               position: index,
+                                               delay: Duration(milliseconds: 100),
+                                               child: SlideAnimation(
+                                                 duration: Duration(milliseconds: 2500),
+                                                 curve: Curves.fastLinearToSlowEaseIn,
+                                                 horizontalOffset: 30,
+                                                 verticalOffset: 300.0,
+                                                 child: FlipAnimation(
+                                                     duration: Duration(milliseconds: 3000),
+                                                     curve: Curves.fastLinearToSlowEaseIn,
+                                                     flipAxis: FlipAxis.y,
+                                                     child: adresslistload(
+                                                          context)),
+                                               ),
+                                             );
+                                           }),
+                                     ),
+                                   ],
+                                 ),
+                               ),
+                             ),
+                             Align(
+                               alignment: Alignment.bottomCenter,
+                               child: buildButton(context: context,name: "Add New Address",
+                                   onTap: (){
+                                     Get.to(() => addadress(),
+                                         transition: Transition.rightToLeft,
+                                         curve: Curves.easeInOut,
+                                         duration: Duration(milliseconds: 700));
+                                   }),
+                             )
+                           ],
+                         ),
                    ),
              )
-                 :Container(width:width!,height:height!,child: Center(child: CircularProgressIndicator(),) ,);
+                 :Stack(
+               children: [
+                 SingleChildScrollView(
+                   child: Padding(
+                     padding: const EdgeInsets.symmetric(
+                         vertical: 26.0, horizontal: 18),
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         SizedBox(
+                           height: 20,
+                         ),
+
+                         AnimationLimiter(
+                           child: ListView.separated(
+                               physics: BouncingScrollPhysics(),
+                               shrinkWrap: true,
+                               separatorBuilder: (context, index) {
+                                 return SizedBox(height: 20);
+                               },
+                               itemCount: 3,
+                               itemBuilder: (context, index) {
+                                 return AnimationConfiguration.staggeredList(
+                                   position: index,
+                                   delay: Duration(milliseconds: 100),
+                                   child: SlideAnimation(
+                                     duration: Duration(milliseconds: 2500),
+                                     curve: Curves.fastLinearToSlowEaseIn,
+                                     horizontalOffset: 30,
+                                     verticalOffset: 300.0,
+                                     child: FlipAnimation(
+                                         duration: Duration(milliseconds: 3000),
+                                         curve: Curves.fastLinearToSlowEaseIn,
+                                         flipAxis: FlipAxis.y,
+                                         child: adresslistload(
+                                             context)),
+                                   ),
+                                 );
+                               }),
+                         ),
+                       ],
+                     ),
+                   ),
+                 ),
+                 Align(
+                   alignment: Alignment.bottomCenter,
+                   child: buildButton(context: context,name: "Add New Address",
+                       onTap: (){
+                         Get.to(() => addadress(),
+                             transition: Transition.rightToLeft,
+                             curve: Curves.easeInOut,
+                             duration: Duration(milliseconds: 700));
+                       }),
+                 )
+               ],
+             );
 
            }else{
-             return Center(child: CircularProgressIndicator(),);
+             return Stack(
+               children: [
+                 SingleChildScrollView(
+                   child: Padding(
+                     padding: const EdgeInsets.symmetric(
+                         vertical: 26.0, horizontal: 18),
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         SizedBox(
+                           height: 20,
+                         ),
+
+                         AnimationLimiter(
+                           child: ListView.separated(
+                               physics: BouncingScrollPhysics(),
+                               shrinkWrap: true,
+                               separatorBuilder: (context, index) {
+                                 return SizedBox(height: 20);
+                               },
+                               itemCount: 3,
+                               itemBuilder: (context, index) {
+                                 return AnimationConfiguration.staggeredList(
+                                   position: index,
+                                   delay: Duration(milliseconds: 100),
+                                   child: SlideAnimation(
+                                     duration: Duration(milliseconds: 2500),
+                                     curve: Curves.fastLinearToSlowEaseIn,
+                                     horizontalOffset: 30,
+                                     verticalOffset: 300.0,
+                                     child: FlipAnimation(
+                                         duration: Duration(milliseconds: 3000),
+                                         curve: Curves.fastLinearToSlowEaseIn,
+                                         flipAxis: FlipAxis.y,
+                                         child: adresslistload(
+                                             context)),
+                                   ),
+                                 );
+                               }),
+                         ),
+                       ],
+                     ),
+                   ),
+                 ),
+                 Align(
+                   alignment: Alignment.bottomCenter,
+                   child: buildButton(context: context,name: "Add New Address",
+                       onTap: (){
+                         Get.to(() => addadress(),
+                             transition: Transition.rightToLeft,
+                             curve: Curves.easeInOut,
+                             duration: Duration(milliseconds: 700));
+                       }),
+                 )
+               ],
+             );
            }
          },),
      );

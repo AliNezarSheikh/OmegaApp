@@ -154,7 +154,18 @@ class logincontroller extends GetxController {
     required BuildContext context,
   }) async {
     isLoading.value = true;
-    Uri url = Uri.parse("$baseurl/customer/logout");
+    Future.delayed(Duration(seconds: 2), () async {
+      await remeber.remove("token");
+      currentuser=null;
+      homecontrol.currentindex = 0.obs;
+    });
+    isLoading.value = false;
+    Get.off(loginscreen(),
+        transition: Transition.fadeIn,
+        curve: Curves.easeOut,
+        duration: Duration(seconds: 1));
+
+   /* Uri url = Uri.parse("$baseurl/customer/logout");
     await http.post(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -182,7 +193,7 @@ class logincontroller extends GetxController {
     }).catchError((error) {
       isLoading.value = false;
       showresult(context, Colors.red, error.toString());
-    });
+    });*/
   }
   Future<void> openWhatsApp({required BuildContext context}) async {
     Uri url = Uri.parse("https://wa.me/+971501646033");
