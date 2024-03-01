@@ -17,6 +17,7 @@ class logincontroller extends GetxController {
   RxBool agree = true.obs;
   RxBool showError = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isLoadingaddress = false.obs;
   RxBool successregister = false.obs;
   RxBool successaddress = false.obs;
   RxBool successlogin = false.obs;
@@ -360,7 +361,7 @@ class logincontroller extends GetxController {
 
   Future<void> getadress(
       {required String token, }) async {
-    isLoading.value = true;
+    isLoadingaddress.value = true;
     listadress = [];
     Uri url = Uri.parse("$baseurl/customer/addresses");
     await http.get(url, headers: {
@@ -369,30 +370,30 @@ class logincontroller extends GetxController {
     }).then((value) {
 
       if (value.statusCode == 200) {
-        isLoading.value = false;
+        isLoadingaddress.value = false;
         var result = jsonDecode(value.body);
        result["data"].forEach((element) {
           listadress.add(addressmodel.fromJson(element));
         });
       } else if (value.statusCode == 401){
-        isLoading.value = false;
+        isLoadingaddress.value = false;
        // showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
             transition: Transition.fadeIn,
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
       }else {
-        isLoading.value = false;
+        isLoadingaddress.value = false;
         //showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
-      isLoading.value = false;
+      isLoadingaddress.value = false;
       //showresult(context, Colors.red, error.toString());
       print(error.toString());
     });
   }
   Future<void> deleteaddress({required int id,required BuildContext context})async{
-    isLoading.value = true;
+    isLoadingaddress.value = true;
     Uri url = Uri.parse("$baseurl/customer/addresses/${id}");
     await http.delete(url,headers: {
       'Accept': 'application/json',
@@ -402,7 +403,7 @@ class logincontroller extends GetxController {
         await getadress(token: token!,);
         showresult(context, Colors.green, "Adress deleted Success");
       }else  if(value.statusCode==401){
-        isLoading.value = false;
+        isLoadingaddress.value = false;
         showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
             transition: Transition.fadeIn,
@@ -410,7 +411,7 @@ class logincontroller extends GetxController {
             duration: Duration(seconds: 3));
       }
     }).catchError((error){
-      isLoading.value = false;
+      isLoadingaddress.value = false;
       showresult(context, Colors.red, error.toString());
     });
   }
@@ -427,7 +428,7 @@ class logincontroller extends GetxController {
     required BuildContext context,
     required String token,
   }) async {
-    isLoading.value = true;
+    isLoadingaddress.value = true;
     Uri url = Uri.parse("$baseurl/customer/addresses/${id}");
     List<String> listadd = [address1];
     Map<String, dynamic> requestbody = {
@@ -452,12 +453,12 @@ class logincontroller extends GetxController {
     )
         .then((value) {
       if (value.statusCode == 200) {
-        isLoading.value = false;
+        isLoadingaddress.value = false;
         showresult(
             context, Colors.green, "Adress has been Updated Successfuly");
         successaddress.value = true;
       } else if (value.statusCode == 401) {
-        isLoading.value = false;
+        isLoadingaddress.value = false;
         successaddress.value = false;
         showresult(context, Colors.red, "You need to login");
         Get.off(loginscreen(),
@@ -465,12 +466,12 @@ class logincontroller extends GetxController {
             curve: Curves.easeOut,
             duration: Duration(seconds: 3));
       } else {
-        isLoading.value = false;
+        isLoadingaddress.value = false;
         successaddress.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
-      isLoading.value = false;
+      isLoadingaddress.value = false;
       successaddress.value = false;
       showresult(context, Colors.red, error.toString());
     });

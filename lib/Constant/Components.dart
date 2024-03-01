@@ -79,6 +79,6 @@ List<productmodel> listproducts = [];
 List<productmodel> listmiddle = [];
 List<itemincart> listcart=[];
 late addressmodel useraddress;
-String baseurl="https://bagisto.lofialight.com/public/api/v1";
+String baseurl="https://bagisto.code-vision.ae/api/v1";
 GetStorage remeber=GetStorage();
 GetStorage edit=GetStorage();

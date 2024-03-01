@@ -206,7 +206,7 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
                   SizedBox(height: 20,),
                   ConditionalBuilder(
-                      condition: controller.isLoading.isFalse,
+                      condition: controller.isLoadingaddress.isFalse,
                       builder: (context) => buildButton(
                           context: context,
                           name: "Update",
@@ -220,10 +220,8 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                   state_name: stateController.text,
                                   context: context, token: token!, postcode:"00000", first_name: firstname.text, last_name: lastname.text, country:"UAE");
                               if(controller.successaddress.isTrue){
-                                Get.off(() => homescreen(),
-                                    transition: Transition.rightToLeft,
-                                    curve: Curves.easeInOut,
-                                    duration: Duration(seconds: 2));
+                                controller.getadress(token: token!,);
+                                Get.back();
                               }
 
 

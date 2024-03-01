@@ -361,7 +361,7 @@ class dashcontroller extends GetxController {
       }
     }).catchError((error) {
       loadadd.value = false;
-
+        print(error);
       showresult(context, Colors.red, error.toString());
     });
   }

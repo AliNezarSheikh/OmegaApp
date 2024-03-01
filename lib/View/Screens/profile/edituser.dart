@@ -211,10 +211,7 @@ class edituser extends StatelessWidget {
                                   token: token!,gender:controller.dropdownValue.value.toString() );
 
                               if (controller.successupdate.isTrue) {
-                                Get.off(() => homescreen(),
-                                    transition: Transition.leftToRight,
-                                    curve: Curves.easeInOut,
-                                    duration: Duration(seconds: 2));
+                                Get.back();
                               }
                             }
                           }),

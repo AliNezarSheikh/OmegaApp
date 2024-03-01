@@ -255,6 +255,7 @@ Widget buildDividerRow(context) {
   );
 }
 
+
 Widget buildIconButton(
   context,
   String sentence,
@@ -1883,6 +1884,7 @@ void showresult(
     );
 Widget adresslist(
   addressmodel model,
+    logincontroller control,
   context,
 ) =>
     Container(
@@ -1983,8 +1985,10 @@ Widget adresslist(
                               child: const Text('Agree'),
                               onTap: () async {
                                 Navigator.pop(context, ButtonAction.Agree);
-                                await checkcon.deleteaddress(
+                                await control.deleteaddress(
                                     id: model.id!, context: context);
+                               // await control.getadress(token: token!);
+
                               },
                             ),
                           ],
@@ -2000,159 +2004,4 @@ Widget adresslist(
         ],
       ),
     );
-Widget Loadadresslist(
-  context,
-) =>
-    Container(
-      padding: EdgeInsets.all(10),
-      height: getheight(context) * 0.1719,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: fontcolorprimary.withOpacity(0.05),
-            spreadRadius: 4,
-            blurRadius: 5,
-            offset: Offset(
-              2,
-              4,
-            ),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      PrimaryText(words: "Adress: ", fontsize: 14),
-                      Shimmer(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.grey[300]!,
-                            Colors.grey[100]!,
-                            Colors.grey[300]!
-                          ],
-                          stops: [0.4, 0.5, 0.6],
-                        ),
-                        child: Container(
-                          margin: EdgeInsets.all(8),
-                          color: Colors.white,
-                          height: getheight(context) * 0.009,
-                          child: PrimaryText(
-                              words:
-                                  "       "), // Replace with your desired shimmer color
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          SecondlyText(words: "Emarite :"),
-                          Shimmer(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.grey[300]!,
-                                Colors.grey[100]!,
-                                Colors.grey[300]!
-                              ],
-                              stops: [0.4, 0.5, 0.6],
-                            ),
-                            child: Container(
-                                height: getheight(context) * 0.01,
-                                color: Colors.white,
-                                child: SecondlyText(words: "  ", fontsize: 12)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          SecondlyText(words: "City:"),
-                          Shimmer(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.grey[300]!,
-                                Colors.grey[100]!,
-                                Colors.grey[300]!
-                              ],
-                              stops: [0.4, 0.5, 0.6],
-                            ),
-                            child: Container(
-                                height: getheight(context) * 0.01,
-                                color: Colors.white,
-                                child: SecondlyText(words: "  ", fontsize: 12)),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: height! * 0.02,
-                  ),
-                  Row(
-                    children: [
-                      PrimaryText(words: 'Phone Number:', fontsize: 14),
-                      Shimmer(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.grey[300]!,
-                            Colors.grey[100]!,
-                            Colors.grey[300]!
-                          ],
-                          stops: [0.4, 0.5, 0.6],
-                        ),
-                        child: Container(
-                            height: getheight(context) * 0.01,
-                            color: Colors.white,
-                            child: SecondlyText(words: "  ", fontsize: 12)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Shimmer.fromColors(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 3.0, right: 3.0),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green.withOpacity(0.5),
-                    radius: 15,
-                    child: Icon(
-                      Icons.edit,
-                    ),
-                  ),
-                ),
-                baseColor: Colors.green,
-                highlightColor: Colors.grey[100]!,
-              ),
 
-              Padding(
-                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
-                  child: Icon(
-                    Icons.delete_outline,
-                  )),
-            ],
-          ),
-        ],
-      ),
-    );

@@ -24,12 +24,6 @@ class cartmodel {
     formatted_tax_total = data["formatted_tax_total"];
     formatted_grand_total = data["formatted_grand_total"];
     formatted_sub_total = data["formatted_sub_total"];
-/* if (data['items'] != null) {
-    items = <itemincart>[];
-    data['items'].forEach((v) {
-      items!.add(new itemincart.fromJson(v));
-    });
-  }*/
     items = data["items"];
     items_qty = data["items_qty"];
   }
@@ -37,7 +31,7 @@ class cartmodel {
 
 class itemincart {
   int? itemidincart;
-  String? quantity = "";
+  int? quantity ;
   String? name;
   RxInt? counter;
   String? formatted_total;
@@ -65,7 +59,6 @@ class itemincart {
     product_id = element["product"]["id"];
     short_description = element["product"]["short_description"];
     medium_image_url = element["product"]["base_image"]["medium_image_url"];
-    counter = int.parse(element["quantity"]).obs;
-
+    counter =quantity!.obs;
   }
 }
