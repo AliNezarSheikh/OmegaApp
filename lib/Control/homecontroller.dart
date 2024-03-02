@@ -22,4 +22,5 @@ class homecontroller extends GetxController {
     selecteditemcolor.value = fontcolorprimary;
   }
 
+
 }

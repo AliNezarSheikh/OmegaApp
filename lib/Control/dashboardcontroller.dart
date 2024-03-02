@@ -15,6 +15,7 @@ class dashcontroller extends GetxController {
   RxInt selectedlistindex = 0.obs;
   Rx<Color> selectedlistcolor = fontcolorprimary.obs;
   RxBool isLoad = false.obs;
+  RxBool isLoadsearch=false.obs;
   RxBool isLoadremove = false.obs;
   RxBool accept = false.obs;
   RxInt totalItems = 0.obs;
@@ -25,6 +26,7 @@ class dashcontroller extends GetxController {
   RxBool loadadd = false.obs;
   RxBool loadcart = false.obs;
   RxBool isLoadwish = false.obs;
+  RxBool isListempty = false.obs;
   RxList<productmodel> listwishs = <productmodel>[].obs;
   RxMap<int, bool> maploadfav = <int, bool>{}.obs;
   RxMap<int, bool> maploadcart = <int, bool>{}.obs;
@@ -80,7 +82,7 @@ class dashcontroller extends GetxController {
       int qty = listcart[index].counter!.value;
       qty--;
       listcart[index].counter!.value = qty;
-      var newitem;
+
       await updateitemincart(productidincart: listcart[index].itemidincart!, count: listcart[index].counter!.value, token: token!, context: context,index: index);
       listcart[index].currenttotal!.value= listcart[index].formatted_total!;
     }
@@ -119,7 +121,7 @@ class dashcontroller extends GetxController {
   }
 
   Future<void> getallproducts() async {
-    isLoad.value = true;
+   // isLoad.value = true;
     Uri url = Uri.parse("$baseurl/products");
     listproducts = [];
     listmiddle = [];
@@ -132,7 +134,7 @@ class dashcontroller extends GetxController {
           listmiddle.add(productmodel.fromJson(element));
         });
       }
-      isLoad.value = false;
+     // isLoad.value = false;
     }).catchError((error) {
       print(error.toString());
       isLoad.value = false;
@@ -164,6 +166,7 @@ class dashcontroller extends GetxController {
             description: element.description,
             iswishlisted: isinwish));
       });
+      isLoad.value = false;
     } else {
       await http.get(url, headers: {
         "Accept": "application/json",
@@ -465,6 +468,46 @@ class dashcontroller extends GetxController {
       }
     }).catchError((error) {
       showresult(context, Colors.red, error.toString());
+    });
+  }
+  Future<void> searchproducts({required String name}) async {
+    isLoadsearch.value = true;
+    isListempty.value=false;
+    Uri url = Uri.parse("$baseurl/products?url_key=${name}");
+    listsearch = [];
+    listmiddle = [];
+    await http.get(url, headers: {
+      "Accept": "application/json",
+    }).then((value) async {
+      if (value.statusCode == 200) {
+        var products = jsonDecode(value.body);
+        products["data"].forEach((element) {
+          listmiddle.add(productmodel.fromJson(element));
+        });
+        await getwishlist();
+        listmiddle.forEach((element) {
+          int id = element.id!;
+          bool isinwish = isInwishList(id);
+          listsearch.add(productmodel(
+              isLoading: false,
+              id: element.id,
+              name: element.name,
+              formatted_price: element.formatted_price,
+              short_description: element.short_description,
+              medium_image_url: element.medium_image_url,
+              original_image_url: element.original_image_url,
+              description: element.description,
+              iswishlisted: isinwish));
+        });
+        if(listsearch.isEmpty){
+          isListempty.value=true;
+        }
+        isLoadsearch.value = false;
+      }
+
+    }).catchError((error) {
+      print(error.toString());
+      isLoadsearch.value = false;
     });
   }
 }

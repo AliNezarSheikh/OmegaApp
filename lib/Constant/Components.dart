@@ -77,6 +77,7 @@ int? id;
 List<categorymodel> listcategories = [];
 List<productmodel> listproducts = [];
 List<productmodel> listmiddle = [];
+List<productmodel> listsearch=[];
 List<itemincart> listcart=[];
 late addressmodel useraddress;
 String baseurl="https://bagisto.code-vision.ae/api/v1";

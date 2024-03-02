@@ -2163,3 +2163,167 @@ Widget adresslistload(
       ),
     );
 
+Widget searchlistItemWidget(context, productmodel model,
+    dashcontroller control, productmodel currentmodel) =>
+    InkWell(
+      onTap: (){
+        Get.to(productdetails(model: model));
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        height: getheight(context) * 0.1719,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorprimary.withOpacity(0.05),
+              spreadRadius: 4,
+              blurRadius: 5,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image(
+                image: NetworkImage(
+                  "${model.medium_image_url}",
+                ),
+                width: getwidth(context) * 0.3,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PrimaryText(words: "${model.name}", fontsize: 14),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.grey,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SecondlyText(words: "${model.short_description}")
+                      ],
+                    ),
+                    SizedBox(
+                      height: height! * 0.02,
+                    ),
+                    PrimaryText(words: '${model.formatted_price} ', fontsize: 14),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                  child:  Obx(
+                        () => ConditionalBuilder(
+                      condition:
+                      control.maploadfav[currentmodel.id] == false,
+                      builder: (BuildContext context) {
+                        return InkWell(
+                          onTap: () async {
+                            await control.addorremovefromwish(
+                                productid: model.id!,
+                                token: token!,
+                                context: context);
+                            if (control.accept.value) {
+                              model.iswishlisted = !model.iswishlisted;
+                              control.listwishs.add(model);
+                            }
+                          },
+                          child: CircleAvatar(
+                            child: Image(
+                              image: AssetImage(
+                                "assets/images/img_heart.png",
+                              ),
+                              width: width! * 0.03,
+                              // color: model.iswishlisted?Colors.red:null,
+                            ),
+                            backgroundColor: model.iswishlisted
+                                ? Colors.red.withOpacity(0.5)
+                                : Colors.black.withOpacity(0.5),
+                            radius: 10,
+                          ),
+                        );
+                      },
+                      fallback: (BuildContext context) {
+                        return Shimmer.fromColors(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 3.0, right: 3.0),
+                            child: CircleAvatar(
+                              child: Image(
+                                image: AssetImage(
+                                  "assets/images/img_heart.png",
+                                ),
+                                width: getwidth(context) * 0.03,
+                                // color: model.iswishlisted?Colors.red:null,
+                              ),
+                              backgroundColor:
+                              Colors.black.withOpacity(0.5),
+                              radius: 10,
+                            ),
+                          ),
+                          baseColor: Colors.red,
+                          highlightColor: Colors.grey[100]!,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Obx(
+                      () => ConditionalBuilder(
+                    condition: control.maploadcart[currentmodel.id] == false,
+                    builder: (BuildContext context) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                        child: InkWell(
+                          onTap: () async {
+                            await control.addtocart(
+                                productid: model.id!,
+                                token: token!,
+                                context: context);
+                          },
+                          child: SvgPicture.asset(
+                            "assets/images/img_plus_primary.svg",
+                          ),
+                        ),
+                      );
+                    },
+                    fallback: (BuildContext context) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: CircleAvatar(
+                            radius: 10, child: CircularProgressIndicator()),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+

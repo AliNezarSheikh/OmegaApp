@@ -436,7 +436,7 @@ class profile extends StatelessWidget {
                           name: "Sign Out",
                           onTap: () async {
                             await controller.logout(
-                                context: context, token: token!);
+                                context: context,);
                           }),
                       fallback: (context) =>
                           Center(child: CircularProgressIndicator())),

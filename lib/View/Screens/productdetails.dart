@@ -22,7 +22,6 @@ class productdetails extends StatelessWidget {
           padding: const EdgeInsets.only(left: 12.0),
           child: IconButton(
             onPressed: () {
-            //  control.getproductbycategory(id: listcategories[control.selectedlistindex.value].id!);
               Get.back();
             },
             icon: SvgPicture.asset(

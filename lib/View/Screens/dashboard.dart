@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/dashboardcontroller.dart';
+import 'package:omega/View/Screens/searchscreen.dart';
 
 class dashboard extends StatelessWidget {
   dashcontroller dashcon = Get.put(dashcontroller(), permanent: true);
@@ -34,7 +37,15 @@ class dashboard extends StatelessWidget {
               radius: 50,
               backgroundColor: fontcolorprimary,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  dashcon.isListempty.value=false;
+                  listsearch=[];
+                  Get.to(()=>searchscreen(),
+                      transition:Transition.cupertinoDialog,
+                      curve: Curves.bounceInOut,
+                      duration: Duration(seconds: 1)
+                  );
+                },
                 child: SvgPicture.asset(
                   'assets/images/img_search.svg',
                 ),

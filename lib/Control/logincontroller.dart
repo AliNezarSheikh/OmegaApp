@@ -150,13 +150,14 @@ class logincontroller extends GetxController {
     });
   }*/
   Future<void> logout({
-    required String token,
+    //required String token,
     required BuildContext context,
   }) async {
     isLoading.value = true;
     Future.delayed(Duration(seconds: 2), () async {
       await remeber.remove("token");
       currentuser=null;
+      token="";
       homecontrol.currentindex = 0.obs;
     });
     isLoading.value = false;
