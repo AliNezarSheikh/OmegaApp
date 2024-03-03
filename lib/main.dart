@@ -7,6 +7,7 @@ import 'package:omega/Control/homecontroller.dart';
 
 import 'View/Screens/address/all address.dart';
 import 'View/Screens/signup/splash_screen.dart';
+import 'View/test.dart';
 
 
 Future<void> main() async {
@@ -16,7 +17,8 @@ Future<void> main() async {
     SystemUiOverlayStyle(
       statusBarColor: Colors.white,
       statusBarIconBrightness:
-          Brightness.dark, // Replace with your desired status bar color
+          Brightness.dark,
+      // Replace with your desired status bar color
     ),
   );
   await GetStorage.init();

@@ -168,7 +168,7 @@ class registerscreen extends StatelessWidget {
                           name: 'Continue As Guest',
                           Textcolor: fontcolorprimary,
                           onTap: () async {
-                            await dashcontrol.getproductbycategoryforguest(id:1);
+
                             Get.off(()=>homescreen(),
                                 transition: Transition.fadeIn,
                                 curve: Curves.easeInOut,

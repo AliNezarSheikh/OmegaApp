@@ -144,22 +144,23 @@ class loginscreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 5),
-                    ConditionalBuilder(
-                      condition: dashcontrol.isLoad.isFalse,
-                      builder: (BuildContext context) { return buildButton(
-                          context: context,
-                          name: 'Continue As Guest',
-                          Textcolor: fontcolorprimary,
-                          onTap: () async {
-                            await dashcontrol.getproductbycategoryforguest(id:1);
-                            Get.off(()=>homescreen(),
-                                transition: Transition.fadeIn,
-                                curve: Curves.easeInOut,
-                                duration: Duration(seconds: 1));
-                          });},
-                        fallback: (context) =>
-                            Center(child: CircularProgressIndicator()),
+                    Obx(
+                      ()=> ConditionalBuilder(
+                        condition: dashcontrol.isLoad.isFalse,
+                        builder: (BuildContext context) { return buildButton(
+                            context: context,
+                            name: 'Continue As Guest',
+                            Textcolor: fontcolorprimary,
+                            onTap: () async {
+                              Get.off(()=>homescreen(),
+                                  transition: Transition.fadeIn,
+                                  curve: Curves.easeInOut,
+                                  duration: Duration(seconds: 1));
+                            });},
+                          fallback: (context) =>
+                              Center(child: CircularProgressIndicator()),
 
+                      ),
                     ),
                   ],
                 ),

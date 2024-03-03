@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
@@ -20,16 +22,22 @@ class dashcontroller extends GetxController {
   RxBool accept = false.obs;
   RxInt totalItems = 0.obs;
   RxString itemscost = "0".obs;
-  // RxInt counter = 1.obs;
   RxString shippingfee = "0".obs;
   RxString totalprice = "0".obs;
   RxBool loadadd = false.obs;
   RxBool loadcart = false.obs;
   RxBool isLoadwish = false.obs;
   RxBool isListempty = false.obs;
+
   RxList<productmodel> listwishs = <productmodel>[].obs;
   RxMap<int, bool> maploadfav = <int, bool>{}.obs;
   RxMap<int, bool> maploadcart = <int, bool>{}.obs;
+
+
+  @override
+
+
+
 
   void startLoadingfav(int id) {
     final index = listproducts.indexWhere((item) => item.id == id);
@@ -225,6 +233,7 @@ class dashcontroller extends GetxController {
           homecontroller.itemsincart.value = 0;
           isLoad.value = false;
         }
+        isLoad.value = false;
       }).catchError((error) {
         print(error.toString());
         isLoad.value = false;

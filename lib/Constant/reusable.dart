@@ -2327,3 +2327,48 @@ Widget searchlistItemWidget(context, productmodel model,
       ),
     );
 
+Widget buildsmallButton(
+    {required context,
+      required String name,
+      Color? Textcolor,
+      required Color buttoncolor,
+      void Function()? onTap}) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: InkWell(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: height! * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: buttoncolor,
+          border: Border.all(
+            color: fontcolorsecond,
+            style: BorderStyle.solid,
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorsecond.withOpacity(0.05),
+              spreadRadius: 4,
+              blurRadius: 0,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+        ),
+        child: Center(
+            child: PrimaryText(
+              words: name,
+              color: Textcolor != null ? Textcolor : Colors.white,
+              fontsize: 18,
+              fontfami: "Inter",
+            )),
+      ),
+    ),
+  );
+}
+

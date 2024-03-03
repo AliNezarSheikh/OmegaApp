@@ -26,7 +26,8 @@ class profile extends StatelessWidget {
             SizedBox(height: 10,),
             SecondlyText(words: "Join us and register your account \n to explore all features ",align: TextAlign.center),
             SizedBox(height: 10,),
-            buildButton(context: context, name: "Register " ,onTap: (){
+            buildButton(context: context, name: "Register " ,
+                onTap: (){
               homecontrol.currentindex=0.obs;
               Get.off(registerscreen(),
                   transition: Transition.fadeIn,
