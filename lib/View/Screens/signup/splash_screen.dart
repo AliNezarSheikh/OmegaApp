@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:omega/Constant/Components.dart';
+import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/logincontroller.dart';
 
 import '../home_screen.dart';
@@ -19,7 +20,13 @@ class splashscreen extends StatelessWidget {
             transition: Transition.fadeIn,
             curve: Curves.easeInOut,
             duration: Duration(seconds: 3));
-      } else {
+      } else if (usernow.read("user")==null){
+        Get.off(() => loginscreen(),
+            transition: Transition.fadeIn,
+            curve: Curves.easeInOut,
+            duration: Duration(seconds: 3));
+      }
+      else{
         Get.off(() => homescreen(),
             transition: Transition.fadeIn,
             curve: Curves.easeInOut,
@@ -29,8 +36,8 @@ class splashscreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          width: double.infinity,
-          height: double.infinity,
+          width:getwidth(context),
+          height: getheight(context),
           child: Center(
             child: Container(
               width: 200,

@@ -17,6 +17,9 @@ class dashcontroller extends GetxController {
   RxInt selectedlistindex = 0.obs;
   Rx<Color> selectedlistcolor = fontcolorprimary.obs;
   RxBool isLoad = false.obs;
+  RxBool isLoadingaddress = false.obs;
+
+  RxBool successaddress=false.obs;
   RxBool isLoadsearch=false.obs;
   RxBool isLoadremove = false.obs;
   RxBool accept = false.obs;
@@ -149,7 +152,7 @@ class dashcontroller extends GetxController {
     });
   }
 
-  Future<void> getproductbycategory({required int id}) async {
+  Future<void> getproductbycategory({required int id,}) async {
     listproducts = [];
     listmiddle = [];
     isLoad.value = true;
@@ -179,6 +182,7 @@ class dashcontroller extends GetxController {
       await http.get(url, headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
       }).then((value) async {
         if (value.statusCode == 200) {
           var products = jsonDecode(value.body);
@@ -189,6 +193,8 @@ class dashcontroller extends GetxController {
           listmiddle.forEach((element) {
             int id = element.id!;
             bool isinwish = isInwishList(id);
+            maploadfav.addAll({element.id!: false});
+            maploadcart.addAll({element.id!: false});
             listproducts.add(productmodel(
                 isLoading: false,
                 id: element.id,
@@ -393,6 +399,7 @@ class dashcontroller extends GetxController {
     ).then((value) async {
       if (value.statusCode == 200) {
         var cart = jsonDecode(value.body);
+        print(cart["data"]);
 
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
@@ -410,6 +417,7 @@ class dashcontroller extends GetxController {
           shippingfee.value = "\$0.0";
           totalprice.value = "\$0.0";
           homecontroller.itemsincart.value = 0;
+          currentcart=null;
         }
         isLoadremove.value = false;
       } else if (value.statusCode == 401) {
@@ -517,6 +525,78 @@ class dashcontroller extends GetxController {
     }).catchError((error) {
       print(error.toString());
       isLoadsearch.value = false;
+    });
+  }
+
+  Future<void> setbillingaddress({
+    required int id,
+    required String phoneaddress,
+    required String state_name,
+    required String address1,
+    required String first_name,
+    required String last_name,
+    required String city,
+    required String email,
+
+    required BuildContext context,
+    required String token,
+  }) async {
+    isLoadingaddress.value = true;
+    Uri url = Uri.parse("$baseurl/customer/checkout/save-address");
+    Map<String,dynamic> listadd={
+      "0":address1
+    };
+   // List<String> listadd = [address1];
+    Map<String, dynamic> requestbody = {
+      "billing": {
+        "address_id": id,
+        "email": email,
+        "save_as_address": false,
+        "use_for_shipping": false,
+        "phone": phoneaddress,
+        "state": state_name,
+        "address1": listadd,
+        "city": city,
+        "first_name": first_name,
+        "last_name": last_name,
+        "postcode": "00000",
+        "country": "UAE",
+      },
+    };
+
+    print(jsonEncode(requestbody));
+    await http
+        .post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(requestbody),
+
+    )
+        .then((value) {
+
+      if (value.statusCode == 200) {
+        isLoadingaddress.value = false;
+        showresult(context, Colors.green, "Billing has been set Successfuly");
+        successaddress.value = true;
+      } else if (value.statusCode == 401) {
+        isLoadingaddress.value = false;
+        successaddress.value = false;
+        showresult(context, Colors.red, "You need to login");
+
+      } else {
+        isLoadingaddress.value = false;
+        successaddress.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+        print( jsonDecode(value.body));
+      }
+    }).catchError((error) {
+      isLoadingaddress.value = false;
+      successaddress.value = false;
+      showresult(context, Colors.red, error.toString());
     });
   }
 }

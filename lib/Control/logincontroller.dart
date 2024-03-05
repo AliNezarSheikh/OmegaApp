@@ -24,6 +24,7 @@ class logincontroller extends GetxController {
   RxBool successupdate = false.obs;
   RxString dropdownValue = list.first.obs;
   RxString dropdownValueemarite = emarites.first.obs;
+   Rx<addressmodel> setbillingaddress=addressmodel(address1: '', id: null, city: '', phoneaddress: '', state: '', firstname: '', lastname: '', postcode: '00000', country: 'UAE').obs;
   @override
 
   void getvisiblepassword() {
@@ -107,7 +108,7 @@ class logincontroller extends GetxController {
         token = result["token"];
         currentuser = usermodel.fromJson(result);
         await dashcontrol.getcart(token: token!, context: context);
-        await dashcontrol.getproductbycategory(id:1);
+        await dashcontrol.getproductbycategory(id:1,);
         if (isremember == true) {
           remeber.write("token", token);
         }
@@ -157,6 +158,7 @@ class logincontroller extends GetxController {
     Future.delayed(Duration(seconds: 2), () async {
       await remeber.remove("token");
       currentuser=null;
+      usernow.remove("user");
       token="";
       homecontrol.currentindex = 0.obs;
     });
@@ -312,13 +314,13 @@ class logincontroller extends GetxController {
 
   Future<void> addnewadress({
     required String phoneaddress,
-    required String postcode,
+
     required String state_name,
     required String address1,
     required String first_name,
     required String last_name,
     required String city,
-    required String country,
+
     required BuildContext context,
     required String token,
   }) async {
@@ -332,8 +334,8 @@ class logincontroller extends GetxController {
       "city": city,
       "first_name": first_name,
       "last_name": last_name,
-      "postcode": postcode,
-      "country": country,
+      "postcode": "00000",
+      "country": "UAE",
     };
     await http
         .post(
@@ -430,13 +432,13 @@ class logincontroller extends GetxController {
   Future<void> addressupdate({
     required int id,
     required String phoneaddress,
-    required String postcode,
+
     required String state_name,
     required String address1,
     required String first_name,
     required String last_name,
     required String city,
-    required String country,
+
     required BuildContext context,
     required String token,
   }) async {
@@ -450,8 +452,8 @@ class logincontroller extends GetxController {
       "city": city,
       "first_name": first_name,
       "last_name": last_name,
-      "postcode": postcode,
-      "country": country,
+      "postcode": "00000",
+      "country": "UAE",
     };
     await http
         .put(

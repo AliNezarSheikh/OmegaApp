@@ -24,6 +24,7 @@ double? height;
 logincontroller checkcon = Get.put(logincontroller());
 homecontroller homecontrol = Get.put(homecontroller());
 dashcontroller dashcontrol = Get.put(dashcontroller());
+
 getwidth(BuildContext context) {
   width = MediaQuery.of(context).size.width;
   return MediaQuery.of(context).size.width;
@@ -193,6 +194,7 @@ Widget buildButton(
     {required context,
     required String name,
     Color? Textcolor,
+      Color? buttoncolor,
     void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
@@ -203,7 +205,7 @@ Widget buildButton(
         height: height! * 0.06,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Textcolor == null ? fontcolorprimary : Colors.white,
+          color: Textcolor == null ? fontcolorprimary :buttoncolor,
           border: Textcolor != null
               ? Border.all(
                   color: Textcolor,
@@ -467,6 +469,7 @@ Widget buildlist(int index, categorymodel model, dashcontroller control) => Obx(
         onPressed: () async {
           control.changenlistindex(index);
           await control.getproductbycategory(id: model.id!);
+
         },
         child: SecondlyText(
             words: "${model.name}",
@@ -1133,6 +1136,7 @@ Widget CartlistItemWidget(context, itemincart model,
             productidincart: currentitemincart.itemidincart!,
             token: token!,
             context: context);
+
       },
       background: Container(
         width: getwidth(context) * 0.25,
@@ -1999,6 +2003,86 @@ Widget adresslist(
                       Icons.delete_outline,
                     ),
                   )),
+            ],
+          ),
+        ],
+      ),
+    );
+
+Widget adresslist2(
+    addressmodel model,
+    logincontroller control,
+    context,
+    ) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryText(words: "Adress: ${model.address1}", fontsize: 14),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SecondlyText(words: "Emarite : ${model.state}"),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "City: ${model.city}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  PrimaryText(
+                      words: 'Phone Number ${model.phoneaddress}',
+                      fontsize: 14),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+               Obx(
+()=> Radio(
+                      value: model,
+
+                      activeColor: Colors.blue,
+                      groupValue: control.setbillingaddress.value,
+                      onChanged: (val) {
+                        control.setbillingaddress.value=val!;
+                        },
+                  // selected: control.setbillingaddress.value==currentmodel?true:false,
+                 ),
+               ),
+
+
             ],
           ),
         ],

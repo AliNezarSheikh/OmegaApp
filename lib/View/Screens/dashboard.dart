@@ -14,6 +14,8 @@ import 'package:omega/Control/dashboardcontroller.dart';
 import 'package:omega/View/Screens/searchscreen.dart';
 import 'package:omega/View/Screens/signup/login_screen.dart';
 import 'package:omega/View/Screens/signup/register_screen.dart';
+import 'package:omega/View/Screens/webpage.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class dashboard extends StatefulWidget {
   @override
@@ -83,7 +85,10 @@ class _dashboardState extends State<dashboard> with TickerProviderStateMixin {
                 } else {
                   _animationController.reverse();
                 }
-                _bool = false;
+                setState(() {
+                  _bool = !_bool;
+                });
+            print(_bool);
               },
               child: SvgPicture.asset(
                 'assets/images/img_megaphone.svg',
@@ -114,174 +119,182 @@ class _dashboardState extends State<dashboard> with TickerProviderStateMixin {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          FutureBuilder(
-            future: dashcon.getcategories(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                  width: getwidth(context),
-                  height: getheight(context),
-                  color: Colors.white,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CarouselSlider(
-                          items: [
-                            buildbanner(context),
-                            buildbanner(context),
-                            buildbanner(context),
-                            buildbanner(context),
-                          ],
-                          options: CarouselOptions(
-                            reverse: false,
-                            initialPage: 0,
-                            enableInfiniteScroll: true,
-                            autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 3),
-                            autoPlayAnimationDuration: Duration(seconds: 1),
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            scrollDirection: Axis.horizontal,
-                            viewportFraction: 1.0,
+      body: PopScope(
+        canPop: _bool ,
+        onPopInvoked: (bool){
+          setState(() {
+            _bool=!_bool;
+          });
+
+        },
+        child: Stack(
+          
+          children: [
+            FutureBuilder(
+              future: dashcon.getcategories(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Container(
+                    width: getwidth(context),
+                    height: getheight(context),
+                    color: Colors.white,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CarouselSlider(
+                            items: [
+                              buildbanner(context),
+                              buildbanner(context),
+                              buildbanner(context),
+                              buildbanner(context),
+                            ],
+                            options: CarouselOptions(
+                              reverse: false,
+                              initialPage: 0,
+                              enableInfiniteScroll: true,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 3),
+                              autoPlayAnimationDuration: Duration(seconds: 1),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              scrollDirection: Axis.horizontal,
+                              viewportFraction: 1.0,
+                            ),
                           ),
+                          Container(
+                            height: 50,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return buildlist(
+                                  index,
+                                  listcategories[index],
+                                  dashcon,
+                                );
+                              },
+                              scrollDirection: Axis.horizontal,
+                              itemCount: listcategories.length,
+                            ),
+                          ),
+                          FutureBuilder(
+                            future: dashcon.getproductbycategory(
+                                id: listcategories[dashcon.selectedlistindex.value].id!),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<void> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                return Obx(
+                                  () => ConditionalBuilder(
+                                    condition: dashcon.isLoad.isFalse,
+                                    builder: (context) => Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: AnimationLimiter(
+                                            child: GridView.count(
+                                              crossAxisCount: 2,
+                                              shrinkWrap: true,
+                                              physics:
+                                                  BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                              mainAxisSpacing: 10.0,
+                                              crossAxisSpacing: 1.0,
+                                              childAspectRatio: 1 / 1.4,
+                                              children: List.generate(
+                                                  listproducts.length, (index) {
+                                                var item = listproducts[index];
+                                                return AnimationConfiguration
+                                                    .staggeredGrid(
+                                                  position: index,
+                                                  duration: Duration(
+                                                      milliseconds: 1000),
+                                                  columnCount: 2,
+                                                  child: ScaleAnimation(
+                                                    duration: Duration(
+                                                        milliseconds: 1200),
+                                                    curve: Curves
+                                                        .fastLinearToSlowEaseIn,
+                                                    child: FadeInAnimation(
+                                                      child: ProductList(
+                                                          context,
+                                                          listproducts[index],
+                                                          dashcon,
+                                                          item),
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    fallback: (context) => GridView.count(
+                                        crossAxisCount: 2,
+                                        shrinkWrap: true,
+                                        physics:
+                                            BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                        mainAxisSpacing: 10.0,
+                                        crossAxisSpacing: 1.0,
+                                        childAspectRatio: 1 / 1.3,
+        
+                                        // Replace with your desired number of shimmer items
+                                        children: List.generate(4, (index) {
+                                          return ProductListLoading(context);
+                                        })),
+                                  ),
+                                );
+                              } else {
+                                return GridView.count(
+                                    crossAxisCount: 2,
+                                    shrinkWrap: true,
+                                    physics:
+                                        BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                    mainAxisSpacing: 10.0,
+                                    crossAxisSpacing: 1.0,
+                                    childAspectRatio: 1 / 1.3,
+        
+                                    // Replace with your desired number of shimmer items
+                                    children: List.generate(4, (index) {
+                                      return ProductListLoading(context);
+                                    }));
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    width: width!,
+                    height: height!,
+                    child: SingleChildScrollView(
+                        child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: loadingbanner(context),
                         ),
                         Container(
-                          height: 50,
+                          height: 25,
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return buildlist(
-                                index,
-                                listcategories[index],
-                                dashcon,
-                              );
+                              return loadinglist(context);
                             },
                             scrollDirection: Axis.horizontal,
-                            itemCount: listcategories.length,
+                            itemCount: 5,
                           ),
                         ),
-                        FutureBuilder(
-                          future: dashcon.getproductbycategory(
-                              id: listcategories[
-                                      dashcon.selectedlistindex.value]
-                                  .id!),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<void> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return Obx(
-                                () => ConditionalBuilder(
-                                  condition: dashcon.isLoad.isFalse,
-                                  builder: (context) => Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: AnimationLimiter(
-                                          child: GridView.count(
-                                            crossAxisCount: 2,
-                                            shrinkWrap: true,
-                                            physics:
-                                                BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                            mainAxisSpacing: 10.0,
-                                            crossAxisSpacing: 1.0,
-                                            childAspectRatio: 1 / 1.4,
-                                            children: List.generate(
-                                                listproducts.length, (index) {
-                                              var item = listproducts[index];
-                                              return AnimationConfiguration
-                                                  .staggeredGrid(
-                                                position: index,
-                                                duration: Duration(
-                                                    milliseconds: 1000),
-                                                columnCount: 2,
-                                                child: ScaleAnimation(
-                                                  duration: Duration(
-                                                      milliseconds: 1200),
-                                                  curve: Curves
-                                                      .fastLinearToSlowEaseIn,
-                                                  child: FadeInAnimation(
-                                                    child: ProductList(
-                                                        context,
-                                                        listproducts[index],
-                                                        dashcon,
-                                                        item),
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  fallback: (context) => GridView.count(
-                                      crossAxisCount: 2,
-                                      shrinkWrap: true,
-                                      physics:
-                                          BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                      mainAxisSpacing: 10.0,
-                                      crossAxisSpacing: 1.0,
-                                      childAspectRatio: 1 / 1.3,
-
-                                      // Replace with your desired number of shimmer items
-                                      children: List.generate(4, (index) {
-                                        return ProductListLoading(context);
-                                      })),
-                                ),
-                              );
-                            } else {
-                              return GridView.count(
-                                  crossAxisCount: 2,
-                                  shrinkWrap: true,
-                                  physics:
-                                      BouncingScrollPhysics(), //BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                  mainAxisSpacing: 10.0,
-                                  crossAxisSpacing: 1.0,
-                                  childAspectRatio: 1 / 1.3,
-
-                                  // Replace with your desired number of shimmer items
-                                  children: List.generate(4, (index) {
-                                    return ProductListLoading(context);
-                                  }));
-                            }
-                          },
-                        ),
                       ],
-                    ),
-                  ),
-                );
-              } else {
-                return Container(
-                  width: width!,
-                  height: height!,
-                  child: SingleChildScrollView(
-                      child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: loadingbanner(context),
-                      ),
-                      Container(
-                        height: 25,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return loadinglist(context);
-                          },
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                        ),
-                      ),
-                    ],
-                  )),
-                );
-              }
-            },
-          ),
-          CustomNavigationDrawer(),
-        ],
+                    )),
+                  );
+                }
+              },
+            ),
+            !_bool?CustomNavigationDrawer():SizedBox(),
+          ],
+        ),
       ),
     );
   }
@@ -320,29 +333,21 @@ class _dashboardState extends State<dashboard> with TickerProviderStateMixin {
                   ),
                   Column(
                     children: [
-                      MyTile(Icons.settings_outlined, 'Settings', () {
-                        HapticFeedback.lightImpact();
-                        /*Fluttertoast.showToast(
-                msg: 'Button pressed',
-              );*/
-                      }),
                       MyTile(Icons.info_outline_rounded, 'About', () {
                         HapticFeedback.lightImpact();
-                        /*Fluttertoast.showToast(
-                msg: 'Button pressed',
-              );*/
+                        Get.to(()=>webview(url: "https://www.google.com", Pagename: "About"));
+
+
                       }),
                       MyTile(Icons.feedback_outlined, 'Feedback', () {
                         HapticFeedback.lightImpact();
-                        /*  Fluttertoast.showToast(
-                msg: 'Button pressed',
-              );*/
+                        Get.to(()=>webview(url: "https://www.youtube.com/", Pagename: "Feedback"));
+
                       }),
-                      MyTile(Icons.find_in_page_outlined, 'Privacy Policy', () {
+                      MyTile(Icons.find_in_page_outlined, 'Privacy & Policy', () {
                         HapticFeedback.lightImpact();
-                        /*Fluttertoast.showToast(
-                msg: 'Button pressed',
-              );*/
+                        Get.to(()=>webview(url: "https://www.linkedin.com/in/ali-sheikh98/", Pagename: "Privacy & Policy"));
+
                       }),
                     ],
                   ),

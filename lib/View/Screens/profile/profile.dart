@@ -155,50 +155,7 @@ class profile extends StatelessWidget {
                 SizedBox(
                   height: 10.0,
                 ),
-                /* InkWell(
-                  onTap: () {
-                    Get.to(() => addadress(),
-                        transition: Transition.rightToLeft,
-                        curve: Curves.easeInOut,
-                        duration: Duration(milliseconds: 700));
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                      ),
-                      SizedBox(
-                        width: width! * 0.05,
-                      ),
-                      PrimaryText(
-                          words: "Add New Address", wight: FontWeight.w300),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        fontcolorprimary,
-                        fontcolorsecond,
-                        Colors.black26
-                      ], // Replace with your desired gradient colors
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                  ),
-                  height: 1,
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),*/
+
                 InkWell(
                   onTap: () {
 

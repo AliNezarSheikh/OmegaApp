@@ -117,10 +117,7 @@ class productdetails extends StatelessWidget {
                                       productid: model.id!,
                                       token: token!,
                                       context: context);
-                                  await control.getproductbycategory(
-                                      id: listcategories[
-                                              control.selectedlistindex.value]
-                                          .id!);
+                                  await control.getproductbycategory(id: listcategories[control.selectedlistindex.value].id!);
                                   model.iswishlisted = !model.iswishlisted;
                                 },
                                 child: CircleAvatar(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
+import 'package:omega/Model/usermodel.dart';
 
 import 'View/Screens/address/all address.dart';
 import 'View/Screens/signup/splash_screen.dart';
@@ -23,6 +24,11 @@ Future<void> main() async {
   );
   await GetStorage.init();
   token=remeber.read("token")!=null?remeber.read("token"):"";
+  var jsonData =usernow.read("user")!=null?usernow.read("user"):null;
+  if(jsonData!=null){
+    currentuser=usermodel.fjs(jsonData);
+  }
+
   runApp(MyApp());
 }
 

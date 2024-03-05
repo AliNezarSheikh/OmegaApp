@@ -105,6 +105,7 @@ class loginscreen extends StatelessWidget {
                                   controller.successlogin.value=false;
                                   if(controller.rememberMe.isTrue){
                                     remeber.write("token", token);
+                                    usernow.write("user", currentuser?.toJson());
                                   }
 
 

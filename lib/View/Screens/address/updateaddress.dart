@@ -218,7 +218,7 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                   city: cityController.text,
                                   phoneaddress: phoneController.text,
                                   state_name: stateController.text,
-                                  context: context, token: token!, postcode:"00000", first_name: firstname.text, last_name: lastname.text, country:"UAE");
+                                  context: context, token: token!,  first_name: firstname.text, last_name: lastname.text,);
                               if(controller.successaddress.isTrue){
                                 controller.getadress(token: token!,);
                                 Get.back();

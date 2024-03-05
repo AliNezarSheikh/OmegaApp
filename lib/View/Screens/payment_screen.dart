@@ -118,7 +118,7 @@ class paymentscreen extends StatelessWidget {
                           Radio(
                               value: "Apple Pay",
                               groupValue: payment,
-                              onChanged: (val) {})
+                              onChanged: (val) {}),
                         ],
                       ),
                     ),
