@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,3 +85,8 @@ String baseurl="https://bagisto.code-vision.ae/api/v1";
 GetStorage remeber=GetStorage();
 GetStorage edit=GetStorage();
 GetStorage usernow=GetStorage();
+
+Future<bool> checkInternetConnection() async {
+  var connectivityResult = await Connectivity().checkConnectivity();
+  return connectivityResult != ConnectivityResult.none;
+}

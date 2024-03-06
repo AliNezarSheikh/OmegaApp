@@ -6,7 +6,6 @@ import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/View/Screens/payment_screen.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../Constant/Components.dart';
 import '../../Control/dashboardcontroller.dart';
 import 'address/addadress.dart';
@@ -155,10 +154,10 @@ class cartscreen extends StatelessWidget {
                               name: "Checkout",
                               onTap:  (){
                                 if(homecontroller.itemsincart.value<1){
-              showresult(context, Colors.red, "Cart is Empty");
-              }
+                                  showresult(context, Colors.red, "Cart is Empty");
+                                         }
                                 else{
-                                  print(currentcart);
+
                                   showModalBottomSheet(
                                     enableDrag: true,
                                     context: context,
@@ -169,43 +168,27 @@ class cartscreen extends StatelessWidget {
                                       return Container(
                                         height: height! * 0.5,
                                         child: FutureBuilder(
-                                          future: checkcon.getadress(
-                                            token: token!,
-                                          ),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<void> snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.done) {
+                                          future: checkcon.getadress(token: token!,),
+                                          builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                            if (snapshot.connectionState == ConnectionState.done) {
                                               return checkcon.isLoadingaddress.isFalse
                                                   ? Obx(
-                                                    () => ConditionalBuilder(
+                                                    () =>
+                                                        ConditionalBuilder(
                                                   condition: checkcon.isLoadingaddress.isFalse,
                                                   builder: (context) => Stack(
                                                     children: [
                                                       Padding(
-                                                        padding:
-                                                        const EdgeInsets
-                                                            .symmetric(
-                                                            vertical: 8.0,
-                                                            horizontal: 20),
+                                                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
                                                         child: Align(
-                                                            alignment: Alignment
-                                                                .topCenter,
-                                                            child: PrimaryText(
-                                                                words:
-                                                                "Set Billing Address",
-                                                                fontsize: 14,
-                                                                wight:
-                                                                FontWeight
-                                                                    .w400)),
+                                                            alignment: Alignment.topCenter,
+                                                            child: PrimaryText(words: "Set Billing Address", fontsize: 14, wight: FontWeight.w400)),
                                                       ),
                                                       SingleChildScrollView(
                                                         child: Padding(
                                                           padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 18),
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               SizedBox(
                                                                 height: 20,
@@ -235,7 +218,7 @@ class cartscreen extends StatelessWidget {
                                                                           horizontalOffset: 30,
                                                                           verticalOffset: 300.0,
                                                                           child: FlipAnimation(duration: Duration(milliseconds: 3000), curve: Curves.fastLinearToSlowEaseIn, flipAxis: FlipAxis.y,
-                                                                              child: adresslist2(listadress[index], checkcon,context,)),
+                                                                              child: adresslistbilling(listadress[index], checkcon,context,)),
                                                                         ),
                                                                       );
                                                                     }),
@@ -276,31 +259,271 @@ class cartscreen extends StatelessWidget {
                                                                         name: "Save",
                                                                         Textcolor:  Colors.white,
                                                                         buttoncolor:fontcolorprimary,
-                                                                        onTap: () async {
-                                                                          print(  checkcon.setbillingaddress.value.firstname!,);
-                                                                          await dashcon.setbillingaddress(
-                                                                              id: checkcon.setbillingaddress.value.id!,
-                                                                              phoneaddress: checkcon.setbillingaddress.value.phoneaddress!,
-                                                                              state_name:  checkcon.setbillingaddress.value.state!,
-                                                                              address1: checkcon.setbillingaddress.value.address1!,
-                                                                              first_name:  checkcon.setbillingaddress.value.firstname!,
-                                                                              last_name:  checkcon.setbillingaddress.value.lastname!,
-                                                                              city:  checkcon.setbillingaddress.value.city!,
-                                                                              email: currentuser!.email!,
-                                                                              context: context,
-                                                                              token: token!);
-                                                                          if(dashcon.successaddress.isTrue){
+                                                                        onTap: (){
+                                                                          if(checkcon.setbillingaddress.value.id != null){
                                                                             showModalBottomSheet(
+                                                                              enableDrag: true,
                                                                               context: context,
-                                                                              builder: (BuildContext context) {
+                                                                              isScrollControlled: true,
+                                                                              showDragHandle: true,
+                                                                              builder: (BuildContext context,) {
+                                                                                listadress=[];
                                                                                 return Container(
-                                                                                  height: 200,
-                                                                                  child: Center(
-                                                                                    child: Text('This is a BottomSheet'),
+                                                                                  height: height! * 0.5,
+                                                                                  child: FutureBuilder(
+                                                                                    future: checkcon.getadress(token: token!,),
+                                                                                    builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                                                                      if (snapshot.connectionState == ConnectionState.done) {
+                                                                                        return checkcon.isLoadingaddress.isFalse
+                                                                                            ? Obx(() =>
+                                                                                              ConditionalBuilder(
+                                                                                                condition: checkcon.isLoadingaddress.isFalse,
+                                                                                                builder: (context) => Stack(
+                                                                                                  children: [
+                                                                                                    Padding(
+                                                                                                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+                                                                                                      child: Align(alignment: Alignment.topCenter,
+                                                                                                          child: PrimaryText(
+                                                                                                              words:
+                                                                                                              "Set Shipping Address", fontsize: 14, wight: FontWeight.w400)),
+                                                                                                    ),
+                                                                                                    SingleChildScrollView(
+                                                                                                      child: Padding(
+                                                                                                        padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 18),
+                                                                                                        child: Column(
+                                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                          children: [
+                                                                                                            SizedBox(
+                                                                                                              height: 20,
+                                                                                                            ),
+                                                                                                            listadress.length == 0
+                                                                                                                ? Center(
+                                                                                                              child: PrimaryText(
+                                                                                                                  words:
+                                                                                                                  "No Address"),
+                                                                                                            )
+                                                                                                                : AnimationLimiter(
+                                                                                                              child: ListView.separated(
+                                                                                                                  physics: BouncingScrollPhysics(),
+                                                                                                                  shrinkWrap: true,
+                                                                                                                  separatorBuilder: (context, index) {
+                                                                                                                    return SizedBox(height: 20);
+                                                                                                                  },
+                                                                                                                  itemCount: listadress.length,
+                                                                                                                  itemBuilder: (context, index) {
+
+                                                                                                                    return AnimationConfiguration.staggeredList(
+                                                                                                                      position: index,
+                                                                                                                      delay: Duration(milliseconds: 100),
+                                                                                                                      child: SlideAnimation(
+                                                                                                                        duration: Duration(milliseconds: 2500),
+                                                                                                                        curve: Curves.fastLinearToSlowEaseIn,
+                                                                                                                        horizontalOffset: 30,
+                                                                                                                        verticalOffset: 300.0,
+                                                                                                                        child: FlipAnimation(duration: Duration(milliseconds: 3000), curve: Curves.fastLinearToSlowEaseIn, flipAxis: FlipAxis.y,
+                                                                                                                            child: adresslistshipping(listadress[index], checkcon,context,)),
+                                                                                                                      ),
+                                                                                                                    );
+                                                                                                                  }),
+                                                                                                            ),
+                                                                                                          ],
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ),
+
+                                                                                                    Align(
+                                                                                                      alignment: Alignment.bottomCenter,
+                                                                                                      child: Row(
+                                                                                                        children: [
+                                                                                                          Container(
+                                                                                                            width: width! * 0.50,
+                                                                                                            height: width! * 0.2,
+                                                                                                            child: buildsmallButton(
+                                                                                                                context: context,
+                                                                                                                name: "Add New Address",
+                                                                                                                buttoncolor:fontcolorprimary,
+                                                                                                                Textcolor:  Colors.white,
+                                                                                                                onTap: () {
+                                                                                                                  Get.to(() => addadress(),
+                                                                                                                      transition: Transition.rightToLeft,
+                                                                                                                      curve: Curves.easeInOut,
+                                                                                                                      duration: Duration(milliseconds: 700));
+                                                                                                                }),
+                                                                                                          ),
+                                                                                                          Container(
+                                                                                                            width: width! * 0.5,
+                                                                                                            height: width! * 0.2,
+                                                                                                            child: Obx(
+                                                                                                                  ()=> ConditionalBuilder(
+                                                                                                                condition: dashcon.isLoadingaddress.isFalse,
+                                                                                                                builder: (BuildContext context) {
+                                                                                                                  return  buildsmallButton(
+                                                                                                                      context: context,
+                                                                                                                      name: "Save",
+                                                                                                                      Textcolor:  Colors.white,
+                                                                                                                      buttoncolor:fontcolorprimary,
+                                                                                                                      onTap: () async {
+                                                                                                                        if(checkcon.setshippingaddress.value.id !=null){
+                                                                                                                          await dashcon.setbillingandshippingaddress(
+                                                                                                                              idbil: checkcon.setbillingaddress.value.id!,
+                                                                                                                              phoneaddressbil: checkcon.setbillingaddress.value.phoneaddress!,
+                                                                                                                              state_namebil:  checkcon.setbillingaddress.value.state!,
+                                                                                                                              address1bil: checkcon.setbillingaddress.value.address1!,
+                                                                                                                              first_namebil:  checkcon.setbillingaddress.value.firstname!,
+                                                                                                                              last_namebil:  checkcon.setbillingaddress.value.lastname!,
+                                                                                                                              citybil:  checkcon.setbillingaddress.value.city!,
+                                                                                                                              emailbil: currentuser!.email!,
+                                                                                                                              address1shi: checkcon.setshippingaddress.value.address1!,
+                                                                                                                              cityshi: checkcon.setshippingaddress.value.city! ,
+                                                                                                                              emailshi:  currentuser!.email!,
+                                                                                                                              first_nameshi: checkcon.setshippingaddress.value.firstname! ,
+                                                                                                                              idshi: checkcon.setshippingaddress.value.id!,
+                                                                                                                              last_nameshi: checkcon.setshippingaddress.value.lastname!,
+                                                                                                                              phoneaddressshi: checkcon.setshippingaddress.value.phoneaddress!,
+                                                                                                                              state_nameshi: checkcon.setshippingaddress.value.state!,
+                                                                                                                              context: context,
+                                                                                                                              token: token!);
+                                                                                                                          if(dashcon.successaddress.isTrue){
+
+                                                                                                                            Get.to(()=>paymentscreen(),
+                                                                                                                              transition: Transition.zoom,
+                                                                                                                              curve: Curves.easeIn,
+                                                                                                                              duration: Duration(seconds: 1)
+                                                                                                                            );
+                                                                                                                          }
+                                                                                                                        }
+                                                                                                                      });
+                                                                                                                },
+                                                                                                                fallback: (BuildContext context) {
+                                                                                                                  return Center(child: CircularProgressIndicator(),);
+                                                                                                                },
+
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                          ),
+
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                    )
+
+                                                                                                  ],
+                                                                                                ),
+                                                                                                fallback: (context) => Stack(
+                                                                                                  children: [
+                                                                                                    SingleChildScrollView(
+                                                                                                      child: Padding(
+                                                                                                        padding:
+                                                                                                        const EdgeInsets
+                                                                                                            .symmetric(
+                                                                                                            vertical:
+                                                                                                            26.0,
+                                                                                                            horizontal:
+                                                                                                            18),
+                                                                                                        child: Column(
+                                                                                                          crossAxisAlignment:
+                                                                                                          CrossAxisAlignment
+                                                                                                              .start,
+                                                                                                          children: [
+                                                                                                            SizedBox(
+                                                                                                              height: 20,
+                                                                                                            ),
+                                                                                                            AnimationLimiter(
+                                                                                                              child: ListView
+                                                                                                                  .separated(
+                                                                                                                  physics:
+                                                                                                                  BouncingScrollPhysics(),
+
+                                                                                                                  separatorBuilder:
+                                                                                                                      (context,
+                                                                                                                      index) {
+                                                                                                                    return SizedBox(
+                                                                                                                        height: 20);
+                                                                                                                  },
+                                                                                                                  itemCount:
+                                                                                                                  3,
+                                                                                                                  itemBuilder:
+                                                                                                                      (context,
+                                                                                                                      index) {
+                                                                                                                    return AnimationConfiguration
+                                                                                                                        .staggeredList(
+                                                                                                                      position:
+                                                                                                                      index,
+                                                                                                                      delay:
+                                                                                                                      Duration(milliseconds: 100),
+                                                                                                                      child:
+                                                                                                                      SlideAnimation(
+                                                                                                                        duration: Duration(milliseconds: 2500),
+                                                                                                                        curve: Curves.fastLinearToSlowEaseIn,
+                                                                                                                        horizontalOffset: 30,
+                                                                                                                        verticalOffset: 300.0,
+                                                                                                                        child: FlipAnimation(duration: Duration(milliseconds: 3000), curve: Curves.fastLinearToSlowEaseIn, flipAxis: FlipAxis.y, child: adresslistload(context)),
+                                                                                                                      ),
+                                                                                                                    );
+                                                                                                                  }),
+                                                                                                            ),
+                                                                                                          ],
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Align(
+                                                                                                      alignment: Alignment
+                                                                                                          .bottomCenter,
+                                                                                                      child: Row(
+                                                                                                        children: [
+                                                                                                          Container(
+                                                                                                            width: width! * 0.50,
+                                                                                                            height: width! * 0.2,
+                                                                                                            child:
+                                                                                                            buildsmallButton(
+                                                                                                              context:
+                                                                                                              context,
+                                                                                                              name:
+                                                                                                              "Add New Address",
+                                                                                                              buttoncolor:
+                                                                                                              Colors
+                                                                                                                  .transparent,
+                                                                                                              Textcolor: fontcolorprimary,
+                                                                                                              onTap: () {},
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                          Container(
+                                                                                                            width:
+                                                                                                            width! * 0.5,
+                                                                                                            height:
+                                                                                                            width! * 0.2,
+                                                                                                            child:
+                                                                                                            buildsmallButton(
+                                                                                                              context:
+                                                                                                              context,
+                                                                                                              name:
+                                                                                                              "Save",
+                                                                                                              Textcolor: fontcolorprimary,
+                                                                                                              buttoncolor:
+                                                                                                              Colors
+                                                                                                                  .transparent,
+                                                                                                              onTap: () {},
+                                                                                                            ),
+                                                                                                          ),
+
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                        )
+                                                                                            : loadaddressbottomshet();
+                                                                                      }
+                                                                                      else {
+                                                                                        return loadaddressbottomshet();
+                                                                                      }
+                                                                                    },
                                                                                   ),
                                                                                 );
                                                                               },
                                                                             );
+                                                                          }else{
+                                                                            showresult(context, Colors.red, "select address");
                                                                           }
 
                                                                         });
@@ -423,229 +646,10 @@ class cartscreen extends StatelessWidget {
                                                   ),
                                                 ),
                                               )
-                                                  : Stack(
-                                                children: [
-                                                  SingleChildScrollView(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 26.0,
-                                                          horizontal: 18),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                        children: [
-                                                          SizedBox(
-                                                            height: 20,
-                                                          ),
-                                                          AnimationLimiter(
-                                                            child: ListView
-                                                                .separated(
-                                                                physics:
-                                                                BouncingScrollPhysics(),
-                                                                shrinkWrap:
-                                                                true,
-                                                                separatorBuilder:
-                                                                    (context,
-                                                                    index) {
-                                                                  return SizedBox(
-                                                                      height:
-                                                                      20);
-                                                                },
-                                                                itemCount:
-                                                                3,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                    index) {
-                                                                  return AnimationConfiguration
-                                                                      .staggeredList(
-                                                                    position:
-                                                                    index,
-                                                                    delay: Duration(
-                                                                        milliseconds:
-                                                                        100),
-                                                                    child:
-                                                                    SlideAnimation(
-                                                                      duration:
-                                                                      Duration(milliseconds: 2500),
-                                                                      curve:
-                                                                      Curves.fastLinearToSlowEaseIn,
-                                                                      horizontalOffset:
-                                                                      30,
-                                                                      verticalOffset:
-                                                                      300.0,
-                                                                      child: FlipAnimation(
-                                                                          duration: Duration(milliseconds: 3000),
-                                                                          curve: Curves.fastLinearToSlowEaseIn,
-                                                                          flipAxis: FlipAxis.y,
-                                                                          child: adresslistload(context)),
-                                                                    ),
-                                                                  );
-                                                                }),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    alignment: Alignment
-                                                        .bottomCenter,
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: width! * 0.50,
-                                                          height: width! * 0.2,
-                                                          child:
-                                                          buildsmallButton(
-                                                            context:
-                                                            context,
-                                                            name:
-                                                            "Add New Address",
-                                                            buttoncolor:
-                                                            Colors
-                                                                .white,
-                                                            Textcolor: fontcolorprimary,
-                                                            onTap: () {},
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          width:
-                                                          width! * 0.5,
-                                                          height:
-                                                          width! * 0.2,
-                                                          child:
-                                                          buildsmallButton(
-                                                            context:
-                                                            context,
-                                                            name:
-                                                            "Save",
-                                                            Textcolor: fontcolorprimary,
-                                                            buttoncolor:
-                                                            Colors
-                                                                .white,
-                                                            onTap: () {},
-                                                          ),
-                                                        ),
-
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              );
-                                            } else {
-                                              return Stack(
-                                                children: [
-                                                  SingleChildScrollView(
-                                                    child: Padding(
-                                                      padding:
-                                                      const EdgeInsets.symmetric(
-                                                          vertical: 26.0,
-                                                          horizontal: 18),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                        children: [
-                                                          SizedBox(
-                                                            height: 20,
-                                                          ),
-                                                          AnimationLimiter(
-                                                            child: ListView.separated(
-                                                                physics:
-                                                                BouncingScrollPhysics(),
-                                                                shrinkWrap: true,
-                                                                separatorBuilder:
-                                                                    (context, index) {
-                                                                  return SizedBox(
-                                                                      height: 20);
-                                                                },
-                                                                itemCount: 3,
-                                                                itemBuilder:
-                                                                    (context, index) {
-                                                                  return AnimationConfiguration
-                                                                      .staggeredList(
-                                                                    position: index,
-                                                                    delay: Duration(
-                                                                        milliseconds:
-                                                                        100),
-                                                                    child:
-                                                                    SlideAnimation(
-                                                                      duration: Duration(
-                                                                          milliseconds:
-                                                                          2500),
-                                                                      curve: Curves
-                                                                          .fastLinearToSlowEaseIn,
-                                                                      horizontalOffset:
-                                                                      30,
-                                                                      verticalOffset:
-                                                                      300.0,
-                                                                      child: FlipAnimation(
-                                                                          duration: Duration(
-                                                                              milliseconds:
-                                                                              3000),
-                                                                          curve: Curves
-                                                                              .fastLinearToSlowEaseIn,
-                                                                          flipAxis:
-                                                                          FlipAxis
-                                                                              .y,
-                                                                          child: adresslistload(
-                                                                              context)),
-                                                                    ),
-                                                                  );
-                                                                }),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    alignment: Alignment
-                                                        .bottomCenter,
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: width! * 0.50,
-                                                          height: width! * 0.2,
-                                                          child:
-                                                          buildsmallButton(
-                                                              context:
-                                                              context,
-                                                              name:
-                                                              "Add New Address",
-                                                              buttoncolor:
-                                                              Colors
-                                                                  .white,
-                                                              Textcolor: fontcolorprimary,
-                                                              onTap:
-                                                                  () {
-
-                                                              }),
-                                                        ),
-                                                        Container(
-                                                          width:
-                                                          width! * 0.5,
-                                                          height:
-                                                          width! * 0.2,
-                                                          child:
-                                                          buildsmallButton(
-                                                              context:
-                                                              context,
-                                                              name:
-                                                              "Save",
-                                                              Textcolor: fontcolorprimary,
-                                                              buttoncolor:
-                                                              Colors
-                                                                  .white,
-                                                              onTap:
-                                                                  () {
-                                                              }),
-                                                        ),
-
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              );
+                                                  : loadaddressbottomshet();
+                                            }
+                                            else {
+                                              return loadaddressbottomshet();
                                             }
                                           },
                                         ),
@@ -663,169 +667,9 @@ class cartscreen extends StatelessWidget {
                     ),
                   ),
                 );
-              } else {
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 18.0, vertical: 36.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            PrimaryText(words: "Items in Cart : "),
-                            Shimmer(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.grey[300]!,
-                                  Colors.grey[100]!,
-                                  Colors.grey[300]!
-                                ],
-                                stops: [0.4, 0.5, 0.6],
-                              ),
-                              child: Container(
-                                margin: EdgeInsets.all(8),
-                                color: Colors.white,
-                                height: getheight(context) * 0.009,
-                                child: PrimaryText(
-                                    words:
-                                        "       "), // Replace with your desired shimmer color
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        AnimationLimiter(
-                          child: ListView.separated(
-                            itemCount: 2,
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return SizedBox(height: 20);
-                            },
-                            itemBuilder: (BuildContext context, int index) {
-                              return AnimationConfiguration.staggeredList(
-                                position: index,
-                                delay: Duration(milliseconds: 100),
-                                child: SlideAnimation(
-                                  duration: Duration(milliseconds: 1000),
-                                  curve: Curves.easeInToLinear,
-                                  horizontalOffset: 30,
-                                  verticalOffset: 300.0,
-                                  child: FlipAnimation(
-                                      duration: Duration(milliseconds: 1000),
-                                      curve: Curves.easeInToLinear,
-                                      flipAxis: FlipAxis.y,
-                                      child: cartlistload(context)),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Container(
-                          width: getwidth(context),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14.0, vertical: 8),
-                                child: Row(
-                                  children: [
-                                    SecondlyText(words: "Items Cost"),
-                                    Spacer(),
-                                    Shimmer(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.grey[300]!,
-                                          Colors.grey[100]!,
-                                          Colors.grey[300]!
-                                        ],
-                                        stops: [0.4, 0.5, 0.6],
-                                      ),
-                                      child: Container(
-                                          height: getheight(context) * 0.01,
-                                          color: Colors.white,
-                                          child: SecondlyText(
-                                              words: "               ",
-                                              fontsize: 12)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14.0, vertical: 8),
-                                child: Row(
-                                  children: [
-                                    SecondlyText(words: "Shipping Fee"),
-                                    Spacer(),
-                                    Shimmer(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.grey[300]!,
-                                          Colors.grey[100]!,
-                                          Colors.grey[300]!
-                                        ],
-                                        stops: [0.4, 0.5, 0.6],
-                                      ),
-                                      child: Container(
-                                          height: getheight(context) * 0.01,
-                                          color: Colors.white,
-                                          child: SecondlyText(
-                                              words: "               ",
-                                              fontsize: 12)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Divider(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14.0, vertical: 8),
-                                child: Row(
-                                  children: [
-                                    SecondlyText(words: "Total Price"),
-                                    Spacer(),
-                                    Shimmer(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.grey[300]!,
-                                          Colors.grey[100]!,
-                                          Colors.grey[300]!
-                                        ],
-                                        stops: [0.4, 0.5, 0.6],
-                                      ),
-                                      child: Container(
-                                          height: getheight(context) * 0.01,
-                                          color: Colors.white,
-                                          child: SecondlyText(
-                                              words: "               ",
-                                              fontsize: 12)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        buildButton(
-                            context: context,
-                            name: "Checkout",
-                            onTap: () {
-                            }),
-                      ],
-                    ),
-                  ),
-                );
+              }
+              else {
+                return loadScreen();
               }
             },
           ),
@@ -834,3 +678,7 @@ class cartscreen extends StatelessWidget {
     );
   }
 }
+
+
+
+

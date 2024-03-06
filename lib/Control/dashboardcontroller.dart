@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
@@ -528,37 +528,62 @@ class dashcontroller extends GetxController {
     });
   }
 
-  Future<void> setbillingaddress({
-    required int id,
-    required String phoneaddress,
-    required String state_name,
-    required String address1,
-    required String first_name,
-    required String last_name,
-    required String city,
-    required String email,
+  Future<void> setbillingandshippingaddress({
+    required int idbil,
+    required String phoneaddressbil,
+    required String state_namebil,
+    required String address1bil,
+    required String first_namebil,
+    required String last_namebil,
+    required String citybil,
+    required String emailbil,
+
+    required int idshi,
+    required String phoneaddressshi,
+    required String state_nameshi,
+    required String address1shi,
+    required String first_nameshi,
+    required String last_nameshi,
+    required String cityshi,
+    required String emailshi,
 
     required BuildContext context,
     required String token,
   }) async {
     isLoadingaddress.value = true;
     Uri url = Uri.parse("$baseurl/customer/checkout/save-address");
-    Map<String,dynamic> listadd={
-      "0":address1
+    Map<String,dynamic> mapaddbil={
+      "0":address1bil
+    };
+    Map<String,dynamic>mapaddshi={
+      "0":address1shi
     };
    // List<String> listadd = [address1];
     Map<String, dynamic> requestbody = {
       "billing": {
-        "address_id": id,
-        "email": email,
+        "address_id": idbil,
+        "email": emailbil,
         "save_as_address": false,
         "use_for_shipping": false,
-        "phone": phoneaddress,
-        "state": state_name,
-        "address1": listadd,
-        "city": city,
-        "first_name": first_name,
-        "last_name": last_name,
+        "phone": phoneaddressbil,
+        "state": state_namebil,
+        "address1": mapaddbil,
+        "city": citybil,
+        "first_name": first_namebil,
+        "last_name": last_namebil,
+        "postcode": "00000",
+        "country": "UAE",
+      },
+      "shipping": {
+        "address_id": idshi,
+        "email": emailshi,
+        "save_as_address": false,
+        "phone": phoneaddressshi,
+        "state": state_nameshi,
+        "address1": mapaddshi,
+        "city": cityshi,
+        "first_name": first_nameshi,
+        "last_name": last_nameshi,
         "postcode": "00000",
         "country": "UAE",
       },
@@ -599,4 +624,5 @@ class dashcontroller extends GetxController {
       showresult(context, Colors.red, error.toString());
     });
   }
+
 }

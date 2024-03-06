@@ -5,6 +5,7 @@ import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
 
 class homescreen extends StatelessWidget {
+
   homecontroller controller = Get.put(homecontroller());
 
   @override

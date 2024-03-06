@@ -1,4 +1,6 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:omega/Constant/Components.dart';
@@ -27,10 +29,11 @@ class splashscreen extends StatelessWidget {
             duration: Duration(seconds: 3));
       }
       else{
-        Get.off(() => homescreen(),
+        Get.off(()=>homescreen(),
             transition: Transition.fadeIn,
             curve: Curves.easeInOut,
             duration: Duration(seconds: 3));
+
       }
     });
     return SafeArea(

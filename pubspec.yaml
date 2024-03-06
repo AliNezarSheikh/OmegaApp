@@ -46,6 +46,7 @@ dependencies:
   url_launcher: ^6.2.5
   shimmer: ^3.0.0
   webview_flutter: ^4.7.0
+  connectivity_plus: ^5.0.2
 
 
 

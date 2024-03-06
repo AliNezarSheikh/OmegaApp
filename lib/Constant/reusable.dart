@@ -1,7 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
@@ -895,6 +897,7 @@ Widget favoritelistItemWidget(context, productmodel model,
                             model.iswishlisted = !model.iswishlisted;
                             control.listwishs.add(model);
                           }
+                          final connectivityResult = await (Connectivity().checkConnectivity());
 
                           Get.off(homescreen());
                         },
@@ -1827,44 +1830,6 @@ Widget addcardButton(
   );
 }
 
-/*Widget buildpaymentButton(
-    {required context,
-    required String name,
-    Color? Textcolor,
-    String? object}) {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: InkWell(
-      onTap: () {
-
-
-      },
-      child: Container(
-        width: double.infinity,
-        height: height! * 0.06,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Textcolor == null ? fontcolorprimary : Colors.white,
-          border: Textcolor != null
-              ? Border.all(
-                  color: Textcolor,
-                  style: BorderStyle.solid,
-                  width: 1,
-                )
-              : null,
-        ),
-        child: Center(
-            child: PrimaryText(
-          words: name,
-          color: Textcolor != null ? Textcolor : Colors.white,
-          fontsize: 18,
-          fontfami: "Inter",
-        )),
-      ),
-    ),
-  );
-}*/
-
 void showresult(
   BuildContext context,
   Color color,
@@ -2009,7 +1974,7 @@ Widget adresslist(
       ),
     );
 
-Widget adresslist2(
+Widget adresslistbilling(
     addressmodel model,
     logincontroller control,
     context,
@@ -2081,6 +2046,85 @@ Widget adresslist2(
                   // selected: control.setbillingaddress.value==currentmodel?true:false,
                  ),
                ),
+
+
+            ],
+          ),
+        ],
+      ),
+    );
+Widget adresslistshipping(
+    addressmodel model,
+    logincontroller control,
+    context,
+    ) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryText(words: "Adress: ${model.address1}", fontsize: 14),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SecondlyText(words: "Emarite : ${model.state}"),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "City: ${model.city}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  PrimaryText(
+                      words: 'Phone Number ${model.phoneaddress}',
+                      fontsize: 14),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              Obx(
+                    ()=> Radio(
+                  value: model,
+
+                  activeColor: Colors.blue,
+                  groupValue: control.setshippingaddress.value,
+                  onChanged: (val) {
+                    control.setshippingaddress.value=val!;
+                  },
+
+                ),
+              ),
 
 
             ],
@@ -2451,6 +2495,288 @@ Widget buildsmallButton(
               fontsize: 18,
               fontfami: "Inter",
             )),
+      ),
+    ),
+  );
+}
+
+
+Widget loadaddressbottomshet(){
+  return Stack(
+    children: [
+      SingleChildScrollView(
+        child: Padding(
+          padding:
+          const EdgeInsets.symmetric(
+              vertical: 26.0,
+              horizontal: 18),
+          child: Column(
+            crossAxisAlignment:
+            CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              AnimationLimiter(
+                child: ListView.separated(
+                    physics:
+                    BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder:
+                        (context, index) {
+                      return SizedBox(
+                          height: 20);
+                    },
+                    itemCount: 3,
+                    itemBuilder:
+                        (context, index) {
+                      return AnimationConfiguration
+                          .staggeredList(
+                        position: index,
+                        delay: Duration(
+                            milliseconds:
+                            100),
+                        child:
+                        SlideAnimation(
+                          duration: Duration(
+                              milliseconds:
+                              2500),
+                          curve: Curves
+                              .fastLinearToSlowEaseIn,
+                          horizontalOffset:
+                          30,
+                          verticalOffset:
+                          300.0,
+                          child: FlipAnimation(
+                              duration: Duration(
+                                  milliseconds:
+                                  3000),
+                              curve: Curves
+                                  .fastLinearToSlowEaseIn,
+                              flipAxis:
+                              FlipAxis
+                                  .y,
+                              child: adresslistload(
+                                  context)),
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Align(
+        alignment: Alignment
+            .bottomCenter,
+        child: Row(
+          children: [
+            Container(
+              width: width! * 0.50,
+              height: width! * 0.2,
+              child:
+              buildsmallButton(
+                  context:
+                  context,
+                  name:
+                  "Add New Address",
+                  buttoncolor:
+                  Colors
+                      .white,
+                  Textcolor: fontcolorprimary,
+                  onTap:
+                      () {
+
+                  }),
+            ),
+            Container(
+              width:
+              width! * 0.5,
+              height:
+              width! * 0.2,
+              child:
+              buildsmallButton(
+                  context:
+                  context,
+                  name:
+                  "Save",
+                  Textcolor: fontcolorprimary,
+                  buttoncolor:
+                  Colors
+                      .white,
+                  onTap:
+                      () {
+                  }),
+            ),
+
+          ],
+        ),
+      )
+    ],
+  );
+}
+
+
+Widget loadScreen(){
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: 18.0, vertical: 36.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              PrimaryText(words: "Items in Cart : "),
+              Shimmer(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.grey[300]!,
+                    Colors.grey[100]!,
+                    Colors.grey[300]!
+                  ],
+                  stops: [0.4, 0.5, 0.6],
+                ),
+                child: Container(
+                  margin: EdgeInsets.all(8),
+                  color: Colors.white,
+                  height: height! * 0.009,
+                  child: PrimaryText(
+                      words:
+                      "       "), // Replace with your desired shimmer color
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          AnimationLimiter(
+            child: ListView.separated(
+              itemCount: 2,
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              separatorBuilder:
+                  (BuildContext context, int index) {
+                return SizedBox(height: 20);
+              },
+              itemBuilder: (BuildContext context, int index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: Duration(milliseconds: 1000),
+                    curve: Curves.easeInToLinear,
+                    horizontalOffset: 30,
+                    verticalOffset: 300.0,
+                    child: FlipAnimation(
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.easeInToLinear,
+                        flipAxis: FlipAxis.y,
+                        child: cartlistload(context)),
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 100,
+          ),
+          Container(
+            width: width!,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14.0, vertical: 8),
+                  child: Row(
+                    children: [
+                      SecondlyText(words: "Items Cost"),
+                      Spacer(),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: height! * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(
+                                words: "               ",
+                                fontsize: 12)),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14.0, vertical: 8),
+                  child: Row(
+                    children: [
+                      SecondlyText(words: "Shipping Fee"),
+                      Spacer(),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: height! * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(
+                                words: "               ",
+                                fontsize: 12)),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14.0, vertical: 8),
+                  child: Row(
+                    children: [
+                      SecondlyText(words: "Total Price"),
+                      Spacer(),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                            height: height! * 0.01,
+                            color: Colors.white,
+                            child: SecondlyText(
+                                words: "               ",
+                                fontsize: 12)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          buildButton(
+              context: context,
+              name: "Checkout",
+              onTap: () {
+              }),
+        ],
       ),
     ),
   );

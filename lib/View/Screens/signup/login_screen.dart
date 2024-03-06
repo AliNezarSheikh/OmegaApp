@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
@@ -107,12 +108,11 @@ class loginscreen extends StatelessWidget {
                                     remeber.write("token", token);
                                     usernow.write("user", currentuser?.toJson());
                                   }
-
-
-                                  Get.off(() => homescreen(),
+                                  Get.off(()=>homescreen(),
                                       transition: Transition.fadeIn,
                                       curve: Curves.easeInOut,
                                       duration: Duration(seconds: 1));
+
                                 }
 
                               }
@@ -156,8 +156,8 @@ class loginscreen extends StatelessWidget {
                               Get.off(()=>homescreen(),
                                   transition: Transition.fadeIn,
                                   curve: Curves.easeInOut,
-                                  duration: Duration(seconds: 1));
-                            });},
+                                  duration: Duration(seconds: 1));});
+                          },
                           fallback: (context) =>
                               Center(child: CircularProgressIndicator()),
 

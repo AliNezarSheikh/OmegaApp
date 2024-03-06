@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,9 @@ class logincontroller extends GetxController {
   RxBool successupdate = false.obs;
   RxString dropdownValue = list.first.obs;
   RxString dropdownValueemarite = emarites.first.obs;
+  RxBool isinternet = true.obs;
    Rx<addressmodel> setbillingaddress=addressmodel(address1: '', id: null, city: '', phoneaddress: '', state: '', firstname: '', lastname: '', postcode: '00000', country: 'UAE').obs;
+  Rx<addressmodel> setshippingaddress=addressmodel(address1: '', id: null, city: '', phoneaddress: '', state: '', firstname: '', lastname: '', postcode: '00000', country: 'UAE').obs;
   @override
 
   void getvisiblepassword() {
