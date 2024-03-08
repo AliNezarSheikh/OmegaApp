@@ -4,11 +4,12 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/homecontroller.dart';
+import 'package:omega/View/Screens/cartscreen/setbillingaddress.dart';
 import 'package:omega/View/Screens/payment_screen.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../Constant/Components.dart';
-import '../../Control/dashboardcontroller.dart';
-import 'address/addadress.dart';
+import '../../../Constant/Components.dart';
+import '../../../Control/dashboardcontroller.dart';
+import '../address/addadress.dart';
 
 class cartscreen extends StatelessWidget {
   dashcontroller dashcon = Get.put(dashcontroller(), permanent: true);
@@ -157,8 +158,11 @@ class cartscreen extends StatelessWidget {
                                   showresult(context, Colors.red, "Cart is Empty");
                                          }
                                 else{
-
-                                  showModalBottomSheet(
+                                  Get.to(()=>setbilling(),
+                                  transition: Transition.downToUp,
+                                  curve: Curves.easeIn,
+                                  duration: Duration(seconds: 1));
+                                /*  showModalBottomSheet(
                                     enableDrag: true,
                                     context: context,
                                     isScrollControlled: true,
@@ -655,7 +659,7 @@ class cartscreen extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                  );
+                                  );*/
                                 }
 
                               }

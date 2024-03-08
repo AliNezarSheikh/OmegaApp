@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/adressmodel.dart';
+import 'package:omega/Model/paymentmodel.dart';
 import 'package:omega/Model/usermodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,19 +17,27 @@ import '../View/Screens/signup/login_screen.dart';
 class logincontroller extends GetxController {
   RxBool notvisable = true.obs;
   RxBool rememberMe = false.obs;
+  RxBool setsameadress = false.obs;
   RxBool agree = true.obs;
   RxBool showError = false.obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingaddress = false.obs;
+  RxBool isloadmethod = false.obs;
   RxBool successregister = false.obs;
   RxBool successaddress = false.obs;
+  RxBool successmethod = false.obs;
+  RxBool successpaymethod = false.obs;
   RxBool successlogin = false.obs;
   RxBool successupdate = false.obs;
   RxString dropdownValue = list.first.obs;
+
   RxString dropdownValueemarite = emarites.first.obs;
-  RxBool isinternet = true.obs;
+
    Rx<addressmodel> setbillingaddress=addressmodel(address1: '', id: null, city: '', phoneaddress: '', state: '', firstname: '', lastname: '', postcode: '00000', country: 'UAE').obs;
   Rx<addressmodel> setshippingaddress=addressmodel(address1: '', id: null, city: '', phoneaddress: '', state: '', firstname: '', lastname: '', postcode: '00000', country: 'UAE').obs;
+  RxString setshipmethod="".obs;
+  RxString setpaymethod="".obs;
+
   @override
 
   void getvisiblepassword() {
@@ -36,6 +46,9 @@ class logincontroller extends GetxController {
 
   void getremember({bool? val}) {
     rememberMe.value = val!;
+  }
+  void getsameadress({bool? val}){
+    setsameadress.value=val!;
   }
 
   void getagree({bool? val}) {
@@ -499,6 +512,88 @@ class logincontroller extends GetxController {
       builder: (BuildContext context)=>child,);
   }
 
+Future<void>setmethodtype({
+  required String token,required BuildContext context,required String method})
+async{
+  isloadmethod.value = true;
+  Uri url = Uri.parse("$baseurl/customer/checkout/save-shipping");
+  listpaymentmethods=[];
+  await http.post(
+    url,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: {
+      "shipping_method":method
+    },
+  )
+      .then((value) {
+    if (value.statusCode == 200) {
+      isloadmethod.value = false;
+      var cart=jsonDecode(value.body);
+      cart["data"]["methods"].forEach((element){
+        listpaymentmethods.add(paymentmodel.fromJson(element));
+      });
+      currentcart!.formatted_grand_total=cart["data"]["cart"]["formatted_grand_total"];
+      successmethod.value = true;
+    } else if (value.statusCode == 401) {
+      isloadmethod.value = false;
+      successmethod.value = false;
+      showresult(context, Colors.red, "You need to login");
+    } else {
+      isloadmethod.value = false;
+      successmethod.value = false;
+      showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+    }
+  }).catchError((error) {
+    isloadmethod.value = false;
+    successmethod.value = false;
+    showresult(context, Colors.red, error.toString());
+  });
+}
 
+  Future<void>setmethodpayment({
+    required String token,required BuildContext context,required String method})
+  async{
+    isloadmethod.value = true;
+    Uri url = Uri.parse("$baseurl/customer/checkout/save-payment");
+    Map<String , dynamic> bodyrequest={
+      "payment":{
+        "method":method
+      }
+
+    };
+
+    await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body:jsonEncode(bodyrequest),
+
+    )
+        .then((value) {
+      if (value.statusCode == 200) {
+        isloadmethod.value = false;
+        showresult(context, Colors.green, jsonDecode(value.body)["message"]);
+        successpaymethod.value = true;
+      } else if (value.statusCode == 401) {
+        isloadmethod.value = false;
+        successpaymethod.value = false;
+        showresult(context, Colors.red, "You need to login");
+      } else {
+        isloadmethod.value = false;
+        successpaymethod.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+      }
+    }).catchError((error) {
+      isloadmethod.value = false;
+      successpaymethod.value = false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }
 
 }

@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:omega/Model/cartmodel.dart';
 import 'package:omega/Model/categorymodel.dart';
+import 'package:omega/Model/paymentmodel.dart';
+import 'package:omega/Model/shipmodel.dart';
 import 'package:omega/Model/usermodel.dart';
 
 import '../Model/adressmodel.dart';
@@ -80,6 +82,8 @@ List<productmodel> listproducts = [];
 List<productmodel> listmiddle = [];
 List<productmodel> listsearch=[];
 List<itemincart> listcart=[];
+List<shipmodel> listship=[];
+List<paymentmodel> listpaymentmethods=[];
 late addressmodel useraddress;
 String baseurl="https://bagisto.code-vision.ae/api/v1";
 GetStorage remeber=GetStorage();

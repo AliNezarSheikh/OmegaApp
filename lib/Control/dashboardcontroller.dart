@@ -10,6 +10,7 @@ import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Model/cartmodel.dart';
 import 'package:omega/Model/categorymodel.dart';
 import 'package:omega/Model/productmodel.dart';
+import 'package:omega/Model/shipmodel.dart';
 import '../Constant/Components.dart';
 import '../Constant/reusable.dart';
 
@@ -551,6 +552,7 @@ class dashcontroller extends GetxController {
     required String token,
   }) async {
     isLoadingaddress.value = true;
+    listship=[];
     Uri url = Uri.parse("$baseurl/customer/checkout/save-address");
     Map<String,dynamic> mapaddbil={
       "0":address1bil
@@ -558,7 +560,7 @@ class dashcontroller extends GetxController {
     Map<String,dynamic>mapaddshi={
       "0":address1shi
     };
-   // List<String> listadd = [address1];
+
     Map<String, dynamic> requestbody = {
       "billing": {
         "address_id": idbil,
@@ -588,7 +590,6 @@ class dashcontroller extends GetxController {
         "country": "UAE",
       },
     };
-
     print(jsonEncode(requestbody));
     await http
         .post(
@@ -605,6 +606,11 @@ class dashcontroller extends GetxController {
 
       if (value.statusCode == 200) {
         isLoadingaddress.value = false;
+        var data= jsonDecode(value.body);
+        data["data"]["rates"].forEach((elemant){
+          listship.add(shipmodel.fromJson(elemant));
+          print(elemant["rates"]);
+        });
         showresult(context, Colors.green, "Billing has been set Successfuly");
         successaddress.value = true;
       } else if (value.statusCode == 401) {
@@ -616,7 +622,6 @@ class dashcontroller extends GetxController {
         isLoadingaddress.value = false;
         successaddress.value = false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
-        print( jsonDecode(value.body));
       }
     }).catchError((error) {
       isLoadingaddress.value = false;

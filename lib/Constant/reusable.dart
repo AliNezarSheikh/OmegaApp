@@ -12,7 +12,9 @@ import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Model/adressmodel.dart';
 import 'package:omega/Model/cartmodel.dart';
 import 'package:omega/Model/categorymodel.dart';
+import 'package:omega/Model/paymentmodel.dart';
 import 'package:omega/Model/productmodel.dart';
+import 'package:omega/Model/shipmodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/home_screen.dart';
 import 'package:omega/View/Screens/productdetails.dart';
@@ -188,6 +190,28 @@ Widget buildAgreeRow(bool value, void Function(bool?)? onChanged) {
         wight: FontWeight.w500,
       ),
       Spacer(),
+    ],
+  );
+}
+Widget buildsavesameadress(bool value, void Function(bool?)? onChanged) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.only(bottom: 1),
+        child: Checkbox(
+          value: value,
+          onChanged: onChanged,
+          checkColor: Colors.white,
+          activeColor: Colors.black,
+        ),
+      ),
+      PrimaryText(
+        words: "Set Same Address For Shipping",
+        fontsize: 14,
+        wight: FontWeight.w500,
+      ),
+
     ],
   );
 }
@@ -1724,9 +1748,9 @@ Widget buildinfo() {
   );
 }
 
-Widget paymentlist(context) => Container(
+Widget paymentlist(itemincart model ,context) => Container(
       padding: EdgeInsets.all(10),
-      height: getheight(context) * 0.1719,
+      height: height! * 0.1719,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
@@ -1749,8 +1773,8 @@ Widget paymentlist(context) => Container(
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Image(
-              image: AssetImage(
-                "assets/images/img_bg.png",
+              image: NetworkImage(
+                "${model.medium_image_url}",
               ),
               width: getwidth(context) * 0.3,
               fit: BoxFit.cover,
@@ -1762,7 +1786,7 @@ Widget paymentlist(context) => Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PrimaryText(words: "Airforce Jump", fontsize: 14),
+                  PrimaryText(words: "${model.name}", fontsize: 14),
                   SizedBox(
                     height: 10,
                   ),
@@ -1775,13 +1799,13 @@ Widget paymentlist(context) => Container(
                       SizedBox(
                         width: 10,
                       ),
-                      SecondlyText(words: "Dark Grey")
+                      SecondlyText(words: "${model.short_description}")
                     ],
                   ),
                   SizedBox(
                     height: height! * 0.02,
                   ),
-                  PrimaryText(words: '\$245.00 ', fontsize: 14),
+                  PrimaryText(words: '${model.formatted_total} ', fontsize: 14),
                 ],
               ),
             ),
@@ -1789,8 +1813,54 @@ Widget paymentlist(context) => Container(
         ],
       ),
     );
+Widget paymentmethodlist(paymentmodel model ,context,logincontroller con) =>
+    Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+  child: Container(
+    width: double.infinity,
+    height: height! * 0.06,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8.0),
+      ),
+      border: Border.all(
+        color: fontcolorsecond,
+        style: BorderStyle.solid,
+        width: 1,
+      ),
+    ),
+    child: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 14.0, vertical: 8),
+          child: Image(
+            image: NetworkImage(
+              "${model.image}"
+            ),
+            width: width! * 0.04,
+            height: width! * 0.04,
+          ),
+        ),
+        SizedBox(
+          width: width! * 0.05,
+        ),
+        SecondlyText(words: "${model.method_title}"),
+        Spacer(),
+       Obx(
+           ()=> Radio(
+              value: model.method,
+              groupValue: con.setpaymethod.value,
+              onChanged: (val) {
+                con.setpaymethod.value=val!;
+              }),
+       ),
+      ],
+    ),
+  ),
+);
 
-Widget addcardButton(
+    Widget addcardButton(
     {required context,
     required String name,
     Color? Textcolor,
@@ -2123,6 +2193,74 @@ Widget adresslistshipping(
                     control.setshippingaddress.value=val!;
                   },
 
+                ),
+              ),
+
+
+            ],
+          ),
+        ],
+      ),
+    );
+Widget lsitshipmethods(
+    shipmodel model,
+    logincontroller control,
+    context,
+    ) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.1719,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryText(words: "Method : ${model.carrier_title}", fontsize: 14),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  PrimaryText(
+                      words: 'Fee ${model.formatted_price}',
+                      fontsize: 14),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              Obx(
+                    ()=> Radio(
+                  value: model.method,
+
+                  activeColor: Colors.blue,
+                  groupValue: control.setshipmethod.value,
+                  onChanged: (val) {
+                    control.setshipmethod.value=val!;
+                  },
+                  // selected: control.setbillingaddress.value==currentmodel?true:false,
                 ),
               ),
 
@@ -2500,8 +2638,7 @@ Widget buildsmallButton(
   );
 }
 
-
-Widget loadaddressbottomshet(){
+Widget loadaddress(){
   return Stack(
     children: [
       SingleChildScrollView(
@@ -2781,4 +2918,113 @@ Widget loadScreen(){
     ),
   );
 }
+/*  Accordion(
+                    children: [
+                      AccordionSection(
+                          isOpen: false,
+                          headerBackgroundColor: Colors.white,
+                          contentVerticalPadding: 20,
+                          headerBackgroundColorOpened: Colors.white,
+                          headerBorderColor: fontcolorsecond,
+                          headerBorderColorOpened: fontcolorsecond,
+                          headerPadding: EdgeInsets.all(12.0),
+                          contentBorderColor: Colors.white,
+                          rightIcon:
+                          SvgPicture.asset("assets/images/img_arrow_up.svg"),
+                          leftIcon: SvgPicture.asset(
+                              "assets/images/img_television.svg"),
+                          header: const Text(
+                            'Credit Card',
+                          ),
+                          content: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: height! * 0.06,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                    border: Border.all(
+                                      color: fontcolorsecond,
+                                      style: BorderStyle.solid,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14.0, vertical: 8),
+                                        child: SvgPicture.asset(
+                                          "assets/images/img_payment_method.svg",
+                                          width: width! * 0.05,
+                                          height: width! * 0.05,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: width! * 0.05,
+                                      ),
+                                      SecondlyText(words: "**** 7658"),
+                                      Spacer(),
+                                      Radio(
+                                          value: "Master Card",
+                                          groupValue: payment,
+                                          onChanged: (val) {})
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: height! * 0.06,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                    border: Border.all(
+                                      color: fontcolorsecond,
+                                      style: BorderStyle.solid,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14.0, vertical: 8),
+                                        child: SvgPicture.asset(
+                                          "assets/images/img_payment_method_indigo_900.svg",
+                                          width: width! * 0.05,
+                                          height: width! * 0.05,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: width! * 0.05,
+                                      ),
+                                      SecondlyText(words: "**** 2322"),
+                                      Spacer(),
+                                      Radio(
+                                          value: "Visa",
+                                          groupValue: payment,
+                                          onChanged: (val) {})
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              addcardButton(
+                                  context: context, name: "Add New Card",onTap: (){
+                                Get.to(addcardscreen(),
+                                    transition: Transition.circularReveal,
+                                    curve: Curves.easeInOut,
+                                    duration: Duration(seconds: 3));
+                              }),
+                            ],
+                          )),
+                    ],
+                  ),*/
 
