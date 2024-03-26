@@ -264,8 +264,10 @@ class addadress extends StatelessWidget {
                                               placemarks[0].thoroughfare!;
                                       cityController.text =
                                           placemarks[0].subLocality!;
+                                     emarites.contains( placemarks[0].administrativeArea!)?
                                       controller.dropdownValueemarite.value =
-                                          placemarks[0].administrativeArea!;
+                                          placemarks[0].administrativeArea!
+                                      : controller.dropdownValueemarite.value =emarites.first;
                                     },
                                     mapType: MapType.hybrid,
                                     initialCameraPosition:
@@ -325,8 +327,10 @@ class addadress extends StatelessWidget {
                                       placemarks[0].subThoroughfare! + " "+placemarks[0].thoroughfare!;
                                   cityController.text =
                                       placemarks[0].subLocality!;
+                                  emarites.contains( placemarks[0].administrativeArea!)?
                                   controller.dropdownValueemarite.value =
-                                      placemarks[0].administrativeArea!;
+                                  placemarks[0].administrativeArea!
+                                      : controller.dropdownValueemarite.value =emarites.first;
                                 }),
                           ),
                         ),
