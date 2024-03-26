@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
-import 'package:omega/View/Screens/address/all%20address.dart';
+import 'package:omega/View/Screens/address/alladdress.dart';
 import 'package:omega/View/Screens/profile/edituser.dart';
 import 'package:omega/View/Screens/profile/updatepassword.dart';
 import 'package:omega/View/Screens/signup/register_screen.dart';

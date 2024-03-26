@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/adressmodel.dart';
 import 'package:omega/Model/paymentmodel.dart';
@@ -23,7 +26,11 @@ class logincontroller extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingaddress = false.obs;
   RxBool isloadmethod = false.obs;
+  RxBool isloadmap = false.obs;
+  RxBool getlocation = false.obs;
+  RxBool visiblesave = false.obs;
   RxBool successregister = false.obs;
+
   RxBool successaddress = false.obs;
   RxBool successmethod = false.obs;
   RxBool successpaymethod = false.obs;
@@ -330,13 +337,11 @@ class logincontroller extends GetxController {
 
   Future<void> addnewadress({
     required String phoneaddress,
-
     required String state_name,
     required String address1,
     required String first_name,
     required String last_name,
     required String city,
-
     required BuildContext context,
     required String token,
   }) async {
@@ -593,6 +598,76 @@ async{
       isloadmethod.value = false;
       successpaymethod.value = false;
       showresult(context, Colors.red, error.toString());
+    });
+  }
+
+  Future getposition({required BuildContext context})async{
+    bool serv;
+    LocationPermission per;
+    serv=await Geolocator.isLocationServiceEnabled();
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if(connectivityResult==ConnectivityResult.none){
+      showresult(context, Colors.red, "Check Your Internet");
+    }else{
+      if(serv == false) {
+        AwesomeDialog(context: context,
+            title: "Location Service",
+            body: Text("Location is not Enabled"))
+          ..show();
+      }else {
+        per = await Geolocator.checkPermission();
+        if (per == LocationPermission.denied) {
+          per = await Geolocator.requestPermission();
+        }
+        if (per == LocationPermission.deniedForever) {
+          per = await Geolocator.requestPermission();
+        }
+        if (per == LocationPermission.always) {
+          await getlatandlong(context: context);
+          print(currentlocation!.latitude);
+        }
+        if (per == LocationPermission.whileInUse) {
+          await getlatandlong(context: context);
+         
+        }
+      }
+    }
+
+  }
+  CameraPosition? kGooglePlex ;
+  Rx<Marker> marker = Marker(
+    markerId: MarkerId('1'),
+    position: LatLng( 0,0),
+  ).obs;
+  void updateMarker(LatLng newPosition) {
+    marker.value = marker.value.copyWith(positionParam: newPosition);
+  }
+
+  Future getlatandlong({required BuildContext context})async{
+    isloadmap.value=true;
+    getlocation.value=false;
+ await Geolocator.getCurrentPosition()
+        .then((value) {
+   currentlocation =value;
+      kGooglePlex = CameraPosition(
+        target: LatLng( currentlocation!.latitude,currentlocation!.longitude),
+        zoom: 14.4746,
+      );
+   marker = Marker(
+     markerId: MarkerId('1'),
+     draggable: true,
+     position: LatLng( currentlocation!.latitude,currentlocation!.longitude),
+   ).obs;
+
+
+      isloadmap.value=false;
+      getlocation.value=true;
+      visiblesave.value = true;
+    })
+    .catchError((error){
+      isloadmap.value=false;
+      getlocation.value=false;
+      AwesomeDialog(context: context,title: "Location Service",body: Text("Error While Get Location"))..show();
     });
   }
 

@@ -6,7 +6,7 @@ import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Model/usermodel.dart';
 
-import 'View/Screens/address/all address.dart';
+import 'View/Screens/address/alladdress.dart';
 import 'View/Screens/signup/splash_screen.dart';
 import 'View/test.dart';
 

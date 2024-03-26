@@ -25,13 +25,13 @@ class homescreen extends StatelessWidget {
               icon: ImageIcon(
                 AssetImage("assets/images/img_user.png"),
               ),
-              label: "",
+              label: " ",
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("assets/images/img_heart.png"),
               ),
-              label: "",
+              label: " ",
             ),
             BottomNavigationBarItem(
               icon: Obx(
@@ -43,13 +43,13 @@ class homescreen extends StatelessWidget {
                   AssetImage("assets/images/img_thumbs_up.png"),
                 )),
               ),
-              // label: "",
+               label: " ",
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("assets/images/img_lock.png"),
               ),
-              label: "",
+              label: " ",
             ),
           ],
         ),

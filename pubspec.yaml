@@ -47,6 +47,12 @@ dependencies:
   shimmer: ^3.0.0
   webview_flutter: ^4.7.0
   connectivity_plus: ^5.0.2
+  awesome_dialog: ^3.2.0
+  #maps
+  geolocator: ^11.0.0
+  geocoding: ^3.0.0
+  google_maps_flutter: ^2.6.0
+
 
 
 

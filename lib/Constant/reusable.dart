@@ -49,9 +49,12 @@ Widget PrimaryText(
         Color? color,
         double? fontsize,
         String? fontfami,
-        FontWeight? wight}) =>
+        FontWeight? wight,
+          TextOverflow? over,
+        }) =>
     Text(
       words,
+      overflow: over != null ? over : null,
       style: TextStyle(
         color: color != null ? color : fontcolorprimary,
         fontSize: fontsize != null ? fontsize : sizeprimary,
@@ -1954,17 +1957,23 @@ Widget adresslist(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PrimaryText(words: "Adress: ${model.address1}", fontsize: 14),
+                  model.address1!.length<20?
+                  PrimaryText(words: "Adress: ${model.address1}",over: TextOverflow.ellipsis, fontsize: 14)
+                  : PrimaryText(words: "Adress: ${model.address1!.substring(0,20)}"+"...",over: TextOverflow.ellipsis, fontsize: 14),
                   SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      SecondlyText(words: "Emarite : ${model.state}"),
+                      model.state!.length<12?
+                      SecondlyText(words: "Emarite : ${model.state}"):
+                      SecondlyText(words: "Emarite : ${model.state!.substring(0,12)}"+"..."),
                       SizedBox(
                         width: 10,
                       ),
-                      SecondlyText(words: "City: ${model.city}")
+                      model.state!.length<10?
+                      model.city!.length<10?SecondlyText(words: "City: ${model.city}"):SecondlyText(words: "City: ${model.city!.substring(0, 10)}"+"...")
+                          :model.city!.length<6? SecondlyText(words: "City: ${model.city}"):SecondlyText(words: "City: ${model.city!.substring(0,6)}"+"...")
                     ],
                   ),
                   SizedBox(
@@ -2606,6 +2615,50 @@ Widget buildsmallButton(
       child: Container(
         width: double.infinity,
         height: height! * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: buttoncolor,
+          border: Border.all(
+            color: fontcolorsecond,
+            style: BorderStyle.solid,
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: fontcolorsecond.withOpacity(0.05),
+              spreadRadius: 4,
+              blurRadius: 0,
+              offset: Offset(
+                2,
+                4,
+              ),
+            ),
+          ],
+        ),
+        child: Center(
+            child: PrimaryText(
+              words: name,
+              color: Textcolor != null ? Textcolor : Colors.white,
+              fontsize: 18,
+              fontfami: "Inter",
+            )),
+      ),
+    ),
+  );
+}
+Widget buildmapButton(
+    {required context,
+      required String name,
+      Color? Textcolor,
+      required Color buttoncolor,
+      void Function()? onTap}) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: InkWell(
+      onTap: onTap,
+      child: Container(
+        width: width!*0.3,
+        height: height! * 0.04,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           color: buttoncolor,
