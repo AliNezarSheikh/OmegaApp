@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
+import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/View/Screens/signup/register_screen.dart';
 
@@ -153,6 +154,7 @@ class loginscreen extends StatelessWidget {
                             name: 'Continue As Guest',
                             Textcolor: fontcolorprimary,
                             onTap: () async {
+                              homecontroller.itemsincart.value=0;
                               Get.off(()=>homescreen(),
                                   transition: Transition.fadeIn,
                                   curve: Curves.easeInOut,

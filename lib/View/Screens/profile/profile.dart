@@ -18,6 +18,22 @@ class profile extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        appBar:currentuser==null? AppBar():AppBar(
+          scrolledUnderElevation: 0.0,
+          leadingWidth: 70.0,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 12.0),
+            child: IconButton(
+                onPressed: () {
+
+                },
+                icon: Icon(Icons.person_2_outlined,)
+            ),
+          ),
+          elevation: 0.0,
+          title: PrimaryText(words: "Profile",),
+
+        ),
         body:currentuser==null
             ? Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,13 +59,7 @@ class profile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PrimaryText(
-                  words: "Profile",
-                ),
 
-                SizedBox(
-                  height: 20.0,
-                ),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(

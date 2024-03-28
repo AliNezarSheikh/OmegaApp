@@ -1158,11 +1158,13 @@ Widget favoriteloading(context) => Container(
     );
 
 Widget CartlistItemWidget(context, itemincart model,
-        itemincart currentitemincart, dashcontroller control) =>
+        itemincart currentitemincart, dashcontroller control,int index) =>
     Dismissible(
       key: Key(currentitemincart.itemidincart.toString()),
       onDismissed: (direction) async {
+        listcart.removeAt(index);
         await control.removeitemfromcart(
+
             productidincart: currentitemincart.itemidincart!,
             token: token!,
             context: context);
@@ -1278,7 +1280,7 @@ Widget CartlistItemWidget(context, itemincart model,
                                 control.decreasequantity(
                                     currentitemincart.itemidincart!,
                                     context: context);
-                                //await control.updateitemincart(productidincart: currentitemincart.itemidincart!, count: currentitemincart.counter!.value,token: token!,context: context);
+
                               },
                               child: SvgPicture.asset(
                                   "assets/images/img_minus_blue_gray_300.svg"),
@@ -2017,7 +2019,7 @@ Widget adresslist(
                           title: const Text(
                               'Are you sure you want to delete the adress?'),
                           content: Text(
-                            'If you want to adress the item, choose AGREE or cancel the operation',
+                            'If you want to delete the item, choose AGREE or cancel the operation',
                           ),
                           actions: <Widget>[
                             InkWell(

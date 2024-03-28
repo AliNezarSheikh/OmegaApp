@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
@@ -19,10 +18,10 @@ class dashcontroller extends GetxController {
   Rx<Color> selectedlistcolor = fontcolorprimary.obs;
   RxBool isLoad = false.obs;
   RxBool isLoadingaddress = false.obs;
-
+  RxInt lencart=0.obs;
   RxBool successaddress=false.obs;
   RxBool isLoadsearch=false.obs;
-  RxBool isLoadremove = false.obs;
+  RxBool isLoadupdate = false.obs;
   RxBool accept = false.obs;
   RxInt totalItems = 0.obs;
   RxString itemscost = "0".obs;
@@ -323,6 +322,7 @@ class dashcontroller extends GetxController {
         var cart = jsonDecode(value.body);
         homecontroller.itemsincart.value = cart["data"]["items_count"];
         showresult(context, Colors.green, jsonDecode(value.body)["message"]);
+
         loadadd.value = false;
       } else if (value.statusCode == 401) {
         stopLoadingcart(productid);
@@ -365,10 +365,11 @@ class dashcontroller extends GetxController {
           currentcart!.items!.forEach((element) {
             listcart.add(itemincart.fromJson(element));
           });
+
         } else {
           homecontroller.itemsincart.value = 0;
         }
-
+        lencart.value=listcart.length;
         loadcart.value = false;
       } else if (value.statusCode == 401) {
         loadadd.value = false;
@@ -384,13 +385,45 @@ class dashcontroller extends GetxController {
       showresult(context, Colors.red, error.toString());
     });
   }
-
+  Future<void> emptycart({required String token,
+    required BuildContext context,})
+  async{
+    isLoadupdate.value=true;
+    Uri url = Uri.parse("$baseurl/customer/cart/empty");
+    await http.delete(url, headers: {
+      "Accept": "application/json",
+      'Authorization': 'Bearer $token',
+    }).then((value) async {
+      if (value.statusCode == 200){
+        isLoadupdate.value=false;
+        listcart = [];
+        lencart.value=listcart.length;
+        showresult(context, Colors.green, jsonDecode(value.body)["message"]);
+        totalItems.value = 0;
+        itemscost.value = "\$0.0";
+        shippingfee.value = "\$0.0";
+        totalprice.value = "\$0.0";
+        homecontroller.itemsincart.value = 0;
+        currentcart=null;
+      }else if (value.statusCode == 401) {
+        isLoadupdate.value=false;
+        showresult(context, Colors.red, "You need to Login");
+      } else {
+        isLoadupdate.value=false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+      }
+    }).catchError((error){
+      isLoadupdate.value=false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }
   Future<void> removeitemfromcart(
       {required int productidincart,
       required String token,
       required BuildContext context}) async {
-    isLoadremove.value = true;
+    isLoadupdate.value = true;
     Uri url = Uri.parse("$baseurl/customer/cart/remove/${productidincart}");
+    listcart=[];
     await http.delete(
       url,
       headers: {
@@ -400,8 +433,6 @@ class dashcontroller extends GetxController {
     ).then((value) async {
       if (value.statusCode == 200) {
         var cart = jsonDecode(value.body);
-        print(cart["data"]);
-
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
           totalItems.value = currentcart!.items_qty!;
@@ -420,17 +451,18 @@ class dashcontroller extends GetxController {
           homecontroller.itemsincart.value = 0;
           currentcart=null;
         }
-        isLoadremove.value = false;
+        lencart.value=listcart.length;
+        isLoadupdate.value = false;
       } else if (value.statusCode == 401) {
         showresult(context, Colors.red, "You need to Login");
-        isLoadremove.value = false;
+        isLoadupdate.value = false;
       } else {
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
-        isLoadremove.value = false;
+        isLoadupdate.value = false;
       }
     }).catchError((error) {
       showresult(context, Colors.red, error.toString());
-      isLoadremove.value = false;
+      isLoadupdate.value = false;
     });
   }
 
@@ -442,6 +474,7 @@ class dashcontroller extends GetxController {
       required BuildContext context}) async {
     Map requestbody={"qty": {"${productidincart}": count}};
     Uri url = Uri.parse("$baseurl/customer/cart/update");
+    isLoadupdate.value=true;
     await http
         .put(url,
             headers: {
@@ -454,7 +487,7 @@ class dashcontroller extends GetxController {
             ))
         .then((value) async {
       if (value.statusCode == 200) {
-        print("success");
+
         var cart = jsonDecode(value.body);
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
@@ -463,15 +496,11 @@ class dashcontroller extends GetxController {
           shippingfee.value = currentcart!.formatted_tax_total!;
           totalprice.value = currentcart!.formatted_sub_total!;
           homecontroller.itemsincart.value = cart["data"]["items_count"];
-
           currentcart!.items!.forEach((element) {
             if(element["id"]==listcart.elementAt(index).itemidincart){
               listcart.elementAt(index).formatted_total=(itemincart.fromJson(element).formatted_total);
             }
-
-            print(listcart.elementAt(0).formatted_total);
           });
-
         } else {
           totalItems.value = 0;
           itemscost.value = "\$0.0";
@@ -479,12 +508,18 @@ class dashcontroller extends GetxController {
           totalprice.value = "\$0.0";
           homecontroller.itemsincart.value = 0;
         }
+        lencart.value=listcart.length;
+        isLoadupdate.value=false;
       } else if (value.statusCode == 401) {
+        isLoadupdate.value=false;
         showresult(context, Colors.red, "You need to Login");
+
       } else {
+        isLoadupdate.value=false;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
+      isLoadupdate.value=false;
       showresult(context, Colors.red, error.toString());
     });
   }

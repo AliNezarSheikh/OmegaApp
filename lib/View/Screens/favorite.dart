@@ -16,6 +16,22 @@ class favorite extends GetView<dashcontroller> {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
+              appBar: AppBar(
+                scrolledUnderElevation: 0.0,
+                leadingWidth: 70.0,
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Icon(Icons.favorite_border_outlined,)
+                  ),
+                ),
+                elevation: 0.0,
+                title: PrimaryText(words: "Your Favorite",),
+
+              ),
               body: SingleChildScrollView(
             child: Padding(
               padding:
@@ -23,12 +39,7 @@ class favorite extends GetView<dashcontroller> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PrimaryText(
-                    words: "Your Favorite  ",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   Obx(
                     () => ConditionalBuilder(
                       condition: dashcon.isLoadwish.isFalse,
