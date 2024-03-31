@@ -358,9 +358,9 @@ class dashcontroller extends GetxController {
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
           totalItems.value = currentcart!.items_qty!;
-          itemscost.value = currentcart!.formatted_grand_total!;
-          shippingfee.value = currentcart!.formatted_tax_total!;
-          totalprice.value = currentcart!.formatted_sub_total!;
+          itemscost.value = currentcart!.formatted_sub_total!;
+          shippingfee.value = currentcart!.selected_shipping_rate!;
+          totalprice.value = currentcart!.formatted_grand_total!;
           homecontroller.itemsincart.value = cart["data"]["items_count"];
           currentcart!.items!.forEach((element) {
             listcart.add(itemincart.fromJson(element));
@@ -436,9 +436,9 @@ class dashcontroller extends GetxController {
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
           totalItems.value = currentcart!.items_qty!;
-          itemscost.value = currentcart!.formatted_grand_total!;
-          shippingfee.value = currentcart!.formatted_tax_total!;
-          totalprice.value = currentcart!.formatted_sub_total!;
+          itemscost.value = currentcart!.formatted_sub_total!;
+          shippingfee.value = currentcart!.selected_shipping_rate!;
+          totalprice.value = currentcart!.formatted_grand_total!;
           homecontroller.itemsincart.value = cart["data"]["items_count"];
           currentcart!.items!.forEach((element) {
             listcart.add(itemincart.fromJson(element));
@@ -492,9 +492,9 @@ class dashcontroller extends GetxController {
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
           totalItems.value = currentcart!.items_qty!;
-          itemscost.value = currentcart!.formatted_grand_total!;
-          shippingfee.value = currentcart!.formatted_tax_total!;
-          totalprice.value = currentcart!.formatted_sub_total!;
+          itemscost.value = currentcart!.formatted_sub_total!;
+          shippingfee.value = currentcart!.selected_shipping_rate!;
+          totalprice.value = currentcart!.formatted_grand_total!;
           homecontroller.itemsincart.value = cart["data"]["items_count"];
           currentcart!.items!.forEach((element) {
             if(element["id"]==listcart.elementAt(index).itemidincart){

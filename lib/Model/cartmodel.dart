@@ -5,7 +5,7 @@ class cartmodel {
   int? items_count;
   int? items_qty;
   String? formatted_grand_total;
-  String? formatted_tax_total;
+  String? selected_shipping_rate;
   String? formatted_sub_total;
   List<dynamic>? items;
 
@@ -14,14 +14,14 @@ class cartmodel {
     required this.items_count,
     required this.formatted_grand_total,
     required this.formatted_sub_total,
-    required this.formatted_tax_total,
+    required this.selected_shipping_rate,
     required this.items,
     required this.items_qty,
   });
   cartmodel.fromJson(dynamic data) {
     cartid = data["id"];
     items_count = data["items_count"];
-    formatted_tax_total = data["formatted_tax_total"];
+    selected_shipping_rate = data["selected_shipping_rate"]!=null?data["selected_shipping_rate"]['formatted_price']:"\$0.0";
     formatted_grand_total = data["formatted_grand_total"];
     formatted_sub_total = data["formatted_sub_total"];
     items = data["items"];

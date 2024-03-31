@@ -249,10 +249,11 @@ class cartscreen extends StatelessWidget {
                     child: Container(
                       width: width!,
                       height: height!,
+                      color:themesecond.withOpacity(0.3),
                       child: Center(
                         child: SpinKitChasingDots(color:Colors.blue),
                       ),
-                )),
+                ),),
               )
             ],
           ),

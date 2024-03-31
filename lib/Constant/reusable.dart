@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -44,14 +45,14 @@ enum ButtonAction {
   Agree,
 }
 
-Widget PrimaryText(
-        {required String words,
-        Color? color,
-        double? fontsize,
-        String? fontfami,
-        FontWeight? wight,
-          TextOverflow? over,
-        }) =>
+Widget PrimaryText({
+  required String words,
+  Color? color,
+  double? fontsize,
+  String? fontfami,
+  FontWeight? wight,
+  TextOverflow? over,
+}) =>
     Text(
       words,
       overflow: over != null ? over : null,
@@ -196,6 +197,7 @@ Widget buildAgreeRow(bool value, void Function(bool?)? onChanged) {
     ],
   );
 }
+
 Widget buildsavesameadress(bool value, void Function(bool?)? onChanged) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -214,7 +216,6 @@ Widget buildsavesameadress(bool value, void Function(bool?)? onChanged) {
         fontsize: 14,
         wight: FontWeight.w500,
       ),
-
     ],
   );
 }
@@ -223,7 +224,7 @@ Widget buildButton(
     {required context,
     required String name,
     Color? Textcolor,
-      Color? buttoncolor,
+    Color? buttoncolor,
     void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
@@ -234,7 +235,7 @@ Widget buildButton(
         height: height! * 0.06,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Textcolor == null ? fontcolorprimary :buttoncolor,
+          color: Textcolor == null ? fontcolorprimary : buttoncolor,
           border: Textcolor != null
               ? Border.all(
                   color: Textcolor,
@@ -285,7 +286,6 @@ Widget buildDividerRow(context) {
     ],
   );
 }
-
 
 Widget buildIconButton(
   context,
@@ -498,7 +498,6 @@ Widget buildlist(int index, categorymodel model, dashcontroller control) => Obx(
         onPressed: () async {
           control.changenlistindex(index);
           await control.getproductbycategory(id: model.id!);
-
         },
         child: SecondlyText(
             words: "${model.name}",
@@ -924,7 +923,8 @@ Widget favoritelistItemWidget(context, productmodel model,
                             model.iswishlisted = !model.iswishlisted;
                             control.listwishs.add(model);
                           }
-                          final connectivityResult = await (Connectivity().checkConnectivity());
+                          final connectivityResult =
+                              await (Connectivity().checkConnectivity());
 
                           Get.off(homescreen());
                         },
@@ -1158,17 +1158,15 @@ Widget favoriteloading(context) => Container(
     );
 
 Widget CartlistItemWidget(context, itemincart model,
-        itemincart currentitemincart, dashcontroller control,int index) =>
+        itemincart currentitemincart, dashcontroller control, int index) =>
     Dismissible(
       key: Key(currentitemincart.itemidincart.toString()),
       onDismissed: (direction) async {
         listcart.removeAt(index);
         await control.removeitemfromcart(
-
             productidincart: currentitemincart.itemidincart!,
             token: token!,
             context: context);
-
       },
       background: Container(
         width: getwidth(context) * 0.25,
@@ -1280,7 +1278,6 @@ Widget CartlistItemWidget(context, itemincart model,
                                 control.decreasequantity(
                                     currentitemincart.itemidincart!,
                                     context: context);
-
                               },
                               child: SvgPicture.asset(
                                   "assets/images/img_minus_blue_gray_300.svg"),
@@ -1753,7 +1750,7 @@ Widget buildinfo() {
   );
 }
 
-Widget paymentlist(itemincart model ,context) => Container(
+Widget paymentlist(itemincart model, context) => Container(
       padding: EdgeInsets.all(10),
       height: height! * 0.1719,
       decoration: BoxDecoration(
@@ -1818,54 +1815,52 @@ Widget paymentlist(itemincart model ,context) => Container(
         ],
       ),
     );
-Widget paymentmethodlist(paymentmodel model ,context,logincontroller con) =>
+Widget paymentmethodlist(paymentmodel model, context, logincontroller con) =>
     Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-  child: Container(
-    width: double.infinity,
-    height: height! * 0.06,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(
-        Radius.circular(8.0),
-      ),
-      border: Border.all(
-        color: fontcolorsecond,
-        style: BorderStyle.solid,
-        width: 1,
-      ),
-    ),
-    child: Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 14.0, vertical: 8),
-          child: Image(
-            image: NetworkImage(
-              "${model.image}"
-            ),
-            width: width! * 0.04,
-            height: width! * 0.04,
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Container(
+        width: double.infinity,
+        height: height! * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+          border: Border.all(
+            color: fontcolorsecond,
+            style: BorderStyle.solid,
+            width: 1,
           ),
         ),
-        SizedBox(
-          width: width! * 0.05,
+        child: Row(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8),
+              child: Image(
+                image: NetworkImage("${model.image}"),
+                width: width! * 0.04,
+                height: width! * 0.04,
+              ),
+            ),
+            SizedBox(
+              width: width! * 0.05,
+            ),
+            SecondlyText(words: "${model.method_title}"),
+            Spacer(),
+            Obx(
+              () => Radio(
+                  value: model.method,
+                  groupValue: con.setpaymethod.value,
+                  onChanged: (val) {
+                    con.setpaymethod.value = val!;
+                  }),
+            ),
+          ],
         ),
-        SecondlyText(words: "${model.method_title}"),
-        Spacer(),
-       Obx(
-           ()=> Radio(
-              value: model.method,
-              groupValue: con.setpaymethod.value,
-              onChanged: (val) {
-                con.setpaymethod.value=val!;
-              }),
-       ),
-      ],
-    ),
-  ),
-);
+      ),
+    );
 
-    Widget addcardButton(
+Widget addcardButton(
     {required context,
     required String name,
     Color? Textcolor,
@@ -1928,7 +1923,7 @@ void showresult(
     );
 Widget adresslist(
   addressmodel model,
-    logincontroller control,
+  logincontroller control,
   context,
 ) =>
     Container(
@@ -1959,23 +1954,43 @@ Widget adresslist(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  model.address1!.length<20?
-                  PrimaryText(words: "Adress: ${model.address1}",over: TextOverflow.ellipsis, fontsize: 14)
-                  : PrimaryText(words: "Adress: ${model.address1!.substring(0,20)}"+"...",over: TextOverflow.ellipsis, fontsize: 14),
+                  model.address1!.length < 20
+                      ? PrimaryText(
+                          words: "Adress: ${model.address1}",
+                          over: TextOverflow.ellipsis,
+                          fontsize: 14)
+                      : PrimaryText(
+                          words: "Adress: ${model.address1!.substring(0, 20)}" +
+                              "...",
+                          over: TextOverflow.ellipsis,
+                          fontsize: 14),
                   SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      model.state!.length<12?
-                      SecondlyText(words: "Emarite : ${model.state}"):
-                      SecondlyText(words: "Emarite : ${model.state!.substring(0,12)}"+"..."),
+                      model.state!.length < 12
+                          ? SecondlyText(words: "Emarite : ${model.state}")
+                          : SecondlyText(
+                              words:
+                                  "Emarite : ${model.state!.substring(0, 12)}" +
+                                      "..."),
                       SizedBox(
                         width: 10,
                       ),
-                      model.state!.length<10?
-                      model.city!.length<10?SecondlyText(words: "City: ${model.city}"):SecondlyText(words: "City: ${model.city!.substring(0, 10)}"+"...")
-                          :model.city!.length<6? SecondlyText(words: "City: ${model.city}"):SecondlyText(words: "City: ${model.city!.substring(0,6)}"+"...")
+                      model.state!.length < 10
+                          ? model.city!.length < 10
+                              ? SecondlyText(words: "City: ${model.city}")
+                              : SecondlyText(
+                                  words:
+                                      "City: ${model.city!.substring(0, 10)}" +
+                                          "...")
+                          : model.city!.length < 6
+                              ? SecondlyText(words: "City: ${model.city}")
+                              : SecondlyText(
+                                  words:
+                                      "City: ${model.city!.substring(0, 6)}" +
+                                          "...")
                     ],
                   ),
                   SizedBox(
@@ -2037,8 +2052,7 @@ Widget adresslist(
                                 Navigator.pop(context, ButtonAction.Agree);
                                 await control.deleteaddress(
                                     id: model.id!, context: context);
-                               // await control.getadress(token: token!);
-
+                                // await control.getadress(token: token!);
                               },
                             ),
                           ],
@@ -2056,10 +2070,10 @@ Widget adresslist(
     );
 
 Widget adresslistbilling(
-    addressmodel model,
-    logincontroller control,
-    context,
-    ) =>
+  addressmodel model,
+  logincontroller control,
+  context,
+) =>
     Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
@@ -2088,17 +2102,43 @@ Widget adresslistbilling(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PrimaryText(words: "Adress: ${model.address1}", fontsize: 14),
+                  model.address1!.length < 20
+                      ? PrimaryText(
+                          words: "Adress: ${model.address1}",
+                          over: TextOverflow.ellipsis,
+                          fontsize: 14)
+                      : PrimaryText(
+                          words: "Adress: ${model.address1!.substring(0, 20)}" +
+                              "...",
+                          over: TextOverflow.ellipsis,
+                          fontsize: 14),
                   SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      SecondlyText(words: "Emarite : ${model.state}"),
+                      model.state!.length < 12
+                          ? SecondlyText(words: "Emarite : ${model.state}")
+                          : SecondlyText(
+                              words:
+                                  "Emarite : ${model.state!.substring(0, 12)}" +
+                                      "..."),
                       SizedBox(
                         width: 10,
                       ),
-                      SecondlyText(words: "City: ${model.city}")
+                      model.state!.length < 10
+                          ? model.city!.length < 10
+                              ? SecondlyText(words: "City: ${model.city}")
+                              : SecondlyText(
+                                  words:
+                                      "City: ${model.city!.substring(0, 10)}" +
+                                          "...")
+                          : model.city!.length < 6
+                              ? SecondlyText(words: "City: ${model.city}")
+                              : SecondlyText(
+                                  words:
+                                      "City: ${model.city!.substring(0, 6)}" +
+                                          "...")
                     ],
                   ),
                   SizedBox(
@@ -2114,31 +2154,28 @@ Widget adresslistbilling(
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Obx(
+                () => Radio(
+                  value: model,
 
-               Obx(
-()=> Radio(
-                      value: model,
-
-                      activeColor: Colors.blue,
-                      groupValue: control.setbillingaddress.value,
-                      onChanged: (val) {
-                        control.setbillingaddress.value=val!;
-                        },
+                  activeColor: Colors.blue,
+                  groupValue: control.setbillingaddress.value,
+                  onChanged: (val) {
+                    control.setbillingaddress.value = val!;
+                  },
                   // selected: control.setbillingaddress.value==currentmodel?true:false,
-                 ),
-               ),
-
-
+                ),
+              ),
             ],
           ),
         ],
       ),
     );
 Widget adresslistshipping(
-    addressmodel model,
-    logincontroller control,
-    context,
-    ) =>
+  addressmodel model,
+  logincontroller control,
+  context,
+) =>
     Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
@@ -2167,17 +2204,40 @@ Widget adresslistshipping(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PrimaryText(words: "Adress: ${model.address1}", fontsize: 14),
+                  model.address1!.length < 20
+                      ? PrimaryText(
+                          words: "Adress: ${model.address1}",
+                          over: TextOverflow.ellipsis,
+                          fontsize: 14)
+                      : PrimaryText(
+                          words: "Adress: ${model.address1!.substring(0, 20)}" +
+                              "...",
+                          over: TextOverflow.ellipsis,
+                          fontsize: 14),
                   SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      SecondlyText(words: "Emarite : ${model.state}"),
+                      model.state!.length < 12
+                          ? SecondlyText(words: "Emarite : ${model.state}")
+                          : SecondlyText(words: "Emarite : ${model.state!.substring(0, 12)}" + "..."),
                       SizedBox(
                         width: 10,
                       ),
-                      SecondlyText(words: "City: ${model.city}")
+                      model.state!.length < 10
+                          ? model.city!.length < 10
+                              ? SecondlyText(words: "City: ${model.city}")
+                              : SecondlyText(
+                                  words:
+                                      "City: ${model.city!.substring(0, 10)}" +
+                                          "...")
+                          : model.city!.length < 6
+                              ? SecondlyText(words: "City: ${model.city}")
+                              : SecondlyText(
+                                  words:
+                                      "City: ${model.city!.substring(0, 6)}" +
+                                          "...")
                     ],
                   ),
                   SizedBox(
@@ -2193,31 +2253,26 @@ Widget adresslistshipping(
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               Obx(
-                    ()=> Radio(
+                () => Radio(
                   value: model,
-
                   activeColor: Colors.blue,
                   groupValue: control.setshippingaddress.value,
                   onChanged: (val) {
-                    control.setshippingaddress.value=val!;
+                    control.setshippingaddress.value = val!;
                   },
-
                 ),
               ),
-
-
             ],
           ),
         ],
       ),
     );
 Widget lsitshipmethods(
-    shipmodel model,
-    logincontroller control,
-    context,
-    ) =>
+  shipmodel model,
+  logincontroller control,
+  context,
+) =>
     Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
@@ -2240,20 +2295,19 @@ Widget lsitshipmethods(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PrimaryText(words: "Method : ${model.carrier_title}", fontsize: 14),
+                  PrimaryText(
+                      words: "Method : ${model.carrier_title}", fontsize: 14),
                   SizedBox(
                     height: height! * 0.02,
                   ),
                   PrimaryText(
-                      words: 'Fee ${model.formatted_price}',
-                      fontsize: 14),
+                      words: 'Fee ${model.formatted_price}', fontsize: 14),
                 ],
               ),
             ),
@@ -2261,21 +2315,18 @@ Widget lsitshipmethods(
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               Obx(
-                    ()=> Radio(
+                () => Radio(
                   value: model.method,
 
                   activeColor: Colors.blue,
                   groupValue: control.setshipmethod.value,
                   onChanged: (val) {
-                    control.setshipmethod.value=val!;
+                    control.setshipmethod.value = val!;
                   },
                   // selected: control.setbillingaddress.value==currentmodel?true:false,
                 ),
               ),
-
-
             ],
           ),
         ],
@@ -2283,9 +2334,8 @@ Widget lsitshipmethods(
     );
 
 Widget adresslistload(
-
-    context,
-    ) =>
+  context,
+) =>
     Container(
       padding: EdgeInsets.all(10),
       height: getheight(context) * 0.1719,
@@ -2332,7 +2382,7 @@ Widget adresslistload(
                           height: getheight(context) * 0.009,
                           child: PrimaryText(
                               words:
-                              "       "), // Replace with your desired shimmer color
+                                  "       "), // Replace with your desired shimmer color
                         ),
                       ),
                     ],
@@ -2382,9 +2432,7 @@ Widget adresslistload(
                   ),
                   Row(
                     children: [
-                      PrimaryText(
-                          words: 'Phone Number: ',
-                          fontsize: 14),
+                      PrimaryText(words: 'Phone Number: ', fontsize: 14),
                       Shimmer(
                         gradient: LinearGradient(
                           colors: [
@@ -2400,7 +2448,7 @@ Widget adresslistload(
                           height: getheight(context) * 0.009,
                           child: PrimaryText(
                               words:
-                              "       "), // Replace with your desired shimmer color
+                                  "       "), // Replace with your desired shimmer color
                         ),
                       ),
                     ],
@@ -2429,7 +2477,6 @@ Widget adresslistload(
               Padding(
                   padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
                   child: InkWell(
-
                     child: Icon(
                       Icons.delete_outline,
                     ),
@@ -2440,10 +2487,10 @@ Widget adresslistload(
       ),
     );
 
-Widget searchlistItemWidget(context, productmodel model,
-    dashcontroller control, productmodel currentmodel) =>
+Widget searchlistItemWidget(context, productmodel model, dashcontroller control,
+        productmodel currentmodel) =>
     InkWell(
-      onTap: (){
+      onTap: () {
         Get.to(productdetails(model: model));
       },
       child: Container(
@@ -2503,7 +2550,8 @@ Widget searchlistItemWidget(context, productmodel model,
                     SizedBox(
                       height: height! * 0.02,
                     ),
-                    PrimaryText(words: '${model.formatted_price} ', fontsize: 14),
+                    PrimaryText(
+                        words: '${model.formatted_price} ', fontsize: 14),
                   ],
                 ),
               ),
@@ -2513,10 +2561,9 @@ Widget searchlistItemWidget(context, productmodel model,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                  child:  Obx(
-                        () => ConditionalBuilder(
-                      condition:
-                      control.maploadfav[currentmodel.id] == false,
+                  child: Obx(
+                    () => ConditionalBuilder(
+                      condition: control.maploadfav[currentmodel.id] == false,
                       builder: (BuildContext context) {
                         return InkWell(
                           onTap: () async {
@@ -2547,8 +2594,8 @@ Widget searchlistItemWidget(context, productmodel model,
                       fallback: (BuildContext context) {
                         return Shimmer.fromColors(
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 3.0, right: 3.0),
+                            padding:
+                                const EdgeInsets.only(top: 3.0, right: 3.0),
                             child: CircleAvatar(
                               child: Image(
                                 image: AssetImage(
@@ -2557,8 +2604,7 @@ Widget searchlistItemWidget(context, productmodel model,
                                 width: getwidth(context) * 0.03,
                                 // color: model.iswishlisted?Colors.red:null,
                               ),
-                              backgroundColor:
-                              Colors.black.withOpacity(0.5),
+                              backgroundColor: Colors.black.withOpacity(0.5),
                               radius: 10,
                             ),
                           ),
@@ -2570,11 +2616,12 @@ Widget searchlistItemWidget(context, productmodel model,
                   ),
                 ),
                 Obx(
-                      () => ConditionalBuilder(
+                  () => ConditionalBuilder(
                     condition: control.maploadcart[currentmodel.id] == false,
                     builder: (BuildContext context) {
                       return Padding(
-                        padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                        padding:
+                            const EdgeInsets.only(right: 10.0, bottom: 15.0),
                         child: InkWell(
                           onTap: () async {
                             await control.addtocart(
@@ -2606,10 +2653,10 @@ Widget searchlistItemWidget(context, productmodel model,
 
 Widget buildsmallButton(
     {required context,
-      required String name,
-      Color? Textcolor,
-      required Color buttoncolor,
-      void Function()? onTap}) {
+    required String name,
+    Color? Textcolor,
+    required Color buttoncolor,
+    void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
@@ -2639,27 +2686,28 @@ Widget buildsmallButton(
         ),
         child: Center(
             child: PrimaryText(
-              words: name,
-              color: Textcolor != null ? Textcolor : Colors.white,
-              fontsize: 18,
-              fontfami: "Inter",
-            )),
+          words: name,
+          color: Textcolor != null ? Textcolor : Colors.white,
+          fontsize: 18,
+          fontfami: "Inter",
+        )),
       ),
     ),
   );
 }
+
 Widget buildmapButton(
     {required context,
-      required String name,
-      Color? Textcolor,
-      required Color buttoncolor,
-      void Function()? onTap}) {
+    required String name,
+    Color? Textcolor,
+    required Color buttoncolor,
+    void Function()? onTap}) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: InkWell(
       onTap: onTap,
       child: Container(
-        width: width!*0.3,
+        width: width! * 0.3,
         height: height! * 0.04,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -2683,73 +2731,50 @@ Widget buildmapButton(
         ),
         child: Center(
             child: PrimaryText(
-              words: name,
-              color: Textcolor != null ? Textcolor : Colors.white,
-              fontsize: 18,
-              fontfami: "Inter",
-            )),
+          words: name,
+          color: Textcolor != null ? Textcolor : Colors.white,
+          fontsize: 18,
+          fontfami: "Inter",
+        )),
       ),
     ),
   );
 }
 
-Widget loadaddress(){
+Widget loadaddress() {
   return Stack(
     children: [
       SingleChildScrollView(
         child: Padding(
-          padding:
-          const EdgeInsets.symmetric(
-              vertical: 26.0,
-              horizontal: 18),
+          padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 18),
           child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: 20,
               ),
               AnimationLimiter(
                 child: ListView.separated(
-                    physics:
-                    BouncingScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
-                    separatorBuilder:
-                        (context, index) {
-                      return SizedBox(
-                          height: 20);
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 20);
                     },
                     itemCount: 3,
-                    itemBuilder:
-                        (context, index) {
-                      return AnimationConfiguration
-                          .staggeredList(
+                    itemBuilder: (context, index) {
+                      return AnimationConfiguration.staggeredList(
                         position: index,
-                        delay: Duration(
-                            milliseconds:
-                            100),
-                        child:
-                        SlideAnimation(
-                          duration: Duration(
-                              milliseconds:
-                              2500),
-                          curve: Curves
-                              .fastLinearToSlowEaseIn,
-                          horizontalOffset:
-                          30,
-                          verticalOffset:
-                          300.0,
+                        delay: Duration(milliseconds: 100),
+                        child: SlideAnimation(
+                          duration: Duration(milliseconds: 2500),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          horizontalOffset: 30,
+                          verticalOffset: 300.0,
                           child: FlipAnimation(
-                              duration: Duration(
-                                  milliseconds:
-                                  3000),
-                              curve: Curves
-                                  .fastLinearToSlowEaseIn,
-                              flipAxis:
-                              FlipAxis
-                                  .y,
-                              child: adresslistload(
-                                  context)),
+                              duration: Duration(milliseconds: 3000),
+                              curve: Curves.fastLinearToSlowEaseIn,
+                              flipAxis: FlipAxis.y,
+                              child: adresslistload(context)),
                         ),
                       );
                     }),
@@ -2759,48 +2784,29 @@ Widget loadaddress(){
         ),
       ),
       Align(
-        alignment: Alignment
-            .bottomCenter,
+        alignment: Alignment.bottomCenter,
         child: Row(
           children: [
             Container(
               width: width! * 0.50,
               height: width! * 0.2,
-              child:
-              buildsmallButton(
-                  context:
-                  context,
-                  name:
-                  "Add New Address",
-                  buttoncolor:
-                  Colors
-                      .white,
+              child: buildsmallButton(
+                  context: context,
+                  name: "Add New Address",
+                  buttoncolor: Colors.white,
                   Textcolor: fontcolorprimary,
-                  onTap:
-                      () {
-
-                  }),
+                  onTap: () {}),
             ),
             Container(
-              width:
-              width! * 0.5,
-              height:
-              width! * 0.2,
-              child:
-              buildsmallButton(
-                  context:
-                  context,
-                  name:
-                  "Save",
+              width: width! * 0.5,
+              height: width! * 0.2,
+              child: buildsmallButton(
+                  context: context,
+                  name: "Save",
                   Textcolor: fontcolorprimary,
-                  buttoncolor:
-                  Colors
-                      .white,
-                  onTap:
-                      () {
-                  }),
+                  buttoncolor: Colors.white,
+                  onTap: () {}),
             ),
-
           ],
         ),
       )
@@ -2808,12 +2814,10 @@ Widget loadaddress(){
   );
 }
 
-
-Widget loadScreen(){
+Widget loadScreen() {
   return SingleChildScrollView(
     child: Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: 18.0, vertical: 36.0),
+      padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 36.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -2835,7 +2839,7 @@ Widget loadScreen(){
                   height: height! * 0.009,
                   child: PrimaryText(
                       words:
-                      "       "), // Replace with your desired shimmer color
+                          "       "), // Replace with your desired shimmer color
                 ),
               ),
             ],
@@ -2848,8 +2852,7 @@ Widget loadScreen(){
               itemCount: 2,
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
-              separatorBuilder:
-                  (BuildContext context, int index) {
+              separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(height: 20);
               },
               itemBuilder: (BuildContext context, int index) {
@@ -2879,8 +2882,8 @@ Widget loadScreen(){
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 14.0, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8),
                   child: Row(
                     children: [
                       SecondlyText(words: "Items Cost"),
@@ -2898,15 +2901,14 @@ Widget loadScreen(){
                             height: height! * 0.01,
                             color: Colors.white,
                             child: SecondlyText(
-                                words: "               ",
-                                fontsize: 12)),
+                                words: "               ", fontsize: 12)),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 14.0, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8),
                   child: Row(
                     children: [
                       SecondlyText(words: "Shipping Fee"),
@@ -2924,16 +2926,15 @@ Widget loadScreen(){
                             height: height! * 0.01,
                             color: Colors.white,
                             child: SecondlyText(
-                                words: "               ",
-                                fontsize: 12)),
+                                words: "               ", fontsize: 12)),
                       ),
                     ],
                   ),
                 ),
                 Divider(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 14.0, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8),
                   child: Row(
                     children: [
                       SecondlyText(words: "Total Price"),
@@ -2951,8 +2952,7 @@ Widget loadScreen(){
                             height: height! * 0.01,
                             color: Colors.white,
                             child: SecondlyText(
-                                words: "               ",
-                                fontsize: 12)),
+                                words: "               ", fontsize: 12)),
                       ),
                     ],
                   ),
@@ -2963,11 +2963,7 @@ Widget loadScreen(){
           SizedBox(
             height: 25,
           ),
-          buildButton(
-              context: context,
-              name: "Checkout",
-              onTap: () {
-              }),
+          buildButton(context: context, name: "Checkout", onTap: () {}),
         ],
       ),
     ),
@@ -3082,4 +3078,3 @@ Widget loadScreen(){
                           )),
                     ],
                   ),*/
-
