@@ -8,7 +8,7 @@ import 'package:omega/View/Screens/favorite.dart';
 import 'package:omega/View/Screens/profile/profile.dart';
 
 class homecontroller extends GetxController {
-  RxInt currentindex = 0.obs;
+   RxInt currentindex = 0.obs;
   Rx<Color> selecteditemcolor = fontcolorprimary.obs;
   static RxInt itemsincart=0.obs;
   List<Widget> bottomscreens = [

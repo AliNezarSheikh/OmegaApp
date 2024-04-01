@@ -1,14 +1,16 @@
-import 'package:accordion/accordion.dart';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:omega/Constant/reusable.dart';
+import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
-
+import 'package:omega/View/Screens/dashboard.dart';
+import 'package:omega/View/Screens/home_screen.dart';
 import '../../Constant/Components.dart';
-import 'add_new_card_screen.dart';
 
 class paymentscreen extends StatelessWidget {
 logincontroller controller=Get.put(logincontroller());
@@ -182,27 +184,39 @@ logincontroller controller=Get.put(logincontroller());
 
                     ),
                   ),
-                  Obx(
-                      ()=> ConditionalBuilder(
-                        condition: controller.isloadmethod.isFalse,
-                        builder: (BuildContext context){
-                          return   buildButton(context: context,name: "Apply Filter",onTap: () async {
-                            if(controller.setpaymethod.value !=""){
-                              await controller.setmethodpayment(token: token!,context: context,method:controller.setpaymethod.value  );
-                            }else{
-                              showresult(context, Colors.red, "Select Payment Method");
-                            }
-                          });
-                        },
-                        fallback: (BuildContext context){
-                          return Center(child:  CircularProgressIndicator(),);
-                        }),
-                  )
+    buildButton(context: context,name: "Apply Filter",onTap: () async {
+    if(controller.setpaymethod.value !=""){
+    await controller.setmethodpayment(token: token!,context: context,method:controller.setpaymethod.value  );
+    if(controller.successsaveorder.isTrue){
+      homecontrol.currentindex=0.obs;
+      homecontroller.itemsincart.value=0;
+    Get.off(()=>homescreen(),
+    transition: Transition.zoom,
+    curve: Curves.easeOutBack,
+    duration: Duration(seconds: 1));
+    }
+    }else{
+    showresult(context, Colors.red, "Select Payment Method");
+    }
+    }),
+
 
                 ],
               )
             ),
-          )
+          ),
+          Obx(
+                ()=> Visibility(
+              visible:controller.isloadmethod.value ,
+              child: Container(
+                width: width!,
+                height: height!,
+                color:themesecond.withOpacity(0.3),
+                child: Center(
+                  child: SpinKitChasingDots(color:Colors.blue),
+                ),
+              ),),
+          ),
         ]
       ),
     );

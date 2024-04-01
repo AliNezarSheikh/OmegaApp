@@ -33,7 +33,7 @@ class logincontroller extends GetxController {
 
   RxBool successaddress = false.obs;
   RxBool successmethod = false.obs;
-  RxBool successpaymethod = false.obs;
+  RxBool successsaveorder = false.obs;
   RxBool successlogin = false.obs;
   RxBool successupdate = false.obs;
   RxString dropdownValue = list.first.obs;
@@ -567,9 +567,7 @@ async{
       "payment":{
         "method":method
       }
-
     };
-
     await http.post(
       url,
       headers: {
@@ -578,25 +576,48 @@ async{
         'Content-Type': 'application/json',
       },
       body:jsonEncode(bodyrequest),
-
     )
-        .then((value) {
+        .then((value) async {
       if (value.statusCode == 200) {
-        isloadmethod.value = false;
-        showresult(context, Colors.green, jsonDecode(value.body)["message"]);
-        successpaymethod.value = true;
+        await saveorder(token: token, context: context,);
       } else if (value.statusCode == 401) {
         isloadmethod.value = false;
-        successpaymethod.value = false;
         showresult(context, Colors.red, "You need to login");
       } else {
         isloadmethod.value = false;
-        successpaymethod.value = false;
+
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
       isloadmethod.value = false;
-      successpaymethod.value = false;
+      showresult(context, Colors.red, error.toString());
+    });
+  }
+
+  Future<void> saveorder({required String token,required BuildContext context})async{
+    Uri url = Uri.parse("$baseurl/customer/checkout/save-order");
+    await http.post(url,
+      headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },).then((value)  {
+    if (value.statusCode == 200) {
+        isloadmethod.value = false;
+        showresult(context, Colors.green, "Your Order Saved Successfully");
+        successsaveorder.value = true;
+  } else if (value.statusCode == 401) {
+    isloadmethod.value = false;
+    successsaveorder.value = false;
+    showresult(context, Colors.red, "You need to login");
+    } else {
+    isloadmethod.value = false;
+    successsaveorder.value = false;
+    showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+    }
+
+    }).catchError((error){
+      isloadmethod.value = false;
+      successsaveorder.value = false;
       showresult(context, Colors.red, error.toString());
     });
   }
