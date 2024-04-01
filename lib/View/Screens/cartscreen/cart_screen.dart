@@ -2,19 +2,22 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/View/Screens/cartscreen/setbillingaddress.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../Constant/Components.dart';
 import '../../../Control/dashboardcontroller.dart';
-import '../address/addadress.dart';
 
 class cartscreen extends StatelessWidget {
   dashcontroller dashcon = Get.put(dashcontroller(), permanent: true);
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController coupon = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    coupon.text=currentcart==null?"":currentcart!.coupon_code==null?"":currentcart!.coupon_code!;
     return Stack(
       children: [
         Scaffold(
@@ -147,6 +150,98 @@ class cartscreen extends StatelessWidget {
                               width: getwidth(context),
                               child: Column(
                                 children: [
+                                  Obx(
+                                    ()=> Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 14.0, vertical: 8),
+                                      child: homecontroller.itemsincart.value>0?
+                                     Form(
+                                        key:_formKey,
+                                       child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Obx(
+                                                  ()=>Column(
+                                                    children: [
+                                                      TextFormField(
+                                                      controller:coupon,
+                                                      enabled:!dashcon.isusingcoupon.value,
+                                                      validator:(String? value) {
+                                                        if (value!.length < 3) {
+                                                          return "Coupon is Short";
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                      decoration: InputDecoration(
+                                                        prefixIcon: Icon(Icons.discount_outlined),
+                                                        hintText: "Coupon Code",
+                                                        border: OutlineInputBorder(
+                                                               borderRadius: BorderRadius.circular(10.0),
+                                                                             ),
+                                                        label: Text("Coupon"),
+                                                      ),
+                                                      keyboardType: TextInputType.text,
+                                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Poppins', fontWeight: FontWeight.w200),
+                                                                                                      ),
+                                                      dashcon.isusingcoupon.isTrue?
+                                                      Text(
+                                                        'Discount = ${currentcart!.formatted_discount}',
+                                                        style: TextStyle(color: Colors.red),
+                                                      )
+                                                          :SizedBox(),
+
+                                                    ],
+                                                  ),
+                                              ),
+                                            ),
+                                            Obx(() => dashcon.isusingcoupon.isTrue
+                                                ?Container(
+                                              width: width! * 0.3,
+                                              height: width! * 0.2,
+                                              child: buildsmallButton(
+                                                  context: context,
+                                                  name: "Remove",
+                                                  buttoncolor:Colors.red,
+                                                  Textcolor:  Colors.white,
+                                                  onTap: () async {
+                                                    if (_formKey.currentState!.validate()){
+                                                      await dashcon.removecoupon(
+                                                          token: token!, context: context);
+                                                      if(dashcon.isusingcoupon.value==false){
+                                                        coupon.text='';
+                                                      }else{
+
+                                                      }
+                                                    }
+                                                  }),
+                                            )
+
+                                                : Container(
+                                              width: width! * 0.3,
+                                              height: width! * 0.2,
+                                              child: buildsmallButton(
+                                                  context: context,
+                                                  name: "Use",
+                                                  buttoncolor:Colors.green,
+                                                  Textcolor:  Colors.white,
+                                                  onTap: () async {
+                                                    if (_formKey.currentState!.validate()){
+                                                      await dashcon.addcoupon(
+                                                          couponcode: coupon.text,
+                                                          token: token!, context: context);
+                                                    }
+                                                  }),
+                                            ),
+                                            ),
+
+
+                                          ],
+                                        ),
+                                     )
+                                      :SizedBox(),
+                                    ),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 14.0, vertical: 8),
@@ -209,8 +304,8 @@ class cartscreen extends StatelessWidget {
                             SizedBox(
                               height: 25,
                             ),
-                            Obx(
-                  ()=> ConditionalBuilder(
+                            Obx(()
+                              => ConditionalBuilder(
                                   condition:   homecontroller.itemsincart.value>0,
                                   builder: (context)=>buildButton(
                                     context: context,

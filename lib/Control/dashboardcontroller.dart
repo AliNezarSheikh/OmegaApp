@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/state_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Model/cartmodel.dart';
@@ -22,6 +23,7 @@ class dashcontroller extends GetxController {
   RxBool successaddress=false.obs;
   RxBool isLoadsearch=false.obs;
   RxBool isLoadupdate = false.obs;
+  RxBool isusingcoupon=false.obs;
   RxBool accept = false.obs;
   RxInt totalItems = 0.obs;
   RxString itemscost = "0".obs;
@@ -357,6 +359,11 @@ class dashcontroller extends GetxController {
         var cart = jsonDecode(value.body);
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
+          if(currentcart!.coupon_code != null){
+            isusingcoupon.value=true;
+          }else{
+            isusingcoupon.value=false;
+          }
           totalItems.value = currentcart!.items_qty!;
           itemscost.value = currentcart!.formatted_sub_total!;
           shippingfee.value = currentcart!.selected_shipping_rate!;
@@ -373,13 +380,17 @@ class dashcontroller extends GetxController {
         loadcart.value = false;
       } else if (value.statusCode == 401) {
         loadadd.value = false;
+        isusingcoupon.value=false;
+        homecontroller.itemsincart.value = 0;
         showresult(context, Colors.red, "You need to Login");
       } else {
+        isusingcoupon.value=false;
         loadadd.value = false;
-
+        homecontroller.itemsincart.value = 0;
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {
+      isusingcoupon.value=false;
       loadadd.value = false;
         print(error);
       showresult(context, Colors.red, error.toString());
@@ -399,6 +410,7 @@ class dashcontroller extends GetxController {
         listcart = [];
         lencart.value=listcart.length;
         showresult(context, Colors.green, jsonDecode(value.body)["message"]);
+        isusingcoupon.value=false;
         totalItems.value = 0;
         itemscost.value = "\$0.0";
         shippingfee.value = "\$0.0";
@@ -435,6 +447,11 @@ class dashcontroller extends GetxController {
         var cart = jsonDecode(value.body);
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
+          if(currentcart!.coupon_code != null){
+            isusingcoupon.value=true;
+          }else{
+            isusingcoupon.value=false;
+          }
           totalItems.value = currentcart!.items_qty!;
           itemscost.value = currentcart!.formatted_sub_total!;
           shippingfee.value = currentcart!.selected_shipping_rate!;
@@ -444,6 +461,7 @@ class dashcontroller extends GetxController {
             listcart.add(itemincart.fromJson(element));
           });
         } else {
+          isusingcoupon.value=false;
           totalItems.value = 0;
           itemscost.value = "\$0.0";
           shippingfee.value = "\$0.0";
@@ -458,10 +476,131 @@ class dashcontroller extends GetxController {
         isLoadupdate.value = false;
       } else {
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+
         isLoadupdate.value = false;
       }
     }).catchError((error) {
       showresult(context, Colors.red, error.toString());
+
+      isLoadupdate.value = false;
+    });
+  }
+
+  Future<void> addcoupon(
+      {required String couponcode,
+        required String token,
+        required BuildContext context}) async {
+    isLoadupdate.value = true;
+    Uri url = Uri.parse("$baseurl/customer/cart/coupon");
+    listcart=[];
+    await http.post(
+      url,
+      headers: {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token',
+      },body: {
+        "code":couponcode
+    }
+    ).then((value) async {
+      if (value.statusCode == 200) {
+        var cart = jsonDecode(value.body);
+        showresult(context, Colors.green, "Successfully use Coupon");
+        if (cart["data"] != null) {
+          currentcart = cartmodel.fromJson(cart["data"]);
+          if(currentcart!.coupon_code != null){
+            isusingcoupon.value=true;
+          }else{
+            isusingcoupon.value=false;
+          }
+          totalItems.value = currentcart!.items_qty!;
+          itemscost.value = currentcart!.formatted_sub_total!;
+          shippingfee.value = currentcart!.selected_shipping_rate!;
+          totalprice.value = currentcart!.formatted_grand_total!;
+          homecontroller.itemsincart.value = cart["data"]["items_count"];
+          currentcart!.items!.forEach((element) {
+            listcart.add(itemincart.fromJson(element));
+          });
+        } else {
+          isusingcoupon.value=false;
+          totalItems.value = 0;
+          itemscost.value = "\$0.0";
+          shippingfee.value = "\$0.0";
+          totalprice.value = "\$0.0";
+          homecontroller.itemsincart.value = 0;
+          currentcart=null;
+        }
+        lencart.value=listcart.length;
+        isLoadupdate.value = false;
+      } else if (value.statusCode == 401) {
+        isusingcoupon.value=false;
+        showresult(context, Colors.red, "You need to Login");
+        isLoadupdate.value = false;
+      } else {
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+        isusingcoupon.value=false;
+        isLoadupdate.value = false;
+      }
+    }).catchError((error) {
+      showresult(context, Colors.red, error.toString());
+      isusingcoupon.value=false;
+      isLoadupdate.value = false;
+    });
+  }
+  Future<void> removecoupon(
+      {
+        required String token,
+        required BuildContext context}) async {
+    isLoadupdate.value = true;
+    Uri url = Uri.parse("$baseurl/customer/cart/coupon");
+    listcart=[];
+    await http.delete(
+        url,
+        headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+    ).then((value) async {
+      if (value.statusCode == 200) {
+        var cart = jsonDecode(value.body);
+        showresult(context, Colors.green, "Successfully remove Coupon");
+        if (cart["data"] != null) {
+          currentcart = cartmodel.fromJson(cart["data"]);
+          if(currentcart!.coupon_code != null){
+            isusingcoupon.value=true;
+          }else{
+            isusingcoupon.value=false;
+          }
+          totalItems.value = currentcart!.items_qty!;
+          itemscost.value = currentcart!.formatted_sub_total!;
+          shippingfee.value = currentcart!.selected_shipping_rate!;
+          totalprice.value = currentcart!.formatted_grand_total!;
+          homecontroller.itemsincart.value = cart["data"]["items_count"];
+          currentcart!.items!.forEach((element) {
+            listcart.add(itemincart.fromJson(element));
+          });
+        } else {
+          isusingcoupon.value=false;
+          totalItems.value = 0;
+          itemscost.value = "\$0.0";
+          shippingfee.value = "\$0.0";
+          totalprice.value = "\$0.0";
+          homecontroller.itemsincart.value = 0;
+          currentcart=null;
+        }
+        lencart.value=listcart.length;
+        isLoadupdate.value = false;
+      } else if (value.statusCode == 401) {
+        isusingcoupon.value=true;
+        showresult(context, Colors.red, "You need to Login");
+        isLoadupdate.value = false;
+      } else {
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+        isusingcoupon.value=true;
+        isLoadupdate.value = false;
+      }
+    }).catchError((error) {
+      showresult(context, Colors.red, error.toString());
+      isusingcoupon.value=true;
       isLoadupdate.value = false;
     });
   }
@@ -491,6 +630,11 @@ class dashcontroller extends GetxController {
         var cart = jsonDecode(value.body);
         if (cart["data"] != null) {
           currentcart = cartmodel.fromJson(cart["data"]);
+          if(currentcart!.coupon_code != null){
+            isusingcoupon.value=true;
+          }else{
+            isusingcoupon.value=false;
+          }
           totalItems.value = currentcart!.items_qty!;
           itemscost.value = currentcart!.formatted_sub_total!;
           shippingfee.value = currentcart!.selected_shipping_rate!;
@@ -502,6 +646,7 @@ class dashcontroller extends GetxController {
             }
           });
         } else {
+          isusingcoupon.value=false;
           totalItems.value = 0;
           itemscost.value = "\$0.0";
           shippingfee.value = "\$0.0";
@@ -512,10 +657,12 @@ class dashcontroller extends GetxController {
         isLoadupdate.value=false;
       } else if (value.statusCode == 401) {
         isLoadupdate.value=false;
+
         showresult(context, Colors.red, "You need to Login");
 
       } else {
         isLoadupdate.value=false;
+
         showresult(context, Colors.red, jsonDecode(value.body)["message"]);
       }
     }).catchError((error) {

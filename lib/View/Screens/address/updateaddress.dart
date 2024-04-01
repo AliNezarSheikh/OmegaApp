@@ -13,31 +13,30 @@ import '../../../Constant/reusable.dart';
 import '../../../Control/logincontroller.dart';
 
 class updateaddress extends StatelessWidget {
-addressmodel model;
-updateaddress({required this.model});
-late GoogleMapController gmc;
-TextEditingController adressController = TextEditingController();
-TextEditingController cityController = TextEditingController();
+  addressmodel model;
+  updateaddress({required this.model});
+  late GoogleMapController gmc;
+  TextEditingController adressController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
 
-TextEditingController phoneController = TextEditingController();
-TextEditingController firstname = TextEditingController();
-TextEditingController lastname = TextEditingController();
-logincontroller controller = Get.put(logincontroller());
-GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController firstname = TextEditingController();
+  TextEditingController lastname = TextEditingController();
+  logincontroller controller = Get.put(logincontroller());
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Widget build(BuildContext context) {
-    adressController.text=model.address1!;
-    cityController.text=model.city!;
-    controller.dropdownValueemarite.value=model.state!;
-    phoneController.text=model.phoneaddress!;
-    firstname.text=model.firstname!;
-    lastname.text=model.lastname!;
+    adressController.text = model.address1!;
+    cityController.text = model.city!;
+    controller.dropdownValueemarite.value = model.state!;
+    phoneController.text = model.phoneaddress!;
+    firstname.text = model.firstname!;
+    lastname.text = model.lastname!;
     controller.getposition(context: context);
 
     return Obx(
-          ()=> Scaffold(
+      () => Scaffold(
         appBar: AppBar(
-
           scrolledUnderElevation: 0.0,
           leadingWidth: 70.0,
           leading: Padding(
@@ -53,7 +52,6 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
               ),
             ),
           ),
-
           elevation: 0.0,
         ),
         body: Stack(
@@ -62,7 +60,6 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
             Container(
               height: height! * 0.67,
               child: SingleChildScrollView(
-
                 child: Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Form(
@@ -71,7 +68,8 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                       children: [
                         Row(
                           children: [
-                            Expanded(child: Column(
+                            Expanded(
+                                child: Column(
                               children: [
                                 textinput(
                                     controller: firstname,
@@ -91,7 +89,8 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                     type: TextInputType.text),
                               ],
                             )),
-                            Expanded(child: Column(
+                            Expanded(
+                                child: Column(
                               children: [
                                 textinput(
                                     controller: lastname,
@@ -113,8 +112,9 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                             )),
                           ],
                         ),
-                        SizedBox(height: 20,),
-
+                        SizedBox(
+                          height: 20,
+                        ),
                         textinput(
                             controller: adressController,
                             hint: "Adress",
@@ -131,7 +131,9 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                             ),
                             lab: "Adress",
                             type: TextInputType.text),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         textinput(
                             controller: phoneController,
                             hint: "Phone",
@@ -148,9 +150,9 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                             ),
                             lab: "Phone",
                             type: TextInputType.number),
-
-
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         textinput(
                           validator: (String? value) {
                             if (value!.isEmpty) {
@@ -168,7 +170,9 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                           hint: "City",
                           controller: cityController,
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Row(
                           children: [
                             Padding(
@@ -191,7 +195,7 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                               ),
                               child: DropdownButtonFormField<String>(
                                 decoration:
-                                InputDecoration(border: InputBorder.none),
+                                    InputDecoration(border: InputBorder.none),
                                 borderRadius: BorderRadius.circular(20.0),
                                 padding: EdgeInsets.only(
                                   left: 10.0,
@@ -204,18 +208,19 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                   controller.dropdownValueemarite = value!.obs;
                                 },
                                 items: emarites.map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
                             ),
                           ],
                         ),
-
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         ConditionalBuilder(
                             condition: controller.isLoadingaddress.isFalse,
                             builder: (context) => buildButton(
@@ -225,22 +230,25 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                   if (formKey.currentState!.validate()) {
                                     await controller.addressupdate(
                                       id: model.id!,
-                                        address1: adressController.text,
-                                        city: cityController.text,
-                                        phoneaddress: phoneController.text,
-                                        state_name: controller.dropdownValueemarite.value,
-                                        context: context, token: token!,  first_name: firstname.text, last_name: lastname.text,);
-                                    if(controller.successaddress.isTrue){
-                                      controller.getadress(token: token!,);
+                                      address1: adressController.text,
+                                      city: cityController.text,
+                                      phoneaddress: phoneController.text,
+                                      state_name: controller.dropdownValueemarite.value,
+                                      context: context,
+                                      token: token!,
+                                      first_name: firstname.text,
+                                      last_name: lastname.text,
+                                    );
+                                    if (controller.successaddress.isTrue) {
+                                      controller.getadress(
+                                        token: token!,
+                                      );
                                       Get.back();
                                     }
-
-
                                   }
                                 }),
                             fallback: (context) =>
                                 Center(child: CircularProgressIndicator())),
-
                       ],
                     ),
                   ),
@@ -275,66 +283,69 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                           condition: controller.isloadmap.isFalse,
                           builder: (context) => controller.getlocation.isTrue
                               ? Obx(
-                                () => GoogleMap(
-                              markers: Set<Marker>.of(
-                                  [controller.marker.value]),
-                              onTap: (LatLng) async {
-                                controller.updateMarker(LatLng);
-                                controller.visiblesave = false.obs;
-                                await setLocaleIdentifier("en_US");
-                                List<Placemark> placemarks =
-                                await placemarkFromCoordinates(
-                                  LatLng.latitude,
-                                  LatLng.longitude,
-                                );
-                                adressController.text =
-                                    placemarks[0].subThoroughfare! +
-                                        placemarks[0].thoroughfare!;
-                                cityController.text =
-                                placemarks[0].subLocality!;
-                                emarites.contains( placemarks[0].administrativeArea!)?
-                                controller.dropdownValueemarite.value =
-                                placemarks[0].administrativeArea!
-                                    : controller.dropdownValueemarite.value =emarites.first;
-                              },
-                              mapType: MapType.hybrid,
-                              initialCameraPosition:
-                              controller.kGooglePlex!,
-                              onMapCreated: (GoogleMapController _controller) {
-                                gmc = _controller;
-
-                              },
-                            ),
-                          )
+                                  () => GoogleMap(
+                                    markers: Set<Marker>.of(
+                                        [controller.marker.value]),
+                                    onTap: (LatLng) async {
+                                      controller.updateMarker(LatLng);
+                                      controller.visiblesave = false.obs;
+                                      await setLocaleIdentifier("en_US");
+                                      List<Placemark> placemarks =
+                                          await placemarkFromCoordinates(
+                                        LatLng.latitude,
+                                        LatLng.longitude,
+                                      );
+                                      adressController.text =
+                                          placemarks[0].subThoroughfare! +
+                                              placemarks[0].thoroughfare!;
+                                      cityController.text =
+                                          placemarks[0].subLocality!;
+                                      emarites.contains(
+                                              placemarks[0].administrativeArea!)
+                                          ? controller
+                                                  .dropdownValueemarite.value =
+                                              placemarks[0].administrativeArea!
+                                          : controller.dropdownValueemarite
+                                              .value = emarites.first;
+                                    },
+                                    mapType: MapType.hybrid,
+                                    initialCameraPosition:
+                                        controller.kGooglePlex!,
+                                    onMapCreated:
+                                        (GoogleMapController _controller) {
+                                      gmc = _controller;
+                                    },
+                                  ),
+                                )
                               : Center(
-                            child: Text("Can not Open Map"),
-                          ),
-                          fallback: (context) => Container(
-                            width: width! * 0.9,
-                            height: width! * 0.5,
-                            child: Stack(
-                              alignment: Alignment.topCenter,
-                              children: [
-                                Shimmer(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.grey[300]!,
-                                      Colors.grey[100]!,
-                                      Colors.grey[300]!
-                                    ],
-                                    stops: [0.4, 0.5, 0.6],
-                                  ),
-                                  child: Container(
-                                    width: width! * 0.9,
-                                    height: width! * 0.5,
-                                    color: Colors.white,
-                                  ),
+                                  child: Text("Can not Open Map"),
                                 ),
-                              ],
-                            ),
-                          )),
+                          fallback: (context) => Container(
+                                width: width! * 0.9,
+                                height: width! * 0.5,
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Shimmer(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.grey[300]!,
+                                          Colors.grey[100]!,
+                                          Colors.grey[300]!
+                                        ],
+                                        stops: [0.4, 0.5, 0.6],
+                                      ),
+                                      child: Container(
+                                        width: width! * 0.9,
+                                        height: width! * 0.5,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
                       Obx(
-                            ()=> Visibility(
+                        () => Visibility(
                           visible: controller.visiblesave.value,
                           child: Align(
                             alignment: Alignment.bottomCenter,
@@ -346,19 +357,23 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                   controller.visiblesave = false.obs;
                                   await setLocaleIdentifier("en_US");
                                   List<Placemark> placemarks =
-                                  await placemarkFromCoordinates(
+                                      await placemarkFromCoordinates(
                                     currentlocation!.latitude,
                                     currentlocation!.longitude,
                                   );
 
                                   adressController.text =
-                                      placemarks[0].subThoroughfare! + " "+placemarks[0].thoroughfare!;
+                                      placemarks[0].subThoroughfare! +
+                                          " " +
+                                          placemarks[0].thoroughfare!;
                                   cityController.text =
-                                  placemarks[0].subLocality!;
-                                  emarites.contains( placemarks[0].administrativeArea!)?
-                                  controller.dropdownValueemarite.value =
-                                  placemarks[0].administrativeArea!
-                                      : controller.dropdownValueemarite.value =emarites.first;
+                                      placemarks[0].subLocality!;
+                                  emarites.contains(
+                                          placemarks[0].administrativeArea!)
+                                      ? controller.dropdownValueemarite.value =
+                                          placemarks[0].administrativeArea!
+                                      : controller.dropdownValueemarite.value =
+                                          emarites.first;
                                 }),
                           ),
                         ),

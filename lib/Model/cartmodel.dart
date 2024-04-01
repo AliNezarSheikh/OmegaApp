@@ -4,6 +4,8 @@ class cartmodel {
   int? cartid;
   int? items_count;
   int? items_qty;
+  String? coupon_code;
+  String? formatted_discount;
   String? formatted_grand_total;
   String? selected_shipping_rate;
   String? formatted_sub_total;
@@ -15,12 +17,16 @@ class cartmodel {
     required this.formatted_grand_total,
     required this.formatted_sub_total,
     required this.selected_shipping_rate,
+    required this.formatted_discount,
     required this.items,
     required this.items_qty,
+    required this.coupon_code,
   });
   cartmodel.fromJson(dynamic data) {
     cartid = data["id"];
     items_count = data["items_count"];
+    coupon_code=data["coupon_code"];
+    formatted_discount=data["formatted_discount"];
     selected_shipping_rate = data["selected_shipping_rate"]!=null?data["selected_shipping_rate"]['formatted_price']:"\$0.0";
     formatted_grand_total = data["formatted_grand_total"];
     formatted_sub_total = data["formatted_sub_total"];
