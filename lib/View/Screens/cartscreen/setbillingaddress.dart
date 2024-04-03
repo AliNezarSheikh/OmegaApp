@@ -10,7 +10,7 @@ import '../../../Constant/Components.dart';
 import '../../../Constant/reusable.dart';
 import '../../../Control/logincontroller.dart';
 import '../address/addadress.dart';
-import '../payment_screen.dart';
+import 'payment_screen.dart';
 class setbilling extends StatelessWidget {
   logincontroller controller = Get.put(logincontroller());
 

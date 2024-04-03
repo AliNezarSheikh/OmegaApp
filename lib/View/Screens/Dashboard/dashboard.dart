@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -14,11 +13,10 @@ import 'package:get/get.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/dashboardcontroller.dart';
-import 'package:omega/View/Screens/searchscreen.dart';
+import 'package:omega/View/Screens/Dashboard/searchscreen.dart';
 import 'package:omega/View/Screens/signup/login_screen.dart';
 import 'package:omega/View/Screens/signup/register_screen.dart';
-import 'package:omega/View/Screens/webpage.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:omega/View/web/webpage.dart';
 
 class dashboard extends StatefulWidget {
   @override

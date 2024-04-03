@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -13,16 +14,17 @@ import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/Model/adressmodel.dart';
 import 'package:omega/Model/cartmodel.dart';
 import 'package:omega/Model/categorymodel.dart';
+import 'package:omega/Model/oredermodel.dart';
 import 'package:omega/Model/paymentmodel.dart';
 import 'package:omega/Model/productmodel.dart';
 import 'package:omega/Model/shipmodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
-import 'package:omega/View/Screens/home_screen.dart';
-import 'package:omega/View/Screens/productdetails.dart';
+import 'package:omega/View/Screens/Dashboard/productdetails.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toastification/toastification.dart';
 
 import '../Control/dashboardcontroller.dart';
+import '../View/Screens/Dashboard/home_screen.dart';
 
 double? width;
 double? height;
@@ -2486,7 +2488,308 @@ Widget adresslistload(
         ],
       ),
     );
+Widget orderslist(
+    ordermodel model,
+    logincontroller control,
+    context,
+    ) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.2,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryText(
+                      words: "OrderId: #${model.id}",
+                      over: TextOverflow.ellipsis,
+                      fontsize: 14),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SecondlyText(words: "Total Items : ${model.total_item_count}"),
+                      SizedBox(
+                        width: 10,
+                      ),
 
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  SecondlyText(words: "Shipping: ${model.shipping_description}"),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  PrimaryText(
+                      words: 'Total Price: ${model.formatted_grand_total}',
+                      fontsize: 14),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: getcolor(option: model.status!),
+                      boxShadow: [
+                        BoxShadow(
+                          color: fontcolorprimary.withOpacity(0.05),
+                          spreadRadius: 4,
+                          blurRadius: 5,
+                          offset: Offset(
+                            2,
+                            4,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                  child:Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: SecondlyText(words: "${model.status}",color: Colors.white),
+                  )
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                  child: InkWell(
+                    onTap: (){
+
+                    },
+                    child: Image(
+                      width: 25,
+                      image: AssetImage("assets/images/share.png"),
+                    ),
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
+Color getcolor({required String option}){
+  switch (option){
+    case "pending":return Colors.yellow;
+    case "processing":return Colors.blue;
+    case "completed":return Colors.green;
+    case "canceled":return Colors.red;
+    default:
+      return Colors.white;
+
+  }
+}
+
+Widget ordersload(
+
+    context,
+    ) =>
+    Container(
+      padding: EdgeInsets.all(10),
+      height: getheight(context) * 0.2,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: fontcolorprimary.withOpacity(0.05),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: Offset(
+              2,
+              4,
+            ),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      PrimaryText(
+                          words: "OrderId: ",
+
+                          fontsize: 14),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+
+                          color: Colors.white,
+                          height: height!*0.009,
+                          child: SecondlyText(
+                              words:
+                              "            "), // Replace with your desired shimmer color
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SecondlyText(words: "Total Items : "),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+
+                          color: Colors.white,
+                          height: height!*0.009,
+                          child: SecondlyText(
+                              words:
+                              "           "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.02,
+                  ),
+                  Row(
+                    children: [
+                      SecondlyText(words: "Shipping: "),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+                          color: Colors.white,
+                          height: height!*0.009,
+                          child: SecondlyText(
+                              words:
+                              "                "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height! * 0.015,
+                  ),
+                  Row(
+                    children:[
+                      PrimaryText(
+                          words: 'Total Price:  ',
+                          fontsize: 14),
+                      Shimmer(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey[300]!,
+                            Colors.grey[100]!,
+                            Colors.grey[300]!
+                          ],
+                          stops: [0.4, 0.5, 0.6],
+                        ),
+                        child: Container(
+
+                          color: Colors.white,
+                          height: height!*0.009,
+                          child: SecondlyText(
+                              words:
+                              "       "), // Replace with your desired shimmer color
+                        ),
+                      ),
+                    ]
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child:  Shimmer(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.grey[300]!,
+                      Colors.grey[100]!,
+                      Colors.grey[300]!
+                    ],
+                    stops: [0.4, 0.5, 0.6],
+                  ),
+                  child: Container(
+
+                    color: Colors.white,
+                    height: height!*0.009,
+                    child: SecondlyText(
+                        words:
+                        "       "), // Replace with your desired shimmer color
+                  ),
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                  child: InkWell(
+                    onTap: (){
+
+                    },
+                    child: Image(
+                      width: 25,
+                      image: AssetImage("assets/images/share.png"),
+                    ),
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
 Widget searchlistItemWidget(context, productmodel model, dashcontroller control,
         productmodel currentmodel) =>
     InkWell(

@@ -14,6 +14,7 @@ import 'package:omega/Model/shipmodel.dart';
 import 'package:omega/Model/usermodel.dart';
 
 import '../Model/adressmodel.dart';
+import '../Model/oredermodel.dart';
 import '../Model/productmodel.dart';
 //primary
 Color fontcolorprimary =Color(0xff000000);
@@ -83,6 +84,7 @@ List<productmodel> listproducts = [];
 List<productmodel> listmiddle = [];
 List<productmodel> listsearch=[];
 List<itemincart> listcart=[];
+List<ordermodel> orders=[];
 List<shipmodel> listship=[];
 List<paymentmodel> listpaymentmethods=[];
 late addressmodel useraddress;

@@ -8,7 +8,7 @@ import 'package:omega/Model/usermodel.dart';
 
 import 'View/Screens/address/alladdress.dart';
 import 'View/Screens/signup/splash_screen.dart';
-import 'View/test.dart';
+
 
 
 Future<void> main() async {

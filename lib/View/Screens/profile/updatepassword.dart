@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:omega/Constant/reusable.dart';
 
 import '../../../Control/logincontroller.dart';
-import '../home_screen.dart';
-
 
 class changepassword extends StatelessWidget {
   TextEditingController passwordFieldController = TextEditingController();

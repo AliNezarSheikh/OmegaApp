@@ -7,7 +7,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:omega/Control/dashboardcontroller.dart';
 
-import '../../Constant/reusable.dart';
+import '../../../Constant/reusable.dart';
+
 
 class searchscreen extends StatelessWidget {
   TextEditingController searchcon = TextEditingController();

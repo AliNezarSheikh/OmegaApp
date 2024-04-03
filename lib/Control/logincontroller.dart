@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/adressmodel.dart';
+import 'package:omega/Model/oredermodel.dart';
 import 'package:omega/Model/paymentmodel.dart';
 import 'package:omega/Model/usermodel.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,6 +26,7 @@ class logincontroller extends GetxController {
   RxBool showError = false.obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingaddress = false.obs;
+  RxBool isLoadingorders = false.obs;
   RxBool isloadmethod = false.obs;
   RxBool isloadmap = false.obs;
   RxBool getlocation = false.obs;
@@ -511,6 +513,8 @@ class logincontroller extends GetxController {
       showresult(context, Colors.red, error.toString());
     });
   }
+
+
   void showMaterialDialog<T>({required BuildContext context, required Widget child})
   {
     showDialog<T>(context: context,
@@ -689,6 +693,38 @@ async{
       isloadmap.value=false;
       getlocation.value=false;
       AwesomeDialog(context: context,title: "Location Service",body: Text("Error While Get Location"))..show();
+    });
+  }
+
+  Future<void> getorders(
+      {required String token, }) async {
+    isLoadingorders.value = true;
+    orders=[];
+    Uri url = Uri.parse("$baseurl/customer/orders");
+    await http.get(url, headers: {
+      'Authorization': 'Bearer $token',
+
+    }).then((value) {
+      if (value.statusCode == 200) {
+        var result = jsonDecode(value.body);
+        result["data"].forEach((element) {
+          orders.add(ordermodel.fromJson(element));
+        });
+        isLoadingorders.value = false;
+      } else if (value.statusCode == 401){
+        isLoadingorders.value = false;
+        // showresult(context, Colors.red, "You need to login");
+        Get.off(loginscreen(),
+            transition: Transition.fadeIn,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: 3));
+      }else {
+        isLoadingorders.value = false;
+        
+      }
+    }).catchError((error) {
+      isLoadingorders.value = false;
+
     });
   }
 

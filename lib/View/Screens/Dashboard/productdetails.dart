@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:omega/Control/dashboardcontroller.dart';
 import 'package:omega/Model/productmodel.dart';
 
-import '../../Constant/Components.dart';
-import '../../Constant/reusable.dart';
+import '../../../Constant/Components.dart';
+import '../../../Constant/reusable.dart';
 
 class productdetails extends StatelessWidget {
   productmodel model;

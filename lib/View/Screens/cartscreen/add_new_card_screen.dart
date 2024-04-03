@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../Constant/Components.dart';
-import '../../Constant/reusable.dart';
+import '../../../Constant/Components.dart';
+import '../../../Constant/reusable.dart';
 
 class addcardscreen extends StatelessWidget {
   TextEditingController cardnumbercontrol = TextEditingController();

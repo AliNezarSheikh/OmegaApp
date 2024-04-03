@@ -8,8 +8,7 @@ import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/Control/logincontroller.dart';
 import 'package:omega/View/Screens/signup/register_screen.dart';
 
-import '../home_screen.dart';
-
+import '../Dashboard/home_screen.dart';
 
 
 class loginscreen extends StatelessWidget {
