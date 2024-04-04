@@ -1,12 +1,12 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:omega/Constant/reusable.dart';
 import 'package:omega/Control/homecontroller.dart';
 import 'package:omega/View/Screens/cartscreen/setbillingaddress.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import '../../../Constant/Components.dart';
 import '../../../Control/dashboardcontroller.dart';
 
@@ -334,7 +334,7 @@ class cartscreen extends StatelessWidget {
                     );
                   }
                   else {
-                    return loadScreen();
+                    return loadScreen(context);
                   }
                 },
               ),

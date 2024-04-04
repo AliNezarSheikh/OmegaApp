@@ -74,7 +74,7 @@ String? token="";
  usermodel? currentuser;
 categorymodel? catmod;
 cartmodel? currentcart;
-BuildContext? context;
+
 const List<String> list = <String>['Male', 'Female',];
 const List<String> emarites = <String>['Abu Dhabi', 'Dubai','Sharjah','Ajman','Emirate of Umm Al Quwain','Ras al Khaimah','Fujairah'];
 int? id;
@@ -85,6 +85,7 @@ List<productmodel> listmiddle = [];
 List<productmodel> listsearch=[];
 List<itemincart> listcart=[];
 List<ordermodel> orders=[];
+List<iteminorder> listorders=[];
 List<shipmodel> listship=[];
 List<paymentmodel> listpaymentmethods=[];
 late addressmodel useraddress;
@@ -93,7 +94,7 @@ String baseurl="https://bagisto.code-vision.ae/api/v1";
 GetStorage remeber=GetStorage();
 GetStorage edit=GetStorage();
 GetStorage usernow=GetStorage();
-
+String? urlimage;
 Future<bool> checkInternetConnection() async {
   var connectivityResult = await Connectivity().checkConnectivity();
   return connectivityResult != ConnectivityResult.none;

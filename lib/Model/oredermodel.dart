@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import '../Constant/Components.dart';
 import 'package:http/http.dart' as http;
+
+import '../Constant/Components.dart';
 class ordermodel{
   int? id;
   String? status;
@@ -86,37 +87,26 @@ class iteminorder{
  String? formatted_price;
  String? formatted_grant_total;
  String? imageurl;
+ String? name;
  iteminorder({
    required this.itemid,
    required this.qty_ordered,
    required this.formatted_price,
    required this.formatted_grant_total,
    required this.imageurl,
+   required this.name,
 });
- iteminorder.fromjson(dynamic element)  {
+ iteminorder.fromjson(dynamic element)   {
    itemid=element["product_id"];
+   name=element["name"];
    qty_ordered=element["qty_ordered"];
    formatted_price=element["formatted_price"];
    formatted_grant_total=element["formatted_grant_total"];
-   getproduct(id: itemid!);
    imageurl=urlimage;
 
- }
- String? urlimage;
- Future<String?> getproduct({required int id})async{
-   Uri url = Uri.parse("$baseurl/products/${id}");
-   await http.get(url,headers: {
-     'Accept': 'application/json',
-   }).then((value) {
-     if(value.statusCode==200){
-       var result = jsonDecode(value.body);
-       urlimage= result["data"]["base_image"]["medium_image_url"];
-     }else{
-       return null;
-     }
-   }).catchError((error){
-     return null;
-   });
+
 
  }
+
+
 }

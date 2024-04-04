@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../Constant/Components.dart';
 import '../../../Constant/reusable.dart';
@@ -309,12 +308,12 @@ class setshipping extends StatelessWidget {
 
                   ],
                 ),
-                fallback: (context) => loadaddress(),
+                fallback: (context) => loadaddress(context),
               ),
             )
-                : loadaddress();
+                : loadaddress(context);
           } else {
-            return loadaddress();
+            return loadaddress(context);
           }
         },
       ),

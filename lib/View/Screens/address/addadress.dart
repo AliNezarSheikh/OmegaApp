@@ -1,12 +1,8 @@
-import 'package:flutter/widgets.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:omega/Constant/Components.dart';
 import 'package:shimmer/shimmer.dart';

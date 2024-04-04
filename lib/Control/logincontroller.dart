@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:omega/Model/adressmodel.dart';
@@ -27,12 +28,12 @@ class logincontroller extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingaddress = false.obs;
   RxBool isLoadingorders = false.obs;
+  RxBool isLoaditems = false.obs;
   RxBool isloadmethod = false.obs;
   RxBool isloadmap = false.obs;
   RxBool getlocation = false.obs;
   RxBool visiblesave = false.obs;
   RxBool successregister = false.obs;
-
   RxBool successaddress = false.obs;
   RxBool successmethod = false.obs;
   RxBool successsaveorder = false.obs;
@@ -725,6 +726,52 @@ async{
     }).catchError((error) {
       isLoadingorders.value = false;
 
+    });
+  }
+
+  Future<void> getproduct({required int id})async{
+    Uri url = Uri.parse("$baseurl/products/${id}");
+    var value=await http.get(url,headers: {
+      'Accept': 'application/json',});
+    var result = jsonDecode(value.body);
+    urlimage= result["data"]["base_image"]["medium_image_url"];
+
+
+  }
+  Future<void> getorderbyid(
+      {required String token, required int orderid,required BuildContext context}) async {
+    isLoaditems.value = true;
+    listorders=[];
+    Uri url = Uri.parse("$baseurl/customer/orders/${orderid}");
+    await http.get(url, headers: {
+      'Authorization': 'Bearer $token',
+
+    }).then((value) async {
+      if (value.statusCode == 200) {
+        var result = jsonDecode(value.body);
+        await dashcontrol.getallproducts();
+         result["data"]["items"].forEach((element)  {
+           int id= element["product_id"];
+           listmiddle.forEach((ele) {
+             if(id==ele.id){
+               urlimage=ele.medium_image_url;
+               listorders.add(iteminorder.fromjson(element));
+             }
+           });
+
+        });
+        isLoaditems.value = false;
+      } else if (value.statusCode == 401){
+        isLoaditems.value = false;
+        showresult(context, Colors.red, "You need to login");
+
+      }else {
+        isLoaditems.value = false;
+        showresult(context, Colors.red, jsonDecode(value.body)["message"]);
+      }
+    }).catchError((error) {
+      isLoaditems.value = false;
+      showresult(context, Colors.red, error.toString());
     });
   }
 

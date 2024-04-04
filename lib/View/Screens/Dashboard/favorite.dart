@@ -90,7 +90,7 @@ class favorite extends GetView<dashcontroller> {
                               separatorBuilder: (context, index) {
                                 return SizedBox(height: 20);
                               },
-                              itemCount:5,
+                              itemCount:4,
                               itemBuilder: (context, index) {
 
                                 return AnimationConfiguration.staggeredList(

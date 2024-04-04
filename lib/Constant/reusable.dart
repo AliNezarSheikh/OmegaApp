@@ -20,6 +20,7 @@ import 'package:omega/Model/productmodel.dart';
 import 'package:omega/Model/shipmodel.dart';
 import 'package:omega/View/Screens/address/updateaddress.dart';
 import 'package:omega/View/Screens/Dashboard/productdetails.dart';
+import 'package:omega/View/Screens/cartscreen/orderdetails.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toastification/toastification.dart';
 
@@ -1314,6 +1315,304 @@ Widget CartlistItemWidget(context, itemincart model,
         ),
       ),
     );
+
+Widget orderlistItemWidget(context, iteminorder model,) =>
+    Container(
+      padding: EdgeInsets.all(10),
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    image: NetworkImage(
+                      "${model.imageurl}",
+                    ),
+                    width:width! * 0.2,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: CircleAvatar(
+                  backgroundColor: Colors.green,
+                  maxRadius: 10,
+                  child: SecondlyText(words: "${model.qty_ordered}",color: Colors.white),
+                ),
+              )
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PrimaryText(words: "${model.name}", fontsize: 14),
+
+                  Row(
+                    children: [
+                      SecondlyText(words: "Price: "),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "${model.formatted_price}"),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      SecondlyText(words: "Quantity: "),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "${model.formatted_price} × ${model.qty_ordered}"),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      SecondlyText(words: "Total: "),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SecondlyText(words: "${model.formatted_grant_total}"),
+                    ],
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+        /*  Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                          border: Border.all(
+                            color: Color(0XFFA2A5B1),
+                          )),
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          child: InkWell(
+                            onTap: () async {
+                              control.decreasequantity(
+                                  currentitemincart.itemidincart!,
+                                  context: context);
+                            },
+                            child: SvgPicture.asset(
+                                "assets/images/img_minus_blue_gray_300.svg"),
+                          )),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Obx(
+                          () => SecondlyText(
+                          words: "${currentitemincart.counter}",
+                          wight: FontWeight.w700),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                        onTap: () async {
+                          await control.increasequantity(
+                              currentitemincart.itemidincart!,
+                              context: context);
+                          //  await control.updateitemincart(productidincart: currentitemincart.itemidincart!, count: currentitemincart.counter!.value,token: token!,context: context);
+                        },
+                        child: SvgPicture.asset(
+                            "assets/images/img_plus_primary.svg")),
+                  ],
+                ),
+              ),
+            ],
+          ),*/
+        ],
+      ),
+    );
+Widget loadorderlistItemWidget() =>
+    ListView.separated(
+      physics: BouncingScrollPhysics(),
+
+      shrinkWrap: true,
+      separatorBuilder: (context, index) {
+        return SizedBox(height: 20);
+      },
+      itemCount:1,
+        itemBuilder: (context, index){
+        return Container(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Shimmer(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.grey[300]!,
+                          Colors.grey[100]!,
+                          Colors.grey[300]!
+                        ],
+                        stops: [0.4, 0.5, 0.6],
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                        height:height! * 0.15,
+                        width: width! * 0.3,
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.green,
+                    highlightColor: Colors.grey[100]!,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.green,
+                      maxRadius: 10,
+                      child: SecondlyText(words: " ",color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                Shimmer(
+                gradient: LinearGradient(
+                colors: [
+                  Colors.grey[300]!,
+                  Colors.grey[100]!,
+                  Colors.grey[300]!
+                  ],
+                  stops: [0.4, 0.5, 0.6],
+                ),
+                child: Container(
+                  margin: EdgeInsets.all(8),
+                  color: Colors.white,
+                  height: height! * 0.009,
+                  child: PrimaryText(
+                      words:
+                      "       "), // Replace with your desired shimmer color
+                ),
+              ),
+
+                    Row(
+                      children: [
+                        SecondlyText(words: "Price: "),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Shimmer(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.grey[300]!,
+                              Colors.grey[100]!,
+                              Colors.grey[300]!
+                            ],
+                            stops: [0.4, 0.5, 0.6],
+                          ),
+                          child: Container(
+                              height: height!* 0.01,
+                              color: Colors.white,
+                              child: SecondlyText(
+                                  words: "               ", fontsize: 12)),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      children: [
+                        SecondlyText(words: "Quantity: "),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Shimmer(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.grey[300]!,
+                              Colors.grey[100]!,
+                              Colors.grey[300]!
+                            ],
+                            stops: [0.4, 0.5, 0.6],
+                          ),
+                          child: Container(
+                              height: height! * 0.01,
+                              color: Colors.white,
+                              child: SecondlyText(
+                                  words: "               ", fontsize: 12)),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      children: [
+                        SecondlyText(words: "Total: "),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Shimmer(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.grey[300]!,
+                              Colors.grey[100]!,
+                              Colors.grey[300]!
+                            ],
+                            stops: [0.4, 0.5, 0.6],
+                          ),
+                          child: Container(
+                              height: height! * 0.01,
+                              color: Colors.white,
+                              child: SecondlyText(
+                                  words: "               ", fontsize: 12)),
+                        ),
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+
+          ],
+        ),
+      );
+      }
+    );
 Widget cartlistload(
   BuildContext context,
 ) =>
@@ -2583,7 +2882,11 @@ Widget orderslist(
                   padding: const EdgeInsets.only(right: 10.0, bottom: 15.0),
                   child: InkWell(
                     onTap: (){
-
+                      Get.to(()=>orderdetails(model: model),
+                          transition: Transition.zoom,
+                          curve: Curves.easeIn,
+                          duration: Duration(seconds: 1)
+                      );
                     },
                     child: Image(
                       width: 25,
@@ -3044,7 +3347,7 @@ Widget buildmapButton(
   );
 }
 
-Widget loadaddress() {
+Widget loadaddress(BuildContext context) {
   return Stack(
     children: [
       SingleChildScrollView(
@@ -3117,7 +3420,7 @@ Widget loadaddress() {
   );
 }
 
-Widget loadScreen() {
+Widget loadScreen(BuildContext context) {
   return SingleChildScrollView(
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 36.0),
